@@ -114,6 +114,26 @@
   .pnav-label.prev-c { color: var(--teal); }
   .pnav-label.next-c { color: var(--orange); }
   .pnav-name { display: block; }
+
+  @media (max-width: 640px) {
+    nav { padding: 10px 16px; height: auto; flex-wrap: wrap; gap: 6px; }
+    .nav-links { width: 100%; justify-content: center; flex-wrap: wrap; }
+    .nav-link { padding: 4px 8px; font-size: 9px; }
+
+    .hero { padding: 40px 20px 40px; grid-template-columns: 1fr; gap: 32px; }
+    h1 { font-size: 40px; }
+    .hero-sub { font-size: 15px; max-width: 100%; }
+    .stats { gap: 16px; flex-wrap: wrap; }
+
+    .section { padding: 0 20px 48px; }
+    .divider { padding: 0 20px; margin-bottom: 40px; }
+    .sec-heading { font-size: 30px; }
+    .features-grid { grid-template-columns: 1fr; }
+
+    .tp-bar { flex-direction: column; align-items: flex-start; padding: 20px; gap: 14px; }
+
+    .product-nav { padding: 0 20px 56px; }
+  }
 </style>
 </head>
 <body>

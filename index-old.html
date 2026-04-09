@@ -138,6 +138,25 @@
   .card-tag { font-family: 'JetBrains Mono', monospace; font-size: 10px; background: var(--bg); border: 1px solid var(--border); border-radius: 20px; padding: 3px 10px; color: var(--ink-3); }
   .card-arrow { font-size: 16px; opacity: 0.35; transition: opacity 0.2s, transform 0.2s; }
   .product-card:hover .card-arrow { opacity: 1; transform: translateX(3px); }
+
+  @media (max-width: 640px) {
+    nav { padding: 10px 16px; height: auto; flex-wrap: wrap; gap: 6px; }
+    .nav-links { width: 100%; justify-content: center; flex-wrap: wrap; }
+    .nav-link { padding: 4px 8px; font-size: 9px; }
+
+    .hero { padding: 48px 20px 40px; }
+    .hero h1 { font-size: 42px; }
+    .hero-sub { font-size: 15px; margin-bottom: 36px; }
+
+    .loop-wrap { padding: 0 20px 48px; }
+    .loop-card { padding: 28px 20px; }
+    .loop-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 24px; }
+    .loop-node { width: 40%; }
+    .loop-arrow { display: none; }
+
+    .grid-wrap { padding: 0 20px 56px; }
+    .products-grid { grid-template-columns: 1fr; }
+  }
 </style>
 </head>
 <body>
