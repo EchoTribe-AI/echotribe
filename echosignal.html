@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EchoSignal — Monitor & Detect</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,700;0,9..144,800;1,9..144,600;1,9..144,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F7F6F4; --surface: #FFFFFF; --border: #E8E6E1;
+    --ink: #0F1020; --ink-3: #5A5B70; --ink-muted: #8A8B9E;
+    --pink: #EC1A8D; --pink-hover: #D1137A; --pink-soft: #FDE8F3; --pink-dark: #A10D5F;
+    --teal: #006a65; --purple: #7c3aed; --orange: #ea580c;
+    --radius: 14px; --shadow: 0 1px 2px rgba(15,16,32,0.04), 0 4px 16px rgba(15,16,32,0.06);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--ink); }
+
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(247,246,244,0.88); backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border); padding: 0 40px; height: 58px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .nav-logo { font-family: 'Fraunces', serif; font-size: 17px; font-weight: 700; display: flex; align-items: center; gap: 8px; color: var(--ink); text-decoration: none; }
+  .nav-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--pink); animation: pulse 2s ease-in-out infinite; }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(1.4)} }
+  .nav-links { display: flex; gap: 4px; }
+  .nav-link { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; padding: 6px 12px; border-radius: 8px; text-decoration: none; color: var(--ink-muted); transition: background 0.15s, color 0.15s; }
+  .nav-link:hover { background: var(--surface); color: var(--ink); }
+  .nav-link.active { background: var(--pink-soft); color: var(--pink); }
+  .nav-link.route  { color: var(--teal); }
+  .nav-link.agent  { color: var(--purple); }
+  .nav-link.boost  { color: var(--orange); }
+
+  /* HERO */
+  .hero { max-width: 1120px; margin: 0 auto; padding: 80px 40px 64px; display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+  .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.12em; color: var(--pink); background: var(--pink-soft); border-radius: 20px; padding: 5px 12px; display: inline-flex; align-items: center; gap: 7px; margin-bottom: 24px; }
+  .live-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--pink); animation: pulse 1.5s ease-in-out infinite; }
+  h1 { font-family: 'Fraunces', serif; font-size: 56px; font-weight: 800; line-height: 1.0; letter-spacing: -0.02em; margin-bottom: 20px; }
+  h1 em { font-style: italic; color: var(--pink); }
+  .hero-sub { font-size: 17px; line-height: 1.65; color: var(--ink-3); margin-bottom: 36px; max-width: 420px; }
+  .stats { display: flex; gap: 28px; }
+  .stat-val { font-family: 'Fraunces', serif; font-size: 26px; font-weight: 700; }
+  .stat-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 3px; }
+
+  /* DARK SIGNAL CARD */
+  .signal-card { background: var(--ink); border-radius: 20px; padding: 28px; position: relative; overflow: hidden; }
+  .signal-card::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 30% 20%, rgba(236,26,141,0.15) 0%, transparent 60%); pointer-events: none; }
+  .sc-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 22px; position: relative; }
+  .sc-title { font-family: 'Fraunces', serif; font-size: 20px; font-weight: 700; color: #fff; }
+  .sc-badge { font-family: 'JetBrains Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; background: rgba(236,26,141,0.2); color: var(--pink); border: 1px solid rgba(236,26,141,0.3); border-radius: 20px; padding: 4px 10px; display: flex; align-items: center; gap: 5px; }
+
+  /* Waveform */
+  .waveform { height: 56px; display: flex; align-items: center; gap: 3px; margin-bottom: 20px; position: relative; }
+  .wb { flex: 1; border-radius: 2px; background: rgba(236,26,141,0.35); animation: wa 1.8s ease-in-out infinite; }
+  .wb:nth-child(1){height:18%;animation-delay:0s} .wb:nth-child(2){height:42%;animation-delay:.08s}
+  .wb:nth-child(3){height:68%;animation-delay:.16s} .wb:nth-child(4){height:52%;animation-delay:.24s}
+  .wb:nth-child(5){height:88%;animation-delay:.32s;background:var(--pink)} .wb:nth-child(6){height:100%;animation-delay:.4s;background:var(--pink)}
+  .wb:nth-child(7){height:82%;animation-delay:.48s;background:var(--pink)} .wb:nth-child(8){height:58%;animation-delay:.56s}
+  .wb:nth-child(9){height:38%;animation-delay:.64s} .wb:nth-child(10){height:22%;animation-delay:.72s}
+  .wb:nth-child(11){height:48%;animation-delay:.8s} .wb:nth-child(12){height:74%;animation-delay:.88s}
+  .wb:nth-child(13){height:92%;animation-delay:.96s;background:var(--pink)} .wb:nth-child(14){height:78%;animation-delay:1.04s}
+  .wb:nth-child(15){height:52%;animation-delay:1.12s} .wb:nth-child(16){height:32%;animation-delay:1.2s}
+  .wb:nth-child(17){height:62%;animation-delay:1.28s} .wb:nth-child(18){height:85%;animation-delay:1.36s;background:var(--pink)}
+  .wb:nth-child(19){height:44%;animation-delay:1.44s} .wb:nth-child(20){height:20%;animation-delay:1.52s}
+  @keyframes wa { 0%,100%{opacity:.45;transform:scaleY(.75)} 50%{opacity:1;transform:scaleY(1)} }
+
+  /* Signal rows */
+  .signal-rows { display: flex; flex-direction: column; gap: 8px; position: relative; }
+  .srow { display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 11px 13px; }
+  .srow.hot { background: rgba(236,26,141,0.08); border-color: rgba(236,26,141,0.22); }
+  .srow-icon { width: 30px; height: 30px; border-radius: 8px; background: rgba(255,255,255,0.07); display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
+  .srow.hot .srow-icon { background: rgba(236,26,141,0.15); }
+  .srow-info { flex: 1; min-width: 0; }
+  .srow-name { font-size: 12px; font-weight: 600; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .srow-meta { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: rgba(255,255,255,0.38); margin-top: 2px; }
+  .srow-bar { width: 64px; }
+  .srow-bar-bg { height: 4px; border-radius: 2px; background: rgba(255,255,255,0.1); overflow: hidden; }
+  .srow-bar-fill { height: 100%; border-radius: 2px; background: var(--pink); }
+  .srow-val { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: rgba(255,255,255,0.5); min-width: 28px; text-align: right; }
+  .srow.hot .srow-val { color: var(--pink); }
+  .win-tag { font-family: 'JetBrains Mono', monospace; font-size: 9px; text-transform: uppercase; letter-spacing: 0.08em; background: var(--pink); color: #fff; border-radius: 4px; padding: 2px 6px; animation: wpulse 2s ease-in-out infinite; }
+  @keyframes wpulse { 0%,100%{opacity:1} 50%{opacity:.65} }
+  .sc-footer { margin-top: 16px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.07); display: flex; justify-content: space-between; }
+  .sc-footer-text { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: rgba(255,255,255,0.32); }
+  .sc-footer-text span { color: rgba(255,255,255,0.55); }
+
+  /* FEATURE SECTION */
+  .section { max-width: 1120px; margin: 0 auto; padding: 0 40px 72px; }
+  .sec-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-muted); margin-bottom: 12px; }
+  .sec-label span { color: var(--pink); }
+  .sec-heading { font-family: 'Fraunces', serif; font-size: 40px; font-weight: 700; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 10px; }
+  .sec-heading em { font-style: italic; color: var(--pink); }
+  .sec-sub { font-size: 16px; color: var(--ink-3); line-height: 1.65; max-width: 540px; margin-bottom: 40px; }
+  .divider { max-width: 1120px; margin: 0 auto; padding: 0 40px; border-bottom: 1px solid var(--border); margin-bottom: 64px; }
+
+  .features-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+  .feat-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow); }
+  .feat-num { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; color: var(--pink); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+  .feat-num::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+  .feat-title { font-family: 'Fraunces', serif; font-size: 17px; font-weight: 600; margin-bottom: 10px; }
+  .feat-body { font-size: 13px; line-height: 1.6; color: var(--ink-3); }
+
+  /* ALERT BAR */
+  .alert-bar { background: linear-gradient(135deg, var(--ink) 0%, #1a1b2e 100%); border-radius: var(--radius); padding: 28px 32px; display: flex; align-items: center; gap: 20px; margin-top: 20px; position: relative; overflow: hidden; }
+  .alert-bar::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 80% 50%, rgba(236,26,141,0.1) 0%, transparent 60%); pointer-events: none; }
+  .alert-icon { width: 48px; height: 48px; border-radius: 13px; background: rgba(236,26,141,0.15); border: 1px solid rgba(236,26,141,0.3); display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; position: relative; }
+  .alert-text { flex: 1; position: relative; }
+  .alert-title { font-family: 'Fraunces', serif; font-size: 18px; font-weight: 700; color: #fff; margin-bottom: 5px; }
+  .alert-body { font-size: 13px; color: rgba(255,255,255,0.5); line-height: 1.55; }
+  .alert-body strong { color: var(--pink); font-weight: 600; }
+  .alert-btn { background: var(--pink); color: #fff; font-family: 'Plus Jakarta Sans', sans-serif; font-size: 13px; font-weight: 600; border: none; border-radius: 10px; padding: 11px 18px; cursor: pointer; white-space: nowrap; position: relative; transition: background 0.2s; }
+  .alert-btn:hover { background: var(--pink-hover); }
+
+  /* NAV BETWEEN PRODUCTS */
+  .product-nav { max-width: 1120px; margin: 0 auto; padding: 0 40px 80px; display: flex; justify-content: space-between; align-items: center; }
+  .pnav-back { font-family: 'JetBrains Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-muted); text-decoration: none; display: flex; align-items: center; gap: 6px; transition: color 0.15s; }
+  .pnav-back:hover { color: var(--ink); }
+  .pnav-next { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 13px; font-weight: 600; color: var(--ink); text-decoration: none; display: flex; align-items: center; gap: 10px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 12px 18px; box-shadow: var(--shadow); transition: box-shadow 0.2s, transform 0.2s; }
+  .pnav-next:hover { box-shadow: 0 4px 20px rgba(15,16,32,0.1); transform: translateX(3px); }
+  .pnav-next-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--teal); display: block; }
+  .pnav-next-name { display: block; }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo"><div class="nav-dot"></div>EchoTribe</a>
+  <div class="nav-links">
+    <a href="echosignal.html" class="nav-link active">EchoSignal</a>
+    <a href="echoroute.html"  class="nav-link route">EchoRoute</a>
+    <a href="echoagent.html"  class="nav-link agent">EchoAgent</a>
+    <a href="echoboost.html"  class="nav-link boost">EchoBoost</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div>
+    <div class="eyebrow"><div class="live-dot"></div>EchoSignal · Monitor & Detect</div>
+    <h1>The signal<br>beneath the<br><em>noise.</em></h1>
+    <p class="hero-sub">Watches every affiliate in the network — creator posts, publisher content, link click velocity — and surfaces exactly what's outperforming right now. Before the window closes.</p>
+    <div class="stats">
+      <div><div class="stat-val">48h</div><div class="stat-label">Refresh Cycle</div></div>
+      <div><div class="stat-val">100%</div><div class="stat-label">Network Coverage</div></div>
+      <div><div class="stat-val">Real-time</div><div class="stat-label">Window Alerts</div></div>
+    </div>
+  </div>
+
+  <div class="signal-card">
+    <div class="sc-header">
+      <div class="sc-title">EchoSignal</div>
+      <div class="sc-badge"><div class="live-dot"></div>Live Feed</div>
+    </div>
+    <div class="waveform">
+      <div class="wb"></div><div class="wb"></div><div class="wb"></div><div class="wb"></div>
+      <div class="wb"></div><div class="wb"></div><div class="wb"></div><div class="wb"></div>
+      <div class="wb"></div><div class="wb"></div><div class="wb"></div><div class="wb"></div>
+      <div class="wb"></div><div class="wb"></div><div class="wb"></div><div class="wb"></div>
+      <div class="wb"></div><div class="wb"></div><div class="wb"></div><div class="wb"></div>
+    </div>
+    <div class="signal-rows">
+      <div class="srow hot">
+        <div class="srow-icon">🏕️</div>
+        <div class="srow-info">
+          <div class="srow-name">Outdoor · Camping Hammock</div>
+          <div class="srow-meta">High CVR · +312% click velocity · 48h</div>
+        </div>
+        <div class="srow-bar"><div class="srow-bar-bg"><div class="srow-bar-fill" style="width:94%"></div></div></div>
+        <div class="srow-val">94</div>
+        <div class="win-tag">Window</div>
+      </div>
+      <div class="srow hot">
+        <div class="srow-icon">🪀</div>
+        <div class="srow-info">
+          <div class="srow-name">Toys · Novelty Squishy</div>
+          <div class="srow-meta">Top seller · 702 units · Trending</div>
+        </div>
+        <div class="srow-bar"><div class="srow-bar-bg"><div class="srow-bar-fill" style="width:87%"></div></div></div>
+        <div class="srow-val">87</div>
+        <div class="win-tag">Window</div>
+      </div>
+      <div class="srow">
+        <div class="srow-icon">🏠</div>
+        <div class="srow-info">
+          <div class="srow-name">Kids · Playhouse Set</div>
+          <div class="srow-meta">37K+ clicks · Consistent performer</div>
+        </div>
+        <div class="srow-bar"><div class="srow-bar-bg"><div class="srow-bar-fill" style="width:72%"></div></div></div>
+        <div class="srow-val">72</div>
+      </div>
+      <div class="srow">
+        <div class="srow-icon">✨</div>
+        <div class="srow-info">
+          <div class="srow-name">Beauty · Body Lotion</div>
+          <div class="srow-meta">44 orders · Strong repeat CVR</div>
+        </div>
+        <div class="srow-bar"><div class="srow-bar-bg"><div class="srow-bar-fill" style="width:61%"></div></div></div>
+        <div class="srow-val">61</div>
+      </div>
+    </div>
+    <div class="sc-footer">
+      <div class="sc-footer-text">Next refresh in <span>44h 12m</span></div>
+      <div class="sc-footer-text"><span>2 windows</span> open</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- HOW IT WORKS -->
+<section class="section">
+  <div class="sec-label"><span>01</span> — How It Works</div>
+  <div class="sec-heading">Detection that<br><em>acts</em> on data.</div>
+  <p class="sec-sub">EchoSignal doesn't aggregate vanity metrics. It watches click velocity, conversion rates, and content performance across the entire affiliate network simultaneously.</p>
+
+  <div class="features-grid">
+    <div class="feat-card">
+      <div class="feat-num">01 — Inputs</div>
+      <div class="feat-title">Every affiliate signal, one feed</div>
+      <div class="feat-body">Creator social posts, publisher content pages, and smart link click data — all ingested into a unified signal model. Social creators and content publishers are covered simultaneously, with no manual tagging required.</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-num">02 — Scoring</div>
+      <div class="feat-title">Ranked by real conversion weight</div>
+      <div class="feat-body">Each product receives a composite score combining click velocity, units ordered, and content engagement — weighted by what actually drives revenue. Scored 0–100. Refreshed every 48 hours across the full network.</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-num">03 — Window Detection</div>
+      <div class="feat-title">Flags the moment before it closes</div>
+      <div class="feat-body">When a product's click velocity exceeds its baseline conversion rate by a meaningful threshold, EchoSignal flags an amplification window — the exact signal EchoBoost needs to deploy spend at the right moment, not after.</div>
+    </div>
+  </div>
+
+  <div class="alert-bar">
+    <div class="alert-icon">⚡</div>
+    <div class="alert-text">
+      <div class="alert-title">Amplification Window Detected</div>
+      <div class="alert-body">Outdoor Camping Hammock is at <strong>+312% click velocity</strong> vs 30-day baseline. Window estimated open for <strong>~18 hours</strong>. EchoBoost ready to deploy.</div>
+    </div>
+    <button class="alert-btn">Boost Now →</button>
+  </div>
+</section>
+
+<!-- NEXT PRODUCT NAV -->
+<div class="product-nav">
+  <a href="index.html" class="pnav-back">← All Products</a>
+  <a href="echoroute.html" class="pnav-next">
+    <div>
+      <span class="pnav-next-label">Next — Route & Maximize EPC</span>
+      <span class="pnav-next-name">EchoRoute →</span>
+    </div>
+  </a>
+</div>
+
+</body>
+</html>

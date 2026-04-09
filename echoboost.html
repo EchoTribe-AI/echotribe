@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EchoBoost — Amplify & Convert</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,700;0,9..144,800;1,9..144,600;1,9..144,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F7F6F4; --surface: #FFFFFF; --border: #E8E6E1;
+    --ink: #0F1020; --ink-3: #5A5B70; --ink-muted: #8A8B9E;
+    --pink: #EC1A8D; --pink-soft: #FDE8F3;
+    --teal: #006a65; --purple: #7c3aed;
+    --orange: #ea580c; --orange-soft: #fff1e9; --orange-dark: #9a3412; --orange-light: #fb923c;
+    --radius: 14px; --shadow: 0 1px 2px rgba(15,16,32,0.04), 0 4px 16px rgba(15,16,32,0.06);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--ink); }
+
+  nav { position: sticky; top: 0; z-index: 100; background: rgba(247,246,244,0.88); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); padding: 0 40px; height: 58px; display: flex; align-items: center; justify-content: space-between; }
+  .nav-logo { font-family: 'Fraunces', serif; font-size: 17px; font-weight: 700; display: flex; align-items: center; gap: 8px; color: var(--ink); text-decoration: none; }
+  .nav-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--pink); animation: pulse 2s ease-in-out infinite; }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(1.4)} }
+  .nav-links { display: flex; gap: 4px; }
+  .nav-link { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; padding: 6px 12px; border-radius: 8px; text-decoration: none; color: var(--ink-muted); transition: background 0.15s, color 0.15s; }
+  .nav-link:hover { background: var(--surface); color: var(--ink); }
+  .nav-link.signal { color: var(--pink); }
+  .nav-link.route { color: var(--teal); }
+  .nav-link.agent { color: var(--purple); }
+  .nav-link.active { background: var(--orange-soft); color: var(--orange); }
+
+  /* HERO */
+  .hero { max-width: 1120px; margin: 0 auto; padding: 80px 40px 64px; display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+  .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.12em; color: var(--orange); background: var(--orange-soft); border-radius: 20px; padding: 5px 12px; display: inline-flex; align-items: center; gap: 7px; margin-bottom: 24px; }
+  h1 { font-family: 'Fraunces', serif; font-size: 56px; font-weight: 800; line-height: 1.0; letter-spacing: -0.02em; margin-bottom: 20px; }
+  h1 em { font-style: italic; color: var(--orange); }
+  .hero-sub { font-size: 17px; line-height: 1.65; color: var(--ink-3); margin-bottom: 36px; max-width: 420px; }
+  .stats { display: flex; gap: 28px; }
+  .stat-val { font-family: 'Fraunces', serif; font-size: 26px; font-weight: 700; }
+  .stat-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 3px; }
+
+  /* BOOST DARK CARD */
+  .boost-card { background: var(--ink); border-radius: 20px; padding: 28px; position: relative; overflow: hidden; }
+  .boost-card::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 80% 20%, rgba(234,88,12,0.15) 0%, transparent 60%); pointer-events: none; }
+  .bc-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; position: relative; }
+  .bc-title { font-family: 'Fraunces', serif; font-size: 20px; font-weight: 700; color: #fff; }
+  .bc-badge { font-family: 'JetBrains Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; background: rgba(234,88,12,0.2); color: var(--orange-light); border: 1px solid rgba(234,88,12,0.35); border-radius: 20px; padding: 4px 10px; display: flex; align-items: center; gap: 5px; }
+  .bc-badge-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--orange-light); animation: pulse 1.5s ease-in-out infinite; }
+
+  /* Three-step motion */
+  .boost-steps { display: flex; flex-direction: column; gap: 2px; margin-bottom: 18px; position: relative; }
+  .bs-step { display: flex; align-items: center; gap: 12px; padding: 12px 13px; border-radius: 10px; border: 1px solid transparent; }
+  .bs-step.done { background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.07); }
+  .bs-step.active { background: rgba(234,88,12,0.1); border-color: rgba(234,88,12,0.25); }
+  .bs-num { font-family: 'JetBrains Mono', monospace; font-size: 11px; width: 22px; height: 22px; border-radius: 6px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .bs-step.done .bs-num { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.4); }
+  .bs-step.active .bs-num { background: var(--orange); color: #fff; }
+  .bs-info { flex: 1; }
+  .bs-label { font-family: 'JetBrains Mono', monospace; font-size: 9px; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 2px; }
+  .bs-step.done .bs-label { color: rgba(255,255,255,0.3); }
+  .bs-step.active .bs-label { color: var(--orange-light); }
+  .bs-value { font-size: 12px; font-weight: 600; }
+  .bs-step.done .bs-value { color: rgba(255,255,255,0.6); }
+  .bs-step.active .bs-value { color: #fff; }
+  .bs-check { font-size: 14px; }
+  .bs-arrow { width: 20px; text-align: center; color: rgba(255,255,255,0.2); font-size: 12px; flex-shrink: 0; }
+
+  /* KPI row */
+  .kpi-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 14px; position: relative; }
+  .kpi { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 10px 12px; text-align: center; }
+  .kpi-val { font-family: 'Fraunces', serif; font-size: 18px; font-weight: 700; color: #fff; }
+  .kpi-label { font-family: 'JetBrains Mono', monospace; font-size: 9px; text-transform: uppercase; letter-spacing: 0.07em; color: rgba(255,255,255,0.3); margin-top: 3px; }
+
+  /* Channel tags */
+  .channels { display: flex; gap: 6px; flex-wrap: wrap; position: relative; }
+  .ch-tag { font-family: 'JetBrains Mono', monospace; font-size: 10px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; padding: 5px 10px; color: rgba(255,255,255,0.5); }
+  .ch-tag.active { background: rgba(234,88,12,0.15); border-color: rgba(234,88,12,0.3); color: var(--orange-light); }
+
+  /* SECTION */
+  .section { max-width: 1120px; margin: 0 auto; padding: 0 40px 72px; }
+  .sec-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-muted); margin-bottom: 12px; }
+  .sec-label span { color: var(--orange); }
+  .sec-heading { font-family: 'Fraunces', serif; font-size: 40px; font-weight: 700; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 10px; }
+  .sec-heading em { font-style: italic; color: var(--orange); }
+  .sec-sub { font-size: 16px; color: var(--ink-3); line-height: 1.65; max-width: 540px; margin-bottom: 40px; }
+  .divider { max-width: 1120px; margin: 0 auto; padding: 0 40px; border-bottom: 1px solid var(--border); margin-bottom: 64px; }
+
+  .features-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+  .feat-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow); }
+  .feat-num { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; color: var(--orange); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+  .feat-num::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+  .feat-title { font-family: 'Fraunces', serif; font-size: 17px; font-weight: 600; margin-bottom: 10px; }
+  .feat-body { font-size: 13px; line-height: 1.6; color: var(--ink-3); }
+
+  /* ROAS BAR */
+  .roas-bar { background: linear-gradient(135deg, var(--ink) 0%, #1a1b2e 100%); border-radius: var(--radius); padding: 28px 32px; display: flex; align-items: center; gap: 24px; position: relative; overflow: hidden; }
+  .roas-bar::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 80% 50%, rgba(234,88,12,0.12) 0%, transparent 60%); pointer-events: none; }
+  .roas-icon { width: 48px; height: 48px; border-radius: 13px; background: rgba(234,88,12,0.15); border: 1px solid rgba(234,88,12,0.3); display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; position: relative; }
+  .roas-text { flex: 1; position: relative; }
+  .roas-title { font-family: 'Fraunces', serif; font-size: 18px; font-weight: 700; color: #fff; margin-bottom: 5px; }
+  .roas-body { font-size: 13px; color: rgba(255,255,255,0.5); line-height: 1.55; }
+  .roas-body strong { color: var(--orange-light); font-weight: 600; }
+  .roas-num { position: relative; text-align: right; flex-shrink: 0; }
+  .roas-big { font-family: 'Fraunces', serif; font-size: 36px; font-weight: 800; color: var(--orange-light); line-height: 1; }
+  .roas-unit { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: rgba(255,255,255,0.3); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 4px; }
+
+  /* CLOSED LOOP SUMMARY */
+  .loop-summary { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 36px 40px; box-shadow: var(--shadow); margin-top: 20px; }
+  .ls-heading { font-family: 'Fraunces', serif; font-size: 24px; font-weight: 700; margin-bottom: 8px; }
+  .ls-heading em { font-style: italic; color: var(--pink); }
+  .ls-sub { font-size: 14px; color: var(--ink-3); margin-bottom: 28px; line-height: 1.6; }
+  .ls-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .ls-item { display: flex; flex-direction: column; gap: 8px; }
+  .ls-item-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+  .ls-item-icon.signal { background: var(--pink-soft); }
+  .ls-item-icon.route  { background: #e0f5f4; }
+  .ls-item-icon.agent  { background: #ede9fe; }
+  .ls-item-icon.boost  { background: var(--orange-soft); }
+  .ls-item-name { font-family: 'Fraunces', serif; font-size: 15px; font-weight: 700; }
+  .ls-item-desc { font-size: 12px; color: var(--ink-3); line-height: 1.5; }
+  .ls-item a { text-decoration: none; color: inherit; }
+  .ls-item-name a { display: flex; align-items: center; gap: 4px; }
+  .ls-item-name a:hover { opacity: 0.7; }
+
+  /* NAV */
+  .product-nav { max-width: 1120px; margin: 0 auto; padding: 0 40px 80px; display: flex; justify-content: space-between; align-items: center; }
+  .pnav-btn { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 13px; font-weight: 600; color: var(--ink); text-decoration: none; display: flex; align-items: center; gap: 10px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 12px 18px; box-shadow: var(--shadow); transition: box-shadow 0.2s, transform 0.2s; }
+  .pnav-btn.prev:hover { transform: translateX(-3px); box-shadow: 0 4px 20px rgba(15,16,32,0.1); }
+  .pnav-btn.next:hover { transform: translateX(3px); box-shadow: 0 4px 20px rgba(15,16,32,0.1); }
+  .pnav-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; display: block; }
+  .pnav-label.prev-c { color: var(--purple); }
+  .pnav-label.next-c { color: var(--pink); }
+  .pnav-name { display: block; }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo"><div class="nav-dot"></div>EchoTribe</a>
+  <div class="nav-links">
+    <a href="echosignal.html" class="nav-link signal">EchoSignal</a>
+    <a href="echoroute.html"  class="nav-link route">EchoRoute</a>
+    <a href="echoagent.html"  class="nav-link agent">EchoAgent</a>
+    <a href="echoboost.html"  class="nav-link active">EchoBoost</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div>
+    <div class="eyebrow">🚀 EchoBoost · Amplify & Convert</div>
+    <h1>Signal, routing,<br>and spend.<br><em>One motion.</em></h1>
+    <p class="hero-sub">Uses EchoSignal's top content and EchoRoute's best retailer to identify the exact moment and product to amplify — then enables brands or affiliates to build ads and push them into paid channels.</p>
+    <div class="stats">
+      <div><div class="stat-val">4.6×</div><div class="stat-label">Avg ROAS</div></div>
+      <div><div class="stat-val">Multi</div><div class="stat-label">Channel Push</div></div>
+      <div><div class="stat-val">Signal</div><div class="stat-label">Led Spend</div></div>
+    </div>
+  </div>
+
+  <div class="boost-card">
+    <div class="bc-header">
+      <div class="bc-title">EchoBoost</div>
+      <div class="bc-badge"><div class="bc-badge-dot"></div>Campaign Live</div>
+    </div>
+
+    <div class="boost-steps">
+      <div class="bs-step done">
+        <div class="bs-num">1</div>
+        <div class="bs-info">
+          <div class="bs-label">EchoSignal detected</div>
+          <div class="bs-value">Camping Hammock · Window open</div>
+        </div>
+        <div class="bs-check">✓</div>
+      </div>
+      <div class="bs-step done">
+        <div class="bs-num">2</div>
+        <div class="bs-info">
+          <div class="bs-label">EchoRoute selected</div>
+          <div class="bs-value">Retailer A · $0.94 EPC</div>
+        </div>
+        <div class="bs-check">✓</div>
+      </div>
+      <div class="bs-step active">
+        <div class="bs-num">3</div>
+        <div class="bs-info">
+          <div class="bs-label">EchoBoost deploying</div>
+          <div class="bs-value">Paid campaign · Active now</div>
+        </div>
+        <div class="bs-arrow">→</div>
+      </div>
+    </div>
+
+    <div class="kpi-row">
+      <div class="kpi"><div class="kpi-val">$1,500</div><div class="kpi-label">Spend</div></div>
+      <div class="kpi"><div class="kpi-val">4.6×</div><div class="kpi-label">ROAS</div></div>
+      <div class="kpi"><div class="kpi-val">$6,900</div><div class="kpi-label">Revenue</div></div>
+    </div>
+
+    <div style="font-family:'JetBrains Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.28);margin-bottom:8px;">Active channels</div>
+    <div class="channels">
+      <div class="ch-tag active">Meta</div>
+      <div class="ch-tag active">TikTok</div>
+      <div class="ch-tag">Pinterest</div>
+      <div class="ch-tag">YouTube</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section class="section">
+  <div class="sec-label"><span>04</span> — How It Works</div>
+  <div class="sec-heading">Spend that knows<br>what it's <em>amplifying.</em></div>
+  <p class="sec-sub">EchoBoost doesn't run cold ads. It deploys spend against products and content that have already been validated by the network — at the exact moment the amplification window is open.</p>
+
+  <div class="features-grid">
+    <div class="feat-card">
+      <div class="feat-num">01 — Signal Trigger</div>
+      <div class="feat-title">Only amplifies proven content</div>
+      <div class="feat-body">EchoBoost only activates when EchoSignal has flagged an amplification window — a product whose click velocity has meaningfully exceeded its conversion baseline. Spend is never deployed on cold or unvalidated products.</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-num">02 — Routing Lock-in</div>
+      <div class="feat-title">Best merchant baked in at launch</div>
+      <div class="feat-body">Before a campaign goes live, EchoRoute has already determined the highest-EPC destination. Every ad click lands on the retailer with the best commission rate and conversion rate for that audience — locked in at campaign build time.</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-num">03 — Campaign Build</div>
+      <div class="feat-title">Brands or affiliates can self-serve</div>
+      <div class="feat-body">Brands fund campaigns directly against a specific window. Affiliates can self-boost their own top content. Both modes use the same ad builder — four steps from product selection to campaign launch across Meta, TikTok, and beyond.</div>
+    </div>
+  </div>
+
+  <div class="roas-bar">
+    <div class="roas-icon">🚀</div>
+    <div class="roas-text">
+      <div class="roas-title">Signal-led spend outperforms cold spend</div>
+      <div class="roas-body">By deploying against products with confirmed click velocity and conversion data, EchoBoost campaigns consistently deliver <strong>well above 4× ROAS</strong> — because they're amplifying what's already working, not testing from zero.</div>
+    </div>
+    <div class="roas-num">
+      <div class="roas-big">4.6×</div>
+      <div class="roas-unit">avg ROAS</div>
+    </div>
+  </div>
+
+  <!-- CLOSED LOOP SUMMARY -->
+  <div class="loop-summary" style="margin-top:48px;">
+    <div class="ls-heading">The complete <em>closed loop.</em></div>
+    <div class="ls-sub">EchoBoost is where the loop completes — and where results feed back into EchoSignal for the next cycle. Every campaign generates new performance data that sharpens the signal for every affiliate in the network.</div>
+    <div class="ls-row">
+      <div class="ls-item">
+        <a href="echosignal.html"><div class="ls-item-icon signal">📡</div></a>
+        <div class="ls-item-name"><a href="echosignal.html">EchoSignal ↗</a></div>
+        <div class="ls-item-desc">Detects what's outperforming and flags amplification windows across the network.</div>
+      </div>
+      <div class="ls-item">
+        <a href="echoroute.html"><div class="ls-item-icon route">🔀</div></a>
+        <div class="ls-item-name"><a href="echoroute.html">EchoRoute ↗</a></div>
+        <div class="ls-item-desc">Routes every click to the highest-EPC retailer based on real CVR and commission data.</div>
+      </div>
+      <div class="ls-item">
+        <a href="echoagent.html"><div class="ls-item-icon agent">✍️</div></a>
+        <div class="ls-item-name"><a href="echoagent.html">EchoAgent ↗</a></div>
+        <div class="ls-item-desc">Creates shoppable content and engages audiences with monetized, affiliate-linked responses.</div>
+      </div>
+      <div class="ls-item">
+        <div class="ls-item-icon boost">🚀</div>
+        <div class="ls-item-name">EchoBoost</div>
+        <div class="ls-item-desc">Deploys paid spend at the exact moment signal confirms the window is open.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="product-nav">
+  <a href="echoagent.html" class="pnav-btn prev">
+    <div>
+      <span class="pnav-label prev-c">← Create & Engage</span>
+      <span class="pnav-name">EchoAgent</span>
+    </div>
+  </a>
+  <a href="index.html" class="pnav-btn next">
+    <div>
+      <span class="pnav-label next-c">Back to overview</span>
+      <span class="pnav-name">Intelligence Stack →</span>
+    </div>
+  </a>
+</div>
+
+</body>
+</html>

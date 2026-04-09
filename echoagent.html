@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EchoAgent — Create & Engage</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,700;0,9..144,800;1,9..144,600;1,9..144,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F7F6F4; --surface: #FFFFFF; --border: #E8E6E1;
+    --ink: #0F1020; --ink-3: #5A5B70; --ink-muted: #8A8B9E;
+    --pink: #EC1A8D; --pink-soft: #FDE8F3;
+    --teal: #006a65;
+    --purple: #7c3aed; --purple-soft: #ede9fe; --purple-dark: #5b21b6; --purple-light: #a78bfa;
+    --orange: #ea580c;
+    --radius: 14px; --shadow: 0 1px 2px rgba(15,16,32,0.04), 0 4px 16px rgba(15,16,32,0.06);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--ink); }
+
+  nav { position: sticky; top: 0; z-index: 100; background: rgba(247,246,244,0.88); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); padding: 0 40px; height: 58px; display: flex; align-items: center; justify-content: space-between; }
+  .nav-logo { font-family: 'Fraunces', serif; font-size: 17px; font-weight: 700; display: flex; align-items: center; gap: 8px; color: var(--ink); text-decoration: none; }
+  .nav-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--pink); animation: pulse 2s ease-in-out infinite; }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(1.4)} }
+  .nav-links { display: flex; gap: 4px; }
+  .nav-link { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; padding: 6px 12px; border-radius: 8px; text-decoration: none; color: var(--ink-muted); transition: background 0.15s, color 0.15s; }
+  .nav-link:hover { background: var(--surface); color: var(--ink); }
+  .nav-link.signal { color: var(--pink); }
+  .nav-link.route { color: var(--teal); }
+  .nav-link.active { background: var(--purple-soft); color: var(--purple); }
+  .nav-link.boost { color: var(--orange); }
+
+  /* HERO */
+  .hero { max-width: 1120px; margin: 0 auto; padding: 80px 40px 64px; display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+  .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.12em; color: var(--purple); background: var(--purple-soft); border-radius: 20px; padding: 5px 12px; display: inline-flex; align-items: center; gap: 7px; margin-bottom: 24px; }
+  h1 { font-family: 'Fraunces', serif; font-size: 56px; font-weight: 800; line-height: 1.0; letter-spacing: -0.02em; margin-bottom: 20px; }
+  h1 em { font-style: italic; color: var(--purple); }
+  .hero-sub { font-size: 17px; line-height: 1.65; color: var(--ink-3); margin-bottom: 36px; max-width: 420px; }
+  .stats { display: flex; gap: 28px; }
+  .stat-val { font-family: 'Fraunces', serif; font-size: 26px; font-weight: 700; }
+  .stat-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 3px; }
+
+  /* AGENT DARK CARD */
+  .agent-card { background: var(--ink); border-radius: 20px; padding: 28px; position: relative; overflow: hidden; }
+  .agent-card::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 20% 80%, rgba(124,58,237,0.15) 0%, transparent 60%); pointer-events: none; }
+  .ac-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 22px; position: relative; }
+  .ac-title { font-family: 'Fraunces', serif; font-size: 20px; font-weight: 700; color: #fff; }
+  .ac-badge { font-family: 'JetBrains Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; background: rgba(124,58,237,0.2); color: var(--purple-light); border: 1px solid rgba(124,58,237,0.35); border-radius: 20px; padding: 4px 10px; }
+
+  /* Chat bubbles */
+  .chat { display: flex; flex-direction: column; gap: 10px; margin-bottom: 18px; position: relative; }
+  .bubble { max-width: 82%; padding: 11px 14px; border-radius: 14px; position: relative; }
+  .bubble.user { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1); align-self: flex-end; border-bottom-right-radius: 4px; }
+  .bubble.agent { background: rgba(124,58,237,0.15); border: 1px solid rgba(124,58,237,0.25); align-self: flex-start; border-bottom-left-radius: 4px; }
+  .bubble-text { font-size: 12px; line-height: 1.5; }
+  .bubble.user .bubble-text { color: rgba(255,255,255,0.75); }
+  .bubble.agent .bubble-text { color: rgba(255,255,255,0.85); }
+  .bubble-sender { font-family: 'JetBrains Mono', monospace; font-size: 9px; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 5px; }
+  .bubble.user .bubble-sender { color: rgba(255,255,255,0.3); text-align: right; }
+  .bubble.agent .bubble-sender { color: var(--purple-light); }
+
+  /* Product pill */
+  .product-pill { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); border-radius: 8px; padding: 8px 10px; margin-top: 7px; width: 100%; }
+  .pp-emoji { font-size: 14px; }
+  .pp-info { flex: 1; }
+  .pp-name { font-size: 11px; font-weight: 600; color: #fff; }
+  .pp-price { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: rgba(255,255,255,0.4); }
+  .pp-link { font-family: 'JetBrains Mono', monospace; font-size: 10px; background: var(--purple); color: #fff; border-radius: 5px; padding: 3px 8px; white-space: nowrap; }
+
+  /* Collage preview */
+  .collage-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; position: relative; }
+  .collage-tile { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 10px 8px; text-align: center; }
+  .ct-emoji { font-size: 20px; margin-bottom: 5px; }
+  .ct-name { font-size: 10px; color: rgba(255,255,255,0.6); line-height: 1.3; }
+  .ct-price { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: rgba(255,255,255,0.3); margin-top: 2px; }
+  .ac-caption-row { margin-top: 12px; padding: 10px 12px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; position: relative; }
+  .ac-caption-label { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--purple-light); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 5px; }
+  .ac-caption-text { font-size: 11px; color: rgba(255,255,255,0.55); line-height: 1.5; }
+
+  /* SECTION */
+  .section { max-width: 1120px; margin: 0 auto; padding: 0 40px 72px; }
+  .sec-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-muted); margin-bottom: 12px; }
+  .sec-label span { color: var(--purple); }
+  .sec-heading { font-family: 'Fraunces', serif; font-size: 40px; font-weight: 700; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 10px; }
+  .sec-heading em { font-style: italic; color: var(--purple); }
+  .sec-sub { font-size: 16px; color: var(--ink-3); line-height: 1.65; max-width: 540px; margin-bottom: 40px; }
+  .divider { max-width: 1120px; margin: 0 auto; padding: 0 40px; border-bottom: 1px solid var(--border); margin-bottom: 64px; }
+
+  .features-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+  .feat-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow); }
+  .feat-num { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; color: var(--purple); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+  .feat-num::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+  .feat-title { font-family: 'Fraunces', serif; font-size: 17px; font-weight: 600; margin-bottom: 10px; }
+  .feat-body { font-size: 13px; line-height: 1.6; color: var(--ink-3); }
+
+  /* TOUCHPOINT BAR */
+  .tp-bar { background: linear-gradient(135deg, var(--ink) 0%, #1a1b2e 100%); border-radius: var(--radius); padding: 28px 32px; display: flex; align-items: center; gap: 24px; position: relative; overflow: hidden; }
+  .tp-bar::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 80% 50%, rgba(124,58,237,0.12) 0%, transparent 60%); pointer-events: none; }
+  .tp-icon { width: 48px; height: 48px; border-radius: 13px; background: rgba(124,58,237,0.15); border: 1px solid rgba(124,58,237,0.3); display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; position: relative; }
+  .tp-text { flex: 1; position: relative; }
+  .tp-title { font-family: 'Fraunces', serif; font-size: 18px; font-weight: 700; color: #fff; margin-bottom: 5px; }
+  .tp-body { font-size: 13px; color: rgba(255,255,255,0.5); line-height: 1.55; }
+  .tp-body strong { color: var(--purple-light); font-weight: 600; }
+
+  /* NAV */
+  .product-nav { max-width: 1120px; margin: 0 auto; padding: 0 40px 80px; display: flex; justify-content: space-between; align-items: center; }
+  .pnav-back { font-family: 'JetBrains Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-muted); text-decoration: none; display: flex; align-items: center; gap: 6px; transition: color 0.15s; }
+  .pnav-back:hover { color: var(--ink); }
+  .pnav-btn { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 13px; font-weight: 600; color: var(--ink); text-decoration: none; display: flex; align-items: center; gap: 10px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 12px 18px; box-shadow: var(--shadow); transition: box-shadow 0.2s, transform 0.2s; }
+  .pnav-btn.prev:hover { transform: translateX(-3px); box-shadow: 0 4px 20px rgba(15,16,32,0.1); }
+  .pnav-btn.next:hover { transform: translateX(3px); box-shadow: 0 4px 20px rgba(15,16,32,0.1); }
+  .pnav-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; display: block; }
+  .pnav-label.prev-c { color: var(--teal); }
+  .pnav-label.next-c { color: var(--orange); }
+  .pnav-name { display: block; }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo"><div class="nav-dot"></div>EchoTribe</a>
+  <div class="nav-links">
+    <a href="echosignal.html" class="nav-link signal">EchoSignal</a>
+    <a href="echoroute.html"  class="nav-link route">EchoRoute</a>
+    <a href="echoagent.html"  class="nav-link active">EchoAgent</a>
+    <a href="echoboost.html"  class="nav-link boost">EchoBoost</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div>
+    <div class="eyebrow">✍️ EchoAgent · Create & Engage</div>
+    <h1>Every answer<br>is a<br><em>touchpoint.</em></h1>
+    <p class="hero-sub">Curates shoppable product posts from the network's top performers, ready to publish. Also engages audiences in real time — answering product questions with affiliate-linked recommendations.</p>
+    <div class="stats">
+      <div><div class="stat-val">AI-gen</div><div class="stat-label">Content Ready</div></div>
+      <div><div class="stat-val">Live</div><div class="stat-label">Audience Engagement</div></div>
+      <div><div class="stat-val">100%</div><div class="stat-label">Creator-Approved</div></div>
+    </div>
+  </div>
+
+  <div class="agent-card">
+    <div class="ac-header">
+      <div class="ac-title">EchoAgent</div>
+      <div class="ac-badge">AI · Active</div>
+    </div>
+
+    <!-- Chat -->
+    <div class="chat">
+      <div class="bubble user">
+        <div class="bubble-sender">Audience</div>
+        <div class="bubble-text">What's the best outdoor gift for under $50?</div>
+      </div>
+      <div class="bubble agent">
+        <div class="bubble-sender">EchoAgent</div>
+        <div class="bubble-text">Right now the camping hammock is flying off the shelves — great price point and it sets up in 2 minutes. Here's my link 👇</div>
+        <div class="product-pill">
+          <div class="pp-emoji">🏕️</div>
+          <div class="pp-info">
+            <div class="pp-name">Camping Hammock · Outdoor</div>
+            <div class="pp-price">$38.99 · High CVR</div>
+          </div>
+          <div class="pp-link">Shop →</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Collage -->
+    <div style="font-family:'JetBrains Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.3);margin-bottom:8px;">Auto-generated collage</div>
+    <div class="collage-row">
+      <div class="collage-tile"><div class="ct-emoji">🏕️</div><div class="ct-name">Camping Hammock</div><div class="ct-price">$38.99</div></div>
+      <div class="collage-tile"><div class="ct-emoji">🪀</div><div class="ct-name">Novelty Toy</div><div class="ct-price">$13.49</div></div>
+      <div class="collage-tile"><div class="ct-emoji">✨</div><div class="ct-name">Beauty Set</div><div class="ct-price">$24.00</div></div>
+    </div>
+    <div class="ac-caption-row">
+      <div class="ac-caption-label">Caption ready to post</div>
+      <div class="ac-caption-text">"These are my top picks this week — all under $50 and all back in stock! Links in comments 🔗"</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section class="section">
+  <div class="sec-label"><span>03</span> — How It Works</div>
+  <div class="sec-heading">Content that's<br><em>already</em> optimized.</div>
+  <p class="sec-sub">EchoAgent doesn't generate random content. It starts with what EchoSignal has already confirmed is converting — and builds posts and responses around those products.</p>
+
+  <div class="features-grid">
+    <div class="feat-card">
+      <div class="feat-num">01 — Curation</div>
+      <div class="feat-title">Starts with what's already converting</div>
+      <div class="feat-body">EchoAgent pulls directly from EchoSignal's top-ranked products. Collages, deal posts, and themed roundups are built around items with proven click velocity and conversion data — not guesses.</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-num">02 — Content Generation</div>
+      <div class="feat-title">In the creator's voice, with affiliate links</div>
+      <div class="feat-body">Every post and caption is generated in the creator's established tone and style. Affiliate links are embedded via EchoRoute — so the destination is already optimized before the post goes live.</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-num">03 — Real-time Engagement</div>
+      <div class="feat-title">Questions become purchase moments</div>
+      <div class="feat-body">When audience members ask for product recommendations in comments or chat, EchoAgent responds instantly with affiliate-linked answers — monetizing engagement that would otherwise go unanswered or untracked.</div>
+    </div>
+  </div>
+
+  <div class="tp-bar">
+    <div class="tp-icon">✍️</div>
+    <div class="tp-text">
+      <div class="tp-title">Creator control is non-negotiable</div>
+      <div class="tp-body">Every piece of content EchoAgent generates requires <strong>creator review and approval</strong> before publishing. No automated posting. The creator's brand stays the creator's brand.</div>
+    </div>
+  </div>
+</section>
+
+<div class="product-nav">
+  <a href="echoroute.html" class="pnav-btn prev">
+    <div>
+      <span class="pnav-label prev-c">← Route & Maximize EPC</span>
+      <span class="pnav-name">EchoRoute</span>
+    </div>
+  </a>
+  <a href="echoboost.html" class="pnav-btn next">
+    <div>
+      <span class="pnav-label next-c">Next — Amplify & Convert</span>
+      <span class="pnav-name">EchoBoost →</span>
+    </div>
+  </a>
+</div>
+
+</body>
+</html>
