@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EchoTribe × Partnerize — The Media Buying Center in Action</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Fraunces:ital,wght@0,400;0,600;0,700;0,800;1,400;1,600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#F7F6F4; --surface:#FFFFFF; --border:#E8E6E1;
+  --ink:#0F1020; --ink-2:#2A2B3D; --ink-3:#5A5B70; --ink-4:#8A8B9E;
+  --pink:#EC1A8D; --pink-hover:#D1137A; --pink-soft:#FDE8F3; --pink-dark:#A10D5F;
+  --display:'Fraunces',Georgia,serif; --sans:'Plus Jakarta Sans',sans-serif; --mono:'JetBrains Mono',monospace;
+  --r:14px; --shadow:0 1px 2px rgba(15,16,32,0.04),0 4px 16px rgba(15,16,32,0.04);
+  --shadow-lg:0 2px 4px rgba(15,16,32,0.06),0 12px 40px rgba(15,16,32,0.08);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.7;-webkit-font-smoothing:antialiased;}
+.shell{max-width:1000px;margin:0 auto;padding:48px 28px 100px;}
+
+/* NAV */
+.nav{display:flex;align-items:center;justify-content:space-between;padding:14px 22px;background:var(--surface);border:1px solid var(--border);border-radius:100px;margin-bottom:56px;box-shadow:var(--shadow);}
+.nav-brand{display:flex;align-items:center;gap:10px;}
+.nav-brand img{height:28px;}
+.nav-badge{font-family:var(--mono);font-size:10px;color:var(--ink-4);letter-spacing:0.1em;text-transform:uppercase;}
+
+/* LABELS */
+.eyebrow{display:inline-block;font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:var(--pink);background:var(--pink-soft);padding:5px 13px;border-radius:100px;margin-bottom:22px;}
+.section-label{font-family:var(--mono);font-size:10px;color:var(--ink-4);letter-spacing:0.14em;text-transform:uppercase;margin-bottom:20px;display:flex;align-items:center;gap:10px;}
+.section-label::after{content:'';flex:1;height:1px;background:var(--border);}
+
+/* HERO */
+.hero{background:var(--surface);border:1px solid var(--border);border-radius:24px;padding:64px 56px 56px;margin-bottom:64px;position:relative;overflow:hidden;box-shadow:var(--shadow-lg);}
+.hero::before{content:'';position:absolute;top:-100px;right:-100px;width:420px;height:420px;background:radial-gradient(circle,rgba(236,26,141,0.07) 0%,transparent 70%);pointer-events:none;}
+.hero h1{font-family:var(--display);font-weight:800;font-size:clamp(2.2em,4.5vw,3.2em);line-height:1.05;letter-spacing:-0.025em;margin-bottom:20px;position:relative;}
+.hero h1 .ital{font-style:italic;color:var(--pink);}
+.hero .lede{font-family:var(--display);font-size:1.1em;color:var(--ink-2);line-height:1.6;max-width:600px;position:relative;margin-bottom:36px;}
+.cycle-strip{display:flex;align-items:center;gap:0;background:var(--bg);border:1px solid var(--border);border-radius:100px;padding:10px 6px;position:relative;}
+.cycle-node{display:flex;align-items:center;gap:8px;padding:8px 18px;border-radius:100px;font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:0.06em;}
+.cycle-node.active{background:var(--pink);color:#fff;}
+.cycle-node.muted{color:var(--ink-4);}
+.cycle-arrow{font-family:var(--mono);font-size:12px;color:var(--ink-4);padding:0 2px;}
+
+/* CATEGORY SECTION */
+.cat-section{margin-bottom:72px;}
+.cat-header{display:grid;grid-template-columns:auto 1fr;gap:24px;align-items:center;margin-bottom:32px;}
+.cat-badge{width:64px;height:64px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:2em;flex-shrink:0;border:1px solid var(--border);background:var(--surface);}
+.cat-meta{}
+.cat-label{font-family:var(--mono);font-size:10px;color:var(--pink);text-transform:uppercase;letter-spacing:0.12em;margin-bottom:4px;}
+.cat-title{font-family:var(--display);font-weight:700;font-size:1.6em;line-height:1.1;letter-spacing:-0.02em;}
+.cat-sub{font-size:13px;color:var(--ink-3);margin-top:4px;}
+
+/* BRAND + PUB ROW */
+.bp-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;}
+.bp-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:20px 24px;box-shadow:var(--shadow);}
+.bp-tag{font-family:var(--mono);font-size:9px;text-transform:uppercase;letter-spacing:0.12em;margin-bottom:8px;}
+.bp-tag.brand{color:#2563EB;}
+.bp-tag.pub{color:#0F9D58;}
+.bp-name{font-weight:700;font-size:14px;margin-bottom:4px;}
+.bp-detail{font-size:12px;color:var(--ink-4);}
+.bp-pill{display:inline-block;font-family:var(--mono);font-size:10px;padding:3px 10px;border-radius:100px;margin-top:6px;}
+.bp-pill.blue{background:#EFF6FF;color:#2563EB;}
+.bp-pill.green{background:#F0FDF4;color:#166534;}
+
+/* FLYWHEEL FLOW */
+.flow{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:0;align-items:stretch;margin-bottom:20px;}
+.flow-step{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:22px 24px;box-shadow:var(--shadow);position:relative;}
+.flow-step.signal{border-top:3px solid #F59E0B;}
+.flow-step.boost{border-top:3px solid var(--pink);}
+.flow-step.outcome{border-top:3px solid #0F9D58;}
+.flow-arrow{display:flex;align-items:center;justify-content:center;padding:0 10px;color:var(--ink-4);font-size:18px;flex-shrink:0;}
+.flow-tag{font-family:var(--mono);font-size:9px;text-transform:uppercase;letter-spacing:0.12em;margin-bottom:8px;}
+.flow-tag.amber{color:#D97706;}
+.flow-tag.pink{color:var(--pink);}
+.flow-tag.green{color:#0F9D58;}
+.flow-product{font-weight:700;font-size:13px;margin-bottom:6px;line-height:1.3;}
+.flow-detail{font-size:12px;color:var(--ink-3);line-height:1.5;}
+.flow-metric{display:inline-block;font-family:var(--mono);font-size:11px;font-weight:500;margin-top:10px;padding:4px 10px;border-radius:6px;}
+.flow-metric.amber{background:#FFFBEB;color:#D97706;}
+.flow-metric.pink{background:var(--pink-soft);color:var(--pink-dark);}
+.flow-metric.green{background:#F0FDF4;color:#166534;}
+
+/* VANTAGE CLOSE */
+.vp-bar{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:18px 24px;display:flex;align-items:center;gap:16px;box-shadow:var(--shadow);margin-bottom:8px;}
+.vp-icon{width:36px;height:36px;border-radius:8px;background:#0F1020;display:flex;align-items:center;justify-content:center;font-size:1em;flex-shrink:0;}
+.vp-text{font-size:13px;color:var(--ink-2);}
+.vp-text strong{color:var(--ink);}
+
+/* CYCLE VISUAL */
+.cycle-section{background:var(--ink);border-radius:20px;padding:52px 52px 48px;margin-bottom:28px;position:relative;overflow:hidden;}
+.cycle-section::before{content:'';position:absolute;top:-80px;right:-80px;width:320px;height:320px;background:radial-gradient(circle,rgba(236,26,141,0.12) 0%,transparent 70%);pointer-events:none;}
+.cycle-section .eyebrow{background:rgba(236,26,141,0.2);color:#f472b6;}
+.cycle-section h2{font-family:var(--display);font-weight:700;font-size:1.6em;color:#fff;margin-bottom:12px;line-height:1.2;}
+.cycle-section h2 .ital{font-style:italic;color:#f472b6;}
+.cycle-section .sub{color:rgba(255,255,255,0.65);font-size:14px;margin-bottom:36px;max-width:560px;}
+.cycle-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
+.cycle-step{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:20px 20px 18px;}
+.cs-num{font-family:var(--mono);font-size:10px;color:rgba(236,26,141,0.7);margin-bottom:8px;}
+.cs-name{font-weight:700;font-size:13px;color:#fff;margin-bottom:6px;}
+.cs-desc{font-size:12px;color:rgba(255,255,255,0.55);line-height:1.5;}
+.cycle-note{margin-top:24px;padding-top:20px;border-top:1px solid rgba(255,255,255,0.1);font-size:13px;color:rgba(255,255,255,0.5);}
+.cycle-note strong{color:rgba(255,255,255,0.8);}
+
+/* DIVIDER */
+.cat-divider{height:1px;background:var(--border);margin:0 0 64px;}
+
+@media(max-width:720px){
+  .flow{grid-template-columns:1fr;gap:12px;}
+  .flow-arrow{transform:rotate(90deg);padding:4px 0;}
+  .bp-row{grid-template-columns:1fr;}
+  .cycle-steps{grid-template-columns:1fr 1fr;}
+  .hero{padding:36px 24px;}
+  .cycle-section{padding:32px 24px;}
+  .cat-header{grid-template-columns:auto 1fr;gap:16px;}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <nav class="nav">
+    <div class="nav-brand">
+      <img src="data:image/png;base64,/9j/4AAQSkZJRgABAgAAAQABAAD/wAARCAIUAhQDACIAAREBAhEB/9sAQwAIBgYHBgUIBwcHCQkICgwUDQwLCwwZEhMPFB0aHx4dGhwcICQuJyAiLCMcHCg3KSwwMTQ0NB8nOT04MjwuMzQy/9sAQwEJCQkMCwwYDQ0YMiEcITIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIy/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMAAAERAhEAPwDwUCilFGK7CQwKKSigBcCkoop2AXApKKKBC4FJRRSGLgUlFFAC4FJRS07AGBRikpaQBgUlFFAC4FFJS0AGBSUUU7ALgUlFLRYAwKSilFFgDApKKWiwBgUlFFIBcCkoooAXApKKKAFwKKKBTsIMCjFFJRYYuKSiiiwC4FJRRSAXAowKSinYBcCjFJRRYBcCjApKKLALgUYpKKQC4FGKSigBcCkopaADAopKWgAwKMUlFAC4FGKSigBcCjFJSiqsICBQQKKSiwH3zRRRXCWFFFFAHwOKM0lFdqJCiiikAUUUUAFFFFABRRRQAUUUUAFLSUtMQlLSUtIYlLSUtACUUUUAFFFFABS0lLTEJS0lLSGJS0lFABS0lFABS0lFABS0lFABS0lFABRRRQAUtJRQAUtJRQAUtJRQAUtJRQAUtJS0AJRRRQAUUUtACUtJS0AJS0lFABRRRQAUUUU0AUUUUAFKaSlNMk++KKKK4TQKKKKAPgekoortRIUUUUgCiiimIKKKKACiiimAUUUUDClpKKQgooooAKKKKQwooopiCiiikMKWkopiClpKKQwpaSigApaSiqEFFFFSMKKWkoAKKKKYgpaSimAUUUVIwooopiCiiikMKWkoqhBS0lFJDCiiikAUtJRTEFLSUUhhRRRTEFFFFIYUUUUxBRRRQAUUUppiPviiiiuE0CiiigD4HFFAortRIlFFFMAooopCCiiigAooopjCiiikAUUUUCCiiihDCiiikAUUUVQgoooqRhRRRVCCiiipGFFFFABRRRTQBRRRTAKKKKkAooopiCiiigYUUUUgCiiigAoooqhBRRRSQwooooQBRRRQIKKKKYBRRRUjCiiimIKKKKQwooopoQUUUUhhRRRVAffNFFFcJQUUUUAfA4opKUV2okSiiikAUUUUAFFFFMQUUUUDCiiimIKKKKQBRRRQAUUUUDCiiimIKKKKkYUUUUAFFFFNAFFFFIAooooAKKKKoQUUUUAFFFFSMKKKKACiiimgCiiikAUUUVQgoooqRhRRRQAUUUU0AUUUUIAooopAFFFFABRRRTAKKKKEAUUUUgFoopKoD75ooorhKCiiigD4HopKK7USFFFFCAKKKKQBRRRTEFFFFABRRRTAKKKKQBRRRQAUUUUAFFFFCGFLSUUgCiiigApaSigAooooAKWkoqhBRRRSAKKKKBhRRRQgClpKKQBRRRTQBRRRSAKKKKoQUUUUkMKKKKEAUUUUgCiiimgCiiikAUUUU0AUUUUCCiiimAUUUVIwopaSqA++aKKK4SgooooA+BqKUUldqJCiiihAFFFFAgooopjCiiipAKKKKoAooooEFFFFSMKKKKACiiigAooopoAooooQBRRRSAKKKKACiiigAoooqgCiiipAKKKKACiiigAooopoAooooQBRRRSAKKKKaAKWkopAFFFFABS0lFNAFFFFIAooooAKKKKACiiiqEFLSUtSMKDRQaYj74oooriLCiiigD4HFJRRXaiQooopAFFFFABRRRTAKKKKEAUUUUCCiiikMKKKKoQUUUVIwooopoAooooQBRRRSAKKKKAClpKKACiiigAooopoAooooQBRRRSAKKKKaAKKKKEAUUUUIAooopAFFFFABRRRTQBRRRQgClpKKEAUtJRSAKKKKACiiimgCiiikAUUUU0AtBpKU0CPviiiiuIsKKKKAPgaloFFdqJEooopAFFFFABRRRTEFFFFIYUUUVQBRRRUgFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFMQUtJRQhhS0lFIAooopoAooopAFFFFNAFFFFIAooooAKWkooAKWkopoAooooQBRRRSAKKKKACiiiqEFFFFJDCiilpkn3xRRRXCaBRRRQB8DiigUV2okSiiikAUUUUAFFFFNAFFFFIAoooqgCiiikAUUUUgCiiigAooooAKKKKYBRRRQgClpKKQBRRRQAUUUUAFFFFABRRRTEFFFFCGFFFFIAooopoAooopAFFFFNAFFFFIAooopoAooopAFFFFNAFFFFIAooopoAooopAFFFFUIKKKKkYUppKKok++aKKK4TQKKKKAPgcUlKKK7USJRRRSAKKKKACiiiqEFFFFIAooooQwooooEFFFFIYUUUUAFFFFABRRRVCCiiipGFLSUUAFLSUU0AUUUUgCiiigAooooAKKKKACiiigAooooAKKKKACiiimgCiiigQUUUUIYUUUUCCiiikMKKKKaAKKKKEAUUUUxBRRRSAKKKKQwoooqiT75ooorhNAooooA+BxRQKK7USJRRRSAKKKKACiiiqEFFFFSMKKKKYgooooAKKKKQwooooAKKKKACiiimIKKKKQwooooAKKKKACiiigAooooAKKKKaAKKKKQBRRRQAUUUU0AUUUUgCiiiqEFFFFSMKKKKACiiigAooopiCiiimAUUUVIwooopoAooopAFFFFABRRS0xH3xRRRXEWFFFFAHwPSUUV2okKKKKQBRRRTEFFFFAwooopgFFFFABRRRQAUUUUAFFFFABRRRUgFFFFUAUUUVIBRRRQAUUUVQBRRRSEFFFFABRRRQMKKKKYgooopAFFFFIYUUUUxBRRRSGFFFFABRRRTEFFFFIYUUUUAFFFFABRRRTsAUUUUIAooopAFFFFUAUppKU0AffFFFFcJQUUUUAfA1LSUorsJEooooAKKKKACiiiqAKKKKkAopcUYqgEopcGjBoASilwaSgAooooAKKKWgBK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RRRQhhRRRTAKWkoqQClpKKACiiloASiiigAooooAKKKKAClpKKoApaSipAKWkooAKWkooAKKKKdgClpKKQBS0lFUIKWkpakYlFFFABS0lLQAlFFFABRRRTQBS0lFIApaSloAO9HakpaYhKKKKQwoooqhBS0lFSMKWkooAWg0UGqA++KKKK4SgooooA+BxSUopK7USFFFFIAooopiCiiikMKKKKaAKKKKBBS0lFABRRRSGFFFFABS0lFNAFFFFIApaSimgCiiikAUUUU0AUUUUgCiiigAooopiCiiikMKKKKYgpaSikMKWkooAKWkooAKKKKACiiimgClpKKQBS0lFABRRRTQBRRRSAKKKKACiiimgClpKKQC0GgUGmI++KKKK4iwooooA+BxRSUV2okKKKKQBRRRQAUUUUAFFFFMQUUUUIYUUUUgCiiiqEFFFFSMKKKKACiiimgClpKWkAlLSUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUwClpKKEAUtJRSAKKKKaAKKKKQBRRRQAUtJRTQBRRRSAKKKKaAKKKKQBRRRTEFFFFMYUtJRUgLRRRTEffFFFFcRYUUUUAfA1LQKK7CRKKKKoAooopIAooopAFFFFNAFFFFCAKKKKQBRRRQAUUUUAFFFFABS0lFNAFLSUUgCiiigApaSigAooooAKKKKACiiigAooooAKKKKACiiimgCiiikAUUUU0AUUUUgCiiigAooopoApaSihAFFFFIAooopoAooopAFFFFNAFFFFIBRQaKDVEn3xRRRXCaBRRRQB8Diikpa7CRKKKKACiiimIKKKKQwooooAKKKKACiiimgCiiikAUUUVQBRRRUgFFFFABS0lFABS0lLQAlFFFABS0lFABRRRQAUUUUAFFFFNAFFFFCAKWkopAFFFFUAUUUVIBS0lFABRRRQAUUUU0AUtJRQgCiiikAUUUUAFFFFABRRRTQBS0lFMBaDSUUEn3zRRRXCaBRRRQB8D0CgUV2EiUUUUAFFFFUAUUUVIBRRRTQBRRRSAKWkpaAEooooAKKKKACiiimgCiiihAFFFFIApaSigApaSigApaSigAooopoAooopiClpKKSGFLSUUIAooopiCiiipGFFFFNAFFFFIApaSigApaSigApaSigAooooAKKKKaAKKKKQBRRRTQBRRRSAWg9KSlNUSffFFFFcJoFFFFAHwOKKSlFdhIlFFFABRRRQAUUUUAFFFFABS0lFNAFLSUUgCiiigAooooAKKKKACiiigApaSigAooooAKKKKACiiigAooooAKWkooAKKKKAClpKKaAKWkooQBRRRSAKKKKACiiigAooooAKKKKACiilpoBKKKKQBS0lLQAlFFFABRRRTQBRRRSAKKKKok++aKKK4TQKKKKAPgaloFArsJEooooAKKKKACiiigAooooAKKKKAClpKKoAoooqQClpKKAClpKKACiiigApaSigApaSloASiiigApaSigAooooAKWkpaAEpaSigAooooAKKKKAClpKKACiiigAooooAKWkopoApaSikAUtJRQAUtJRQAUtJRQAUUUUAFFFFNAFKKSlpkhQaKD0pDPviiiiuIsKKKKAPgcUCgUV2EiUUUVQBRRRUgFFFFABRRRTEFFFFIYUUUUAFFFFABS0lFABS0lFABRRRTQBRRRSAKWkooAKWkopoAooopAFFFFNAFLSUUgCiiigAooooAKWkooAKKKKaAKWkopAFFFFABS0lFNAFLSUUgCiiigAooooAKKKKACiiimgClpKKQBSikoqgFoNJRQSffNFFFcJoFFFFAHwPR2oFArsJEoooqgCiiipAKKKKaAKKKKACiiikAUUUVQBRRRSEFFFFIYUUUU0AUUUUgCiiigApaSimgCiiikAUUUUAFFFFABRRRQAUUUU0AUUUUIAooopAFFFFABRRRQAUUUUAFFFFNAFFFFIAooooAKKKKaAKKKKQBRRRTQBRRRSAKKKKAFopKU1RJ98UUUVwmgUUUUAfA4ozSUtdqJEooopAFFFFMQUUUUIYUUUUIAooooQBRRRRcAooooQBRRRQgCiiikAUUUUAFFFFNAFFFFIAooopoAooopAFFFFNAFFFFIAooooAKKKKoQUUUVIwooooAKKKKaAKKKKQBRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRTQBRRRQgCiiikB980UUVxlBRRRQB8DijNApK7USFFFFIAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooopiCiiikMKKKKACiiimgCiiikAUUUUAFFFFABRS96SgAooooAKKKKACiiigAooooAKKKKACiiigAooopoAooopAFFFFNAFFFFIAooooAKKKKACiilNUB98UUUVwlBRRRQB8D0lLmiu4gSiiikAUUUUXGFFFFIAooooAKKKKq4goooqRhRRRTuAUUUUgCiiincAooopAFFFFO4BRRRSAKKKKdwCiiii4BRRRRcAooopAFFFFABRRRQAUUUop3ASiiii4BRRRRcAoooouAUUUUXAKKU0lO4goooqRhRRRTuAUUUUgCiiincAoooouAUUUUgFFLSUtMR970UUVxFhRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFAH/2Q==" alt="EchoTribe">
+    </div>
+    <div class="nav-badge">Partnerize · Media Buying Center · April 2026</div>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="eyebrow">The Flywheel in Action</div>
+    <h1>How EchoTribe turns Partnerize's<br>network into an <span class="ital">on-demand</span><br>media buying center.</h1>
+    <p class="lede">Three categories. Named brands. Real publisher types already in the Partnerize network. This is what the EchoSignal → EchoBoost loop looks like when it runs at scale.</p>
+    <div class="cycle-strip">
+      <div class="cycle-node active">📡 EchoSignal detects window</div>
+      <div class="cycle-arrow">→</div>
+      <div class="cycle-node active">🚀 EchoBoost deploys spend</div>
+      <div class="cycle-arrow">→</div>
+      <div class="cycle-node active">💰 Publisher earns + brand converts</div>
+      <div class="cycle-arrow">→</div>
+      <div class="cycle-node active">📊 VantagePoint closes the loop</div>
+      <div class="cycle-arrow">→</div>
+      <div class="cycle-node muted">↩ Next window opens</div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════ -->
+  <!-- CATEGORY 01: TRAVEL -->
+  <!-- ═══════════════════════════════════════ -->
+  <div class="cat-section">
+    <div class="section-label">Category 01</div>
+    <div class="cat-header">
+      <div class="cat-badge">✈️</div>
+      <div class="cat-meta">
+        <div class="cat-label">Travel</div>
+        <div class="cat-title">Hotels.com × Travel Content Creators</div>
+        <div class="cat-sub">On-demand media buying activated by booking-intent signals</div>
+      </div>
+    </div>
+
+    <div class="bp-row">
+      <div class="bp-card">
+        <div class="bp-tag brand">Partnerize Brand</div>
+        <div class="bp-name">Hotels.com</div>
+        <div class="bp-detail">Leading hotel booking platform · Partnerize network · 10% commission</div>
+        <div class="bp-pill blue">$XX,XXX monthly affiliate budget available</div>
+      </div>
+      <div class="bp-card">
+        <div class="bp-tag pub">Partnerize Publishers</div>
+        <div class="bp-name">SheBuysTravel · Stay22 Creators · Travel Deal Blogs</div>
+        <div class="bp-detail">Travel content creators and publisher sites already driving Hotels.com affiliate clicks inside Partnerize</div>
+        <div class="bp-pill green">Active affiliates · commission earning today</div>
+      </div>
+    </div>
+
+    <div class="flow">
+      <div class="flow-step signal">
+        <div class="flow-tag amber">📡 EchoSignal · Window Detected</div>
+        <div class="flow-product">SheBuysTravel: "Best boutique hotels under $150 — summer Europe"</div>
+        <div class="flow-detail">Hotels.com links in the post hit +287% click velocity vs. 30-day baseline. Booking CVR trending 2.1× above category average. Window estimated open 22 hours — peak travel planning season.</div>
+        <div class="flow-metric amber">Score: 91 · Window: 22h</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step boost">
+        <div class="flow-tag pink">🚀 EchoBoost · Campaign Activated</div>
+        <div class="flow-product">Hotels.com budget deployed against SheBuysTravel's content</div>
+        <div class="flow-detail">$2,000 Hotels.com brand budget activated. SheBuysTravel's post boosted on Meta targeting summer travel intenders 28–45. EchoRoute locks Hotels.com as destination. Partnerize attribution tag preserved throughout.</div>
+        <div class="flow-metric pink">$2,000 spend · Meta + Pinterest</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step outcome">
+        <div class="flow-tag green">💰 Outcome</div>
+        <div class="flow-product">$9,200 in Hotels.com bookings attributed</div>
+        <div class="flow-detail">SheBuysTravel earns 10% commission on incremental bookings — $920 in new earnings on top of her existing organic commissions. Hotels.com gets $9,200 in tracked, Partnerize-attributed bookings. EchoTribe: platform fee on managed spend.</div>
+        <div class="flow-metric green">4.6× ROAS · $920 creator earnings</div>
+      </div>
+    </div>
+
+    <div class="vp-bar">
+      <div class="vp-icon">📊</div>
+      <div class="vp-text"><strong>VantagePoint closes the loop:</strong> Records which content was amplified, tracks the full consumer journey from ad exposure to booking confirmation, attributes fractional commission across the Partnerize chain — even for users who converted via AI-assisted search after seeing the boosted post. Data feeds back into EchoSignal for the next window.</div>
+    </div>
+  </div>
+
+  <div class="cat-divider"></div>
+
+  <!-- ═══════════════════════════════════════ -->
+  <!-- CATEGORY 02: BEAUTY / WELLNESS -->
+  <!-- ═══════════════════════════════════════ -->
+  <div class="cat-section">
+    <div class="section-label">Category 02</div>
+    <div class="cat-header">
+      <div class="cat-badge">✨</div>
+      <div class="cat-meta">
+        <div class="cat-label">Beauty &amp; Wellness</div>
+        <div class="cat-title">Thrive Causemetics × Beauty Creators &amp; Lifestyle Publishers</div>
+        <div class="cat-sub">Signal-led spend on high-converting skincare content before the restock window closes</div>
+      </div>
+    </div>
+
+    <div class="bp-row">
+      <div class="bp-card">
+        <div class="bp-tag brand">Partnerize Brand</div>
+        <div class="bp-name">Thrive Causemetics</div>
+        <div class="bp-detail">Premium cruelty-free beauty brand · Partnerize network · up to 14% commission — among the highest in the network</div>
+        <div class="bp-pill blue">New product launches drive restock spikes</div>
+      </div>
+      <div class="bp-card">
+        <div class="bp-tag pub">Partnerize Publishers</div>
+        <div class="bp-name">Beauty Creators · Mom Lifestyle Blogs · Wellness Content Sites</div>
+        <div class="bp-detail">Creators already driving Thrive affiliate sales through Partnerize — tutorial videos, skincare routines, "get ready with me" content with affiliate links embedded</div>
+        <div class="bp-pill green">Organic commission earners · ready to boost</div>
+      </div>
+    </div>
+
+    <div class="flow">
+      <div class="flow-step signal">
+        <div class="flow-tag amber">📡 EchoSignal · Window Detected</div>
+        <div class="flow-product">Beauty creator: "I finally tried the Thrive liquid lash — honest review"</div>
+        <div class="flow-detail">Thrive affiliate link in the video description hits +341% click velocity within 18 hours of posting. Direct CVR tracking via Partnerize shows 8.3% conversion — 3× the beauty category average. Product nearing restock; window narrow.</div>
+        <div class="flow-metric amber">Score: 96 · Window: 14h · CVR 8.3%</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step boost">
+        <div class="flow-tag pink">🚀 EchoBoost · Campaign Activated</div>
+        <div class="flow-product">Thrive Causemetics budget deployed against creator's video content</div>
+        <div class="flow-detail">$1,500 Thrive brand budget activated. Creator's review video boosted on Meta and TikTok targeting beauty enthusiasts 25–42. EchoRoute confirms Thrive direct as highest-EPC destination. Creator voice preserved — the ad is their content, amplified.</div>
+        <div class="flow-metric pink">$1,500 spend · Meta + TikTok</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step outcome">
+        <div class="flow-product">$7,800 in Thrive sales attributed</div>
+        <div class="flow-tag green">💰 Outcome</div>
+        <div class="flow-detail">Creator earns 14% on incremental sales — $1,092 in new earnings on top of organic commissions. Thrive gets $7,800 in tracked, conversion-verified sales before restock. EchoTribe takes platform fee. Window captured before it closed.</div>
+        <div class="flow-metric green">5.2× ROAS · $1,092 creator earnings</div>
+      </div>
+    </div>
+
+    <div class="vp-bar">
+      <div class="vp-icon">📊</div>
+      <div class="vp-text"><strong>VantagePoint closes the loop:</strong> Measures which boosted content drove verified conversions, including sales from users who discovered the product via AI search summaries citing the creator's review after seeing the ad. Thrive gets full-funnel visibility. Creator gets proof of incremental value beyond organic reach — data that justifies a higher commission tier in the next campaign negotiation.</div>
+    </div>
+  </div>
+
+  <div class="cat-divider"></div>
+
+  <!-- ═══════════════════════════════════════ -->
+  <!-- CATEGORY 03: OUTDOOR / APPAREL -->
+  <!-- ═══════════════════════════════════════ -->
+  <div class="cat-section">
+    <div class="section-label">Category 03</div>
+    <div class="cat-header">
+      <div class="cat-badge">🏕️</div>
+      <div class="cat-meta">
+        <div class="cat-label">Outdoor &amp; Apparel</div>
+        <div class="cat-title">Huckberry × Outdoor Lifestyle Creators &amp; Gear Review Publishers</div>
+        <div class="cat-sub">Weekend traffic peaks captured with signal-timed spend on gear content</div>
+      </div>
+    </div>
+
+    <div class="bp-row">
+      <div class="bp-card">
+        <div class="bp-tag brand">Partnerize Brand</div>
+        <div class="bp-name">Huckberry</div>
+        <div class="bp-detail">Premium outdoor lifestyle retailer · Partnerize network · 8% commission · curated gear and apparel for the adventure-minded buyer</div>
+        <div class="bp-pill blue">Friday–Sunday: peak outdoor purchase intent</div>
+      </div>
+      <div class="bp-card">
+        <div class="bp-tag pub">Partnerize Publishers</div>
+        <div class="bp-name">Outdoor Gear Reviewers · Adventure Travel Creators · Men's Lifestyle Blogs</div>
+        <div class="bp-detail">Content publishers producing trail gear roundups, camping kit guides, and weekend adventure content — already driving Huckberry affiliate traffic through Partnerize</div>
+        <div class="bp-pill green">High-intent audience · gear-purchase mindset</div>
+      </div>
+    </div>
+
+    <div class="flow">
+      <div class="flow-step signal">
+        <div class="flow-tag amber">📡 EchoSignal · Window Detected</div>
+        <div class="flow-product">Gear reviewer: "The only trail pack I've used for 3 years — Huckberry exclusive"</div>
+        <div class="flow-detail">Huckberry affiliate link hits +214% click velocity Thursday afternoon — pre-weekend pattern. Units-ordered signal confirms the pack is trending. Window aligns with the Friday evening outdoor purchase spike. EchoSignal flags: boost now, before the weekend closes.</div>
+        <div class="flow-metric amber">Score: 88 · Window: 36h · Pre-weekend</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step boost">
+        <div class="flow-tag pink">🚀 EchoBoost · Campaign Activated</div>
+        <div class="flow-product">Huckberry budget deployed Thursday evening for weekend coverage</div>
+        <div class="flow-detail">$1,800 Huckberry brand budget activated. Gear reviewer's content boosted on Meta targeting outdoor enthusiasts 28–50, male skew. EchoRoute confirms Huckberry direct as highest-EPC destination. Campaign timed to run through Sunday evening — peak outdoor browse-to-buy window.</div>
+        <div class="flow-metric pink">$1,800 spend · Meta · Thu–Sun</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step outcome">
+        <div class="flow-tag green">💰 Outcome</div>
+        <div class="flow-product">$8,100 in Huckberry sales attributed over the weekend</div>
+        <div class="flow-detail">Gear reviewer earns 8% on incremental weekend sales — $648 in new earnings. Huckberry captures the weekend purchase window with $8,100 in tracked sales — inventory moving at the right moment. Campaign ends Sunday; EchoSignal monitors for the next signal.</div>
+        <div class="flow-metric green">4.5× ROAS · $648 creator earnings</div>
+      </div>
+    </div>
+
+    <div class="vp-bar">
+      <div class="vp-icon">📊</div>
+      <div class="vp-text"><strong>VantagePoint closes the loop:</strong> Captures the full weekend purchase journey — including buyers who saw the boosted post Friday, searched Huckberry via AI assistant Saturday, and completed purchase Sunday with no direct referral click. Publisher gets credit for influence that legacy attribution would have missed entirely. Huckberry gets the full picture of what their media investment actually drove.</div>
+    </div>
+  </div>
+
+  <div class="cat-divider"></div>
+
+  <!-- THE REPEATING CYCLE -->
+  <div class="cycle-section">
+    <div class="eyebrow">The Repeating Flywheel</div>
+    <h2>Every campaign makes the<br>next one <span class="ital">smarter.</span></h2>
+    <p class="sub">The EchoSignal → EchoBoost loop isn't a one-time activation. Every campaign generates new performance data that sharpens the signal for every brand and publisher in the Partnerize network.</p>
+    <div class="cycle-steps">
+      <div class="cycle-step">
+        <div class="cs-num">Step 01</div>
+        <div class="cs-name">EchoSignal watches</div>
+        <div class="cs-desc">Monitors click velocity, CVR, and content performance across every Partnerize publisher simultaneously. Flags the amplification window the moment it opens — 48h refresh cycle, network-wide.</div>
+      </div>
+      <div class="cycle-step">
+        <div class="cs-num">Step 02</div>
+        <div class="cs-name">EchoBoost deploys</div>
+        <div class="cs-desc">Brand budget activates against the flagged content. Best retailer destination locked in at launch. Campaign runs on Meta, TikTok, Pinterest — wherever the audience lives. Spend only against proven signal, never cold.</div>
+      </div>
+      <div class="cycle-step">
+        <div class="cs-num">Step 03</div>
+        <div class="cs-name">Publisher earns more</div>
+        <div class="cs-desc">Creator or publisher earns incremental commission on every sale driven by the boosted campaign — on top of their existing organic earnings. New revenue stream, same content, no extra work.</div>
+      </div>
+      <div class="cycle-step">
+        <div class="cs-num">Step 04</div>
+        <div class="cs-name">VantagePoint measures</div>
+        <div class="cs-desc">Full-funnel attribution captures the journey — including zero-click AI-assisted conversions. Data feeds back into EchoSignal. The next window is detected faster, scored more accurately, and boosted with sharper targeting.</div>
+      </div>
+    </div>
+    <div class="cycle-note">
+      <strong>For Partnerize brands:</strong> an on-demand media buying center that activates against their existing affiliate network — no new vendor relationships, no new tracking setup. &nbsp;·&nbsp; <strong>For Partnerize publishers:</strong> incremental earnings on content they've already created. &nbsp;·&nbsp; <strong>For Partnerize as a platform:</strong> a managed media revenue layer sitting above the SaaS and commission infrastructure already in place.
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
