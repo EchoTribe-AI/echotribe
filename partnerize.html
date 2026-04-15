@@ -133,6 +133,22 @@ nav.site-nav{display:flex;align-items:center;justify-content:space-between;paddi
 /* DIVIDER */
 .cat-divider{height:1px;background:var(--border);margin:0 0 64px;}
 
+/* ── REVIEWER BRIEF ── */
+.reviewer-brief{background:#fff;border:1px solid var(--border);border-radius:20px;padding:36px 40px;margin-bottom:40px;box-shadow:var(--shadow);position:relative;overflow:hidden;}
+.reviewer-brief::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--pink),#f472b6,var(--pink));background-size:200% 100%;animation:rb-shine 3s linear infinite;}
+@keyframes rb-shine{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.rb-eyebrow{font-family:var(--mono);font-size:9px;font-weight:500;letter-spacing:0.16em;text-transform:uppercase;color:var(--pink);background:var(--pink-soft);display:inline-block;padding:4px 12px;border-radius:100px;margin-bottom:20px;}
+.rb-body{display:grid;grid-template-columns:1fr 200px;gap:40px;align-items:start;}
+.rb-heading{font-family:var(--display);font-weight:700;font-size:1.25em;color:var(--ink);margin-bottom:14px;letter-spacing:-0.015em;}
+.rb-text{font-size:14px;color:var(--ink-2);line-height:1.7;margin-bottom:10px;}
+.rb-text:last-child{margin-bottom:0;}
+.rb-sidebar{display:flex;flex-direction:column;gap:12px;}
+.rb-stat{background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:14px 16px;text-align:center;}
+.rb-stat-val{font-family:var(--display);font-size:2em;font-weight:800;color:var(--pink);line-height:1;}
+.rb-stat-label{font-family:var(--mono);font-size:9px;text-transform:uppercase;letter-spacing:0.1em;color:var(--ink-4);margin-top:4px;}
+.rb-note{font-size:11px;color:var(--ink-3);line-height:1.5;text-align:center;padding:0 4px;}
+@media(max-width:720px){.rb-body{grid-template-columns:1fr;gap:24px;}.reviewer-brief{padding:28px 24px;}}
+
 /* ── ANIMATED HERO BANNER ── */
 .hero-banner{
   background:#F0EEE9;border-radius:20px 20px 0 0;
@@ -307,6 +323,34 @@ nav.site-nav{display:flex;align-items:center;justify-content:space-between;paddi
   </div>
   <a href="#demo" class="nav-cta">Get a Demo →</a>
 </nav>
+
+  <!-- PARTNERIZE REVIEWER SUMMARY -->
+  <div class="reviewer-brief">
+    <div class="rb-eyebrow">For Partnerize · Confidential Review</div>
+    <div class="rb-body">
+      <div class="rb-main">
+        <div class="rb-heading">What you're reviewing today</div>
+        <p class="rb-text">This page shows how <strong>EchoTribe</strong> plugs into the Partnerize network as a media-buying layer — sitting between your brands and your publishers without replacing any existing relationships or tracking.</p>
+        <p class="rb-text">The concept is straightforward: when a publisher already in your network creates content that drives affiliate traffic, EchoTribe detects the performance spike in real time and automatically deploys the brand's media budget to amplify that publisher's content. Every click still flows through Partnerize's attribution. Every commission is still paid through Partnerize. EchoTribe simply makes the traffic window bigger.</p>
+        <p class="rb-text">Below you'll find worked examples across <strong>three verticals</strong> — Travel, Finance, and Beauty — each showing two publisher types (social creators and content publishers) and the full flow from signal detection to tracked outcome. The numbers used are illustrative but representative of real campaign performance.</p>
+      </div>
+      <div class="rb-sidebar">
+        <div class="rb-stat">
+          <div class="rb-stat-val">3</div>
+          <div class="rb-stat-label">Verticals covered</div>
+        </div>
+        <div class="rb-stat">
+          <div class="rb-stat-val">6</div>
+          <div class="rb-stat-label">Publisher examples</div>
+        </div>
+        <div class="rb-stat">
+          <div class="rb-stat-val">0</div>
+          <div class="rb-stat-label">Changes to your tracking</div>
+        </div>
+        <div class="rb-note">Partnerize attribution, tags, and commission flows remain fully intact throughout every example.</div>
+      </div>
+    </div>
+  </div>
 
   <!-- HERO ANIMATED BANNER -->
   <div class="hero-img-wrap">
