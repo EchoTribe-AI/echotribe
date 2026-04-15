@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EchoRoute — Route & Maximize EPC</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;0,6..72,700;0,6..72,800;1,6..72,600;1,6..72,700&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F7F6F4; --ink: #4a2135; --ink-muted: rgba(74,33,53,0.55); --ink-3: rgba(74,33,53,0.70);
+    --surface: #ffffff; --surface-low: #F7F6F4; --surface-high: #f4f4f4;
+    --pink: #b7004d; --border-ghost: rgba(74,33,53,0.10);
+    --r-sm: 8px; --r-md: 12px; --r-lg: 16px; --r-full: 100px;
+    --signal-color: #b7004d; --signal-soft: #fce7ef; --signal-dark-accent: #ff6ba8;
+    --route-color: #00656f; --route-soft: #e0f4f5; --route-dark-accent: #4ecdc4;
+    --shop-color: #8930b0; --shop-soft: #f3e8fd; --shop-dark-accent: #c084f5;
+    --boost-color: #c95000; --boost-soft: #fff0e6; --boost-dark-accent: #fb923c;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Manrope', sans-serif; background: var(--bg); color: var(--ink); }
+
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(247,246,244,0.85);
+    backdrop-filter: blur(16px);
+    box-shadow: 0 1px 12px rgba(74,33,53,0.08);
+    padding: 0 40px; height: 58px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .nav-logo { font-family: 'Newsreader', serif; font-size: 17px; font-weight: 700; display: flex; align-items: center; gap: 8px; color: var(--ink); text-decoration: none; }
+  .nav-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--pink); animation: pulse 2s ease-in-out infinite; }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(1.4)} }
+  .nav-links { display: flex; gap: 4px; }
+  .nav-link { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; padding: 6px 12px; border-radius: 8px; text-decoration: none; color: var(--ink-muted); transition: background 0.15s, color 0.15s; }
+  .nav-link:hover { background: var(--surface); color: var(--ink); }
+  .nav-link.signal { color: var(--signal-color); }
+  .nav-link.route  { color: var(--route-color); }
+  .nav-link.shop   { color: var(--shop-color); }
+  .nav-link.boost  { color: var(--boost-color); }
+  .nav-link.active.signal { background: var(--signal-soft); color: var(--signal-color); }
+  .nav-link.active.route  { background: var(--route-soft);  color: var(--route-color); }
+  .nav-link.active.shop   { background: var(--shop-soft);   color: var(--shop-color); }
+  .nav-link.active.boost  { background: var(--boost-soft);  color: var(--boost-color); }
+
+  /* HERO */
+  .hero-outer { background: var(--route-soft); }
+  .hero { max-width: 1120px; margin: 0 auto; padding: 80px 40px 64px; display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+  .eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.12em; border-radius: var(--r-full); padding: 5px 12px; display: inline-flex; align-items: center; gap: 7px; margin-bottom: 24px; }
+  .eyebrow.route { color: var(--route-color); background: var(--route-soft); }
+  .live-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; animation: pulse 1.5s ease-in-out infinite; }
+  h1 { font-family: 'Newsreader', serif; font-size: 56px; font-weight: 700; line-height: 1.0; letter-spacing: -0.02em; margin-bottom: 20px; }
+  h1 em { font-style: italic; color: var(--route-color); }
+  .hero-sub { font-size: 17px; line-height: 1.65; color: var(--ink-3); margin-bottom: 36px; max-width: 420px; }
+  .stats { display: flex; gap: 28px; }
+  .stat-val { font-family: 'Newsreader', serif; font-size: 26px; font-weight: 700; }
+  .stat-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 3px; }
+
+  /* ROUTE VISUAL — light card */
+  .route-card {
+    background: var(--surface);
+    border: 1px solid rgba(0,101,111,0.18);
+    border-radius: 20px;
+    padding: 28px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 8px 40px rgba(0,101,111,0.08);
+  }
+  .route-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 70% 10%, rgba(0,101,111,0.05) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .rc-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 18px; position: relative; }
+  .rc-title { font-family: 'Newsreader', serif; font-size: 20px; font-weight: 700; color: var(--ink); }
+  .rc-badge { font-family: 'JetBrains Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; background: var(--route-soft); color: var(--route-color); border: 1px solid rgba(0,101,111,0.25); border-radius: 20px; padding: 4px 10px; display: flex; align-items: center; gap: 5px; }
+
+  /* Animated routing signal bar */
+  .route-signal-bar {
+    height: 36px; border-radius: 10px;
+    background: rgba(0,101,111,0.10);
+    border: 1px solid rgba(78,205,196,0.15);
+    margin-bottom: 16px; position: relative; overflow: hidden;
+    display: flex; align-items: center; padding: 0 14px; gap: 10px;
+  }
+  .route-signal-label {
+    font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--ink-muted); flex-shrink: 0;
+  }
+  .route-signal-track {
+    flex: 1; height: 2px; border-radius: 2px;
+    background: rgba(0,101,111,0.10); position: relative; overflow: hidden;
+  }
+  .route-signal-track::after {
+    content: ''; position: absolute; top: 0; left: -30%;
+    width: 30%; height: 100%;
+    background: linear-gradient(90deg, transparent, #4ecdc4, transparent);
+    animation: route-signal 1.6s ease-in-out infinite;
+  }
+  @keyframes route-signal {
+    0% { left: -30%; opacity: 0; }
+    20% { opacity: 1; }
+    80% { opacity: 1; }
+    100% { left: 110%; opacity: 0; }
+  }
+  .route-signal-dest {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    color: #4ecdc4; font-weight: 500; flex-shrink: 0;
+  }
+
+  /* Waterfall rows */
+  .waterfall { display: flex; flex-direction: column; gap: 8px; position: relative; }
+  .waterfall::before { content: ''; position: absolute; left: 20px; top: 12px; bottom: 12px; width: 2px; background: var(--border-ghost); }
+  .wf-row { display: flex; align-items: center; gap: 12px; background: var(--bg); border: 1px solid var(--border-ghost); border-radius: 10px; padding: 12px 14px; position: relative; transition: background 0.2s; }
+  .wf-row.winner { background: var(--route-soft); border-color: rgba(0,101,111,0.25); }
+  .wf-row-num { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--ink-muted); width: 16px; flex-shrink: 0; text-align: center; }
+  .wf-row-icon { width: 30px; height: 30px; border-radius: 8px; background: var(--bg); display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
+  .wf-row.winner .wf-row-icon { background: rgba(0,101,111,0.12); }
+  .wf-info { flex: 1; }
+  .wf-name { font-size: 12px; font-weight: 600; color: var(--ink); }
+  .wf-meta { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--ink-muted); margin-top: 2px; }
+  .wf-epc { font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 500; }
+  .wf-row.winner .wf-epc { color: var(--route-color); }
+  .wf-row:not(.winner) .wf-epc { color: var(--ink-muted); }
+  .wf-crown { font-size: 13px; }
+  .wf-divider { height: 1px; background: var(--border-ghost); margin: 2px 0; }
+  .rc-result { margin-top: 16px; padding: 14px; background: var(--route-soft); border: 1px solid rgba(0,101,111,0.20); border-radius: 10px; display: flex; align-items: center; gap: 12px; position: relative; }
+  .rc-result-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--route-color); }
+  .rc-result-val { font-family: 'Newsreader', serif; font-size: 16px; font-weight: 700; color: var(--ink); }
+  .rc-result-sub { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--ink-muted); }
+  .rc-result-epc { margin-left: auto; text-align: right; }
+  .rc-result-epc-val { font-family: 'Newsreader', serif; font-size: 22px; font-weight: 700; color: var(--route-color); }
+  .rc-result-epc-label { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 0.08em; }
+
+  /* SECTION */
+  .section { max-width: 1120px; margin: 0 auto; padding: 0 40px 72px; }
+  .sec-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-muted); margin-bottom: 12px; }
+  .sec-label span { color: var(--route-color); }
+  .sec-heading { font-family: 'Newsreader', serif; font-size: 40px; font-weight: 700; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 10px; }
+  .sec-heading em { font-style: italic; color: var(--route-color); }
+  .sec-sub { font-size: 16px; color: var(--ink-3); line-height: 1.65; max-width: 540px; margin-bottom: 40px; }
+  .divider { max-width: 1120px; margin: 0 auto; padding: 0 40px; border-bottom: 1px solid var(--border-ghost); margin-bottom: 64px; }
+
+  .features-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+  .feat-card { background: var(--surface); border: 1px solid var(--border-ghost); border-radius: var(--r-lg); padding: 24px; box-shadow: 0 4px 24px rgba(74,33,53,0.06); }
+  .feat-num { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; color: var(--route-color); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+  .feat-num::after { content: ''; flex: 1; height: 1px; background: var(--border-ghost); }
+  .feat-title { font-family: 'Newsreader', serif; font-size: 17px; font-weight: 600; margin-bottom: 10px; }
+  .feat-body { font-size: 13px; line-height: 1.6; color: var(--ink-3); }
+
+  /* EPC PROOF BAR */
+  .epc-bar { background: var(--route-soft);
+    max-width: 1120px;
+    margin: 0 auto; border-radius: var(--r-lg); padding: 28px 32px; display: flex; align-items: center; gap: 24px; margin-top: 20px; position: relative; overflow: hidden; }
+  .epc-bar::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 80% 50%, rgba(0,101,111,0.15) 0%, transparent 60%); pointer-events: none; }
+  .epc-icon { width: 48px; height: 48px; border-radius: 13px; background: rgba(0,101,111,0.12); border: 1px solid rgba(0,101,111,0.25); display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; position: relative; }
+  .epc-text { flex: 1; position: relative; }
+  .epc-title { font-family: 'Newsreader', serif; font-size: 18px; font-weight: 700; color: var(--ink); margin-bottom: 5px; }
+  .epc-body { font-size: 13px; color: var(--ink-3); line-height: 1.55; }
+  .epc-body strong { color: var(--route-color); font-weight: 600; }
+  .epc-num { position: relative; text-align: right; flex-shrink: 0; }
+  .epc-big { font-family: 'Newsreader', serif; font-size: 36px; font-weight: 700; color: var(--route-color); line-height: 1; }
+  .epc-unit { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 4px; }
+
+  /* PREV/NEXT NAV */
+  .product-nav { max-width: 1120px; margin: 0 auto; padding: 0 40px 80px; display: flex; justify-content: space-between; align-items: center; }
+  .pnav-btn { font-family: 'Manrope', sans-serif; font-size: 13px; font-weight: 600; color: var(--ink); text-decoration: none; display: flex; align-items: center; gap: 10px; background: var(--surface); border: 1px solid var(--border-ghost); border-radius: var(--r-md); padding: 12px 18px; box-shadow: 0 4px 24px rgba(74,33,53,0.06); transition: box-shadow 0.2s, transform 0.2s; }
+  .pnav-btn.prev:hover { transform: translateX(-3px); box-shadow: 0 8px 32px rgba(74,33,53,0.10); }
+  .pnav-btn.next:hover { transform: translateX(3px); box-shadow: 0 8px 32px rgba(74,33,53,0.10); }
+  .pnav-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; display: block; }
+  .pnav-name { display: block; }
+  .nav-cta { font-family: 'Manrope', sans-serif; font-size: 13px; font-weight: 600; color: #fff; background: #b7004d; padding: 8px 18px; border-radius: 100px; text-decoration: none; white-space: nowrap; transition: background 0.2s, box-shadow 0.2s; box-shadow: 0 2px 10px rgba(183,0,77,0.25); }
+  .nav-cta:hover { background: #93003d; box-shadow: 0 4px 18px rgba(183,0,77,0.35); }
+
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; gap: 40px; padding: 48px 24px 40px; }
+    h1 { font-size: 40px; }
+    .features-grid { grid-template-columns: 1fr; }
+    .section { padding: 0 24px 56px; }
+    .product-nav { padding: 0 24px 60px; flex-direction: column; gap: 12px; }
+    nav { padding: 0 20px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo"><div class="nav-dot"></div>EchoTribe</a>
+  <div class="nav-links">
+    <a href="echosignal.html" class="nav-link signal">EchoSignal</a>
+    <a href="echoroute.html"  class="nav-link route active">EchoRoute</a>
+    <a href="echoshop.html"   class="nav-link shop">EchoShop</a>
+    <a href="echoboost.html"  class="nav-link boost">EchoBoost</a>
+  </div>
+  <a href="#demo" class="nav-cta">Get a Demo →</a>
+</nav>
+<div class="hero-outer">
+  <section class="hero">
+    <div>
+      <span class="eyebrow route"><span class="live-dot"></span> EchoRoute</span>
+      <h1>Every click<br>finds its<br><em>best path.</em></h1>
+      <p class="hero-sub">Delivers the highest-EPC link for every product click — routing to the retailer with the best commission rate and conversion rate for that affiliate's specific audience. Not the default. The right merchant.</p>
+      <div class="stats">
+        <div><div class="stat-val">Real-time</div><div class="stat-label">Routing Decisions</div></div>
+        <div><div class="stat-val">Multi</div><div class="stat-label">Retailer Coverage</div></div>
+        <div><div class="stat-val">↑ EPC</div><div class="stat-label">Per Click</div></div>
+      </div>
+    </div>
+
+    <div class="route-card">
+      <div class="rc-header">
+        <div class="rc-title">EchoRoute</div>
+        <div class="rc-badge"><div class="live-dot"></div>Live Routing</div>
+      </div>
+      <div class="route-signal-bar">
+        <div class="route-signal-label">Click received</div>
+        <div class="route-signal-track"></div>
+        <div class="route-signal-dest">→ Retailer A</div>
+      </div>
+      <div class="waterfall">
+        <div class="wf-row winner">
+          <div class="wf-row-num">1</div>
+          <div class="wf-row-icon">🏆</div>
+          <div class="wf-info">
+            <div class="wf-name">Retailer A — Best CVR Match</div>
+            <div class="wf-meta">16.7% CVR · Audience-matched · Commission +10%</div>
+          </div>
+          <div class="wf-epc">$0.94 EPC</div>
+          <div class="wf-crown">👑</div>
+        </div>
+        <div class="wf-divider"></div>
+        <div class="wf-row">
+          <div class="wf-row-num">2</div>
+          <div class="wf-row-icon">🏪</div>
+          <div class="wf-info">
+            <div class="wf-name">Retailer B — Default Option</div>
+            <div class="wf-meta">3.2% CVR · Standard commission</div>
+          </div>
+          <div class="wf-epc">$0.28 EPC</div>
+        </div>
+        <div class="wf-row">
+          <div class="wf-row-num">3</div>
+          <div class="wf-row-icon">🛍️</div>
+          <div class="wf-info">
+            <div class="wf-name">Retailer C — Fallback</div>
+            <div class="wf-meta">2.1% CVR · Lower payout</div>
+          </div>
+          <div class="wf-epc">$0.17 EPC</div>
+        </div>
+      </div>
+      <div class="rc-result">
+        <div>
+          <div class="rc-result-label">Routed to</div>
+          <div class="rc-result-val">Retailer A</div>
+          <div class="rc-result-sub">Audience CVR × Commission optimized</div>
+        </div>
+        <div class="rc-result-epc">
+          <div class="rc-result-epc-val">$0.94</div>
+          <div class="rc-result-epc-label">EPC delivered</div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="divider"></div>
+
+<section class="section">
+  <div class="sec-label"><span>02</span> — How It Works</div>
+  <div class="sec-heading">The right retailer,<br>every <em>single</em> click.</div>
+  <p class="sec-sub">EchoRoute replaces the default "link to Amazon" reflex with a real-time decision engine that evaluates every available retailer for that product and that audience before every click resolves.</p>
+
+  <div class="features-grid">
+    <div class="feat-card">
+      <div class="feat-num">01 — Signal Input</div>
+      <div class="feat-title">EchoSignal feeds the top products</div>
+      <div class="feat-body">EchoRoute only operates on what EchoSignal has already confirmed is outperforming. It doesn't route cold traffic — it maximizes EPC for products with proven conversion velocity, starting from the highest-scoring items.</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-num">02 — Routing Logic</div>
+      <div class="feat-title">CVR × commission rate, per audience</div>
+      <div class="feat-body">Every product click is evaluated across all available retailers. The engine cross-references that affiliate's historical CVR by retailer, the available commission rate, and real-time inventory to select the optimal destination link.</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-num">03 — EPC Delivery</div>
+      <div class="feat-title">More earned per click, automatically</div>
+      <div class="feat-body">The affiliate receives a single smart link. EchoRoute handles the routing decision invisibly — detecting device, geography, and retailer availability — and delivers the highest-EPC destination without any manual configuration.</div>
+    </div>
+  </div>
+
+  <div class="epc-bar">
+    <div class="epc-icon">🔀</div>
+    <div class="epc-text">
+      <div class="epc-title">Routing in action</div>
+      <div class="epc-body">Same product. Routed to best retailer instead of default. <strong>3.4× higher EPC</strong> delivered to the affiliate on the same click — with no change to content or posting behavior.</div>
+    </div>
+    <div class="epc-num">
+      <div class="epc-big">3.4×</div>
+      <div class="epc-unit">EPC improvement</div>
+    </div>
+  </div>
+</section>
+
+<div class="product-nav">
+  <a href="echosignal.html" class="pnav-btn prev">
+    <div><span class="pnav-label prev-c">← Intent signals</span><span class="pnav-name">EchoSignal</span></div>
+  </a>
+  <a href="echoshop.html" class="pnav-btn next">
+    <div><span class="pnav-label next-c">Next — AI page assembly</span><span class="pnav-name">EchoShop →</span></div>
+  </a>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EchoBoost — Amplify & Convert</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;0,6..72,700;0,6..72,800;1,6..72,600;1,6..72,700&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F7F6F4; --ink: #4a2135; --ink-muted: rgba(74,33,53,0.55); --ink-3: rgba(74,33,53,0.70);
+    --surface: #ffffff; --surface-low: #F7F6F4; --surface-high: #f4f4f4;
+    --pink: #b7004d; --border-ghost: rgba(74,33,53,0.10);
+    --r-sm: 8px; --r-md: 12px; --r-lg: 16px; --r-full: 100px;
+    --signal-color: #b7004d; --signal-soft: #fce7ef; --signal-dark-accent: #ff6ba8;
+    --route-color: #00656f; --route-soft: #e0f4f5; --route-dark-accent: #4ecdc4;
+    --shop-color: #8930b0; --shop-soft: #f3e8fd; --shop-dark-accent: #c084f5;
+    --boost-color: #c95000; --boost-soft: #fff0e6; --boost-dark-accent: #fb923c;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Manrope', sans-serif; background: var(--bg); color: var(--ink); }
+
+  /* NAV */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(247,246,244,0.85);
+    backdrop-filter: blur(16px);
+    box-shadow: 0 1px 12px rgba(74,33,53,0.08);
+    padding: 0 40px; height: 58px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .nav-logo {
+    font-family: 'Newsreader', serif; font-size: 17px; font-weight: 700;
+    display: flex; align-items: center; gap: 8px;
+    color: var(--ink); text-decoration: none;
+  }
+  .nav-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--pink); animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(1.4)} }
+  .nav-links { display: flex; gap: 4px; }
+  .nav-link {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 500;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    padding: 6px 12px; border-radius: 8px;
+    text-decoration: none; color: var(--ink-muted);
+    transition: background 0.15s, color 0.15s;
+  }
+  .nav-link:hover          { background: var(--surface); color: var(--ink); }
+  .nav-link.signal         { color: var(--signal-color); }
+  .nav-link.route          { color: var(--route-color); }
+  .nav-link.shop           { color: var(--shop-color); }
+  .nav-link.boost          { color: var(--boost-color); }
+  .nav-link.active.signal  { background: var(--signal-soft); color: var(--signal-color); }
+  .nav-link.active.route   { background: var(--route-soft);  color: var(--route-color); }
+  .nav-link.active.shop    { background: var(--shop-soft);   color: var(--shop-color); }
+  .nav-link.active.boost   { background: var(--boost-soft);  color: var(--boost-color); }
+
+  /* HERO */
+  .hero-outer { background: var(--boost-soft); }
+  .hero { max-width: 1120px; margin: 0 auto; padding: 80px 40px 64px; display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500;
+    text-transform: uppercase; letter-spacing: 0.12em;
+    border-radius: var(--r-full);
+    padding: 5px 12px;
+    display: inline-flex; align-items: center; gap: 7px;
+    margin-bottom: 24px;
+  }
+  .eyebrow.boost { color: var(--boost-color); background: var(--boost-soft); }
+  .live-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: currentColor; animation: pulse 1.5s ease-in-out infinite;
+  }
+  h1 { font-family: 'Newsreader', serif; font-size: 56px; font-weight: 700; line-height: 1.0; letter-spacing: -0.02em; margin-bottom: 20px; }
+  h1 em { font-style: italic; color: var(--boost-color); }
+  .hero-sub { font-size: 17px; line-height: 1.65; color: var(--ink-3); margin-bottom: 36px; max-width: 420px; }
+  .stats { display: flex; gap: 28px; }
+  .stat-val { font-family: 'Newsreader', serif; font-size: 26px; font-weight: 700; }
+  .stat-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 3px; }
+
+  /* BOOST LIGHT CARD */
+  .boost-card {
+    background: var(--surface);
+    border: 1px solid rgba(201,80,0,0.18);
+    border-radius: 20px;
+    padding: 28px;
+    position: relative; overflow: hidden;
+    box-shadow: 0 8px 40px rgba(201,80,0,0.07);
+  }
+  .boost-card::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 80% 10%, rgba(201,80,0,0.04) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .bc-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; position: relative; }
+  .bc-title { font-family: 'Newsreader', serif; font-size: 20px; font-weight: 700; color: var(--ink); }
+  .bc-badge {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em;
+    background: var(--boost-soft); color: var(--boost-color);
+    border: 1px solid rgba(201,80,0,0.25);
+    border-radius: 20px; padding: 4px 10px;
+    display: flex; align-items: center; gap: 5px;
+  }
+  .bc-badge-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--boost-color); animation: pulse 1.5s ease-in-out infinite; }
+
+  /* 4-step flow */
+  .boost-steps { display: flex; flex-direction: column; gap: 2px; margin-bottom: 18px; }
+  .bs-step {
+    display: flex; align-items: center; gap: 12px;
+    padding: 9px 13px;
+    border-radius: var(--r-sm);
+    border: 1px solid transparent;
+  }
+  .bs-step.done   { background: var(--bg); border-color: var(--border-ghost); }
+  .bs-step.active { background: rgba(201,80,0,0.10);    border-color: rgba(201,80,0,0.25); }
+  .bs-num {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    width: 22px; height: 22px; border-radius: 6px;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .bs-step.done   .bs-num { background: var(--bg); color: var(--ink-muted); }
+  .bs-step.active .bs-num { background: var(--boost-color); color: #ffffff; }
+  .bs-content { flex: 1; }
+  .bs-label {
+    font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 2px;
+  }
+  .bs-step.done   .bs-label { color: var(--ink-muted); }
+  .bs-step.active .bs-label { color: var(--boost-color); }
+  .bs-value { font-size: 12px; font-weight: 600; }
+  .bs-step.done   .bs-value { color: var(--ink-3); }
+  .bs-step.active .bs-value { color: var(--ink); }
+  .bs-check { font-size: 14px; }
+  .bs-arrow { width: 20px; text-align: center; color: var(--ink-muted); font-size: 12px; flex-shrink: 0; }
+
+  /* KPI row — animated */
+  .kpi-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 14px; position: relative; }
+  .kpi { background: var(--bg); border: 1px solid var(--border-ghost); border-radius: 8px; padding: 10px 12px; text-align: center; }
+  .kpi-val { font-family: 'Newsreader', serif; font-size: 18px; font-weight: 700; color: var(--ink); }
+  .kpi-val.counting { color: var(--boost-color); }
+  .kpi-label { font-family: 'JetBrains Mono', monospace; font-size: 9px; text-transform: uppercase; letter-spacing: 0.07em; color: var(--ink-muted); margin-top: 3px; }
+
+  /* Live impressions bar */
+  .campaign-live {
+    background: rgba(201,80,0,0.08); border: 1px solid rgba(201,80,0,0.20);
+    border-radius: 8px; padding: 10px 12px; margin-bottom: 14px;
+    display: flex; align-items: center; justify-content: space-between;
+    position: relative; overflow: hidden;
+  }
+  .campaign-live::before {
+    content: ''; position: absolute; top: 0; left: 0; height: 2px;
+    background: var(--boost-color);
+    animation: campaign-progress 6s ease-in-out infinite;
+  }
+  @keyframes campaign-progress {
+    0%   { width: 0%; }
+    80%  { width: 100%; opacity: 1; }
+    100% { width: 100%; opacity: 0; }
+  }
+  .cl-left { }
+  .cl-label { font-family: 'JetBrains Mono', monospace; font-size: 9px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-muted); margin-bottom: 3px; }
+  .cl-value { font-family: 'Newsreader', serif; font-size: 16px; font-weight: 700; color: var(--ink); }
+  .cl-right { text-align: right; }
+  .cl-delta { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--boost-color); }
+  .cl-sub { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--ink-muted); margin-top: 2px; }
+
+  /* Channel tags */
+  .channels-label { font-family: 'JetBrains Mono', monospace; font-size: 9px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-muted); margin-bottom: 8px; position: relative; }
+  .channels { display: flex; gap: 6px; flex-wrap: wrap; position: relative; }
+  .ch-tag { font-family: 'JetBrains Mono', monospace; font-size: 10px; background: var(--bg); border: 1px solid var(--border-ghost); border-radius: 6px; padding: 5px 10px; color: var(--ink-3); }
+  .ch-tag.active { background: var(--boost-soft); border-color: rgba(201,80,0,0.25); color: var(--boost-color); }
+
+  /* SECTION */
+  .section { max-width: 1120px; margin: 0 auto; padding: 0 40px 72px; }
+  .sec-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-muted); margin-bottom: 12px; }
+  .sec-label span { color: var(--boost-color); }
+  .sec-heading { font-family: 'Newsreader', serif; font-size: 40px; font-weight: 700; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 10px; }
+  .sec-heading em { font-style: italic; color: var(--boost-color); }
+  .sec-sub { font-size: 16px; color: var(--ink-3); line-height: 1.65; max-width: 540px; margin-bottom: 40px; }
+  .divider { max-width: 1120px; margin: 0 auto 64px; padding: 0 40px; border-bottom: 1px solid var(--border-ghost); }
+
+  /* FEATURES GRID */
+  .features-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+  .feat-card {
+    background: var(--surface);
+    border: 1px solid var(--border-ghost);
+    border-radius: var(--r-lg);
+    padding: 24px;
+    box-shadow: 0 4px 24px rgba(74,33,53,0.06);
+  }
+  .feat-num {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500;
+    color: var(--boost-color); text-transform: uppercase; letter-spacing: 0.1em;
+    margin-bottom: 14px; display: flex; align-items: center; gap: 8px;
+  }
+  .feat-num::after { content: ''; flex: 1; height: 1px; background: var(--border-ghost); }
+  .feat-title { font-family: 'Newsreader', serif; font-size: 17px; font-weight: 600; margin-bottom: 10px; }
+  .feat-body { font-size: 13px; line-height: 1.6; color: var(--ink-3); }
+
+  /* ALERT / ROAS BAR */
+  .roas-bar {
+    background: var(--boost-soft);
+    max-width: 1120px;
+    margin: 0 auto;
+    border-radius: var(--r-lg);
+    padding: 28px 32px;
+    display: flex; align-items: center; gap: 24px;
+    position: relative; overflow: hidden;
+  }
+  .roas-bar::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 80% 50%, rgba(201,80,0,0.12) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .roas-icon {
+    width: 48px; height: 48px; border-radius: 13px;
+    background: rgba(201,80,0,0.12); border: 1px solid rgba(201,80,0,0.25);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; flex-shrink: 0; position: relative;
+  }
+  .roas-text { flex: 1; position: relative; }
+  .roas-title { font-family: 'Newsreader', serif; font-size: 18px; font-weight: 700; color: var(--ink); margin-bottom: 5px; }
+  .roas-body { font-size: 13px; color: var(--ink-3); line-height: 1.55; }
+  .roas-body strong { color: var(--boost-color); font-weight: 600; }
+  .roas-num { position: relative; text-align: right; flex-shrink: 0; }
+  .roas-big { font-family: 'Newsreader', serif; font-size: 36px; font-weight: 700; color: var(--boost-color); line-height: 1; }
+  .roas-unit { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 4px; }
+
+  /* CLOSED LOOP SUMMARY */
+  .loop-summary {
+    background: var(--surface);
+    border: 1px solid var(--border-ghost);
+    border-radius: 20px;
+    padding: 36px 40px;
+    box-shadow: 0 4px 24px rgba(74,33,53,0.06);
+    margin-top: 48px;
+    max-width: 1120px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .ls-heading { font-family: 'Newsreader', serif; font-size: 24px; font-weight: 700; margin-bottom: 8px; }
+  .ls-heading em { font-style: italic; color: var(--pink); }
+  .ls-sub { font-size: 14px; color: var(--ink-3); margin-bottom: 28px; line-height: 1.6; }
+  .ls-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .ls-item { display: flex; flex-direction: column; gap: 8px; }
+  .ls-item-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+  .ls-item-icon.signal { background: var(--signal-soft); }
+  .ls-item-icon.route  { background: var(--route-soft); }
+  .ls-item-icon.shop   { background: var(--shop-soft); }
+  .ls-item-icon.boost  { background: var(--boost-soft); }
+  .ls-item-name { font-family: 'Newsreader', serif; font-size: 15px; font-weight: 700; }
+  .ls-item-desc { font-size: 12px; color: var(--ink-3); line-height: 1.5; }
+  .ls-item a { text-decoration: none; color: inherit; }
+  .ls-item-name a { display: flex; align-items: center; gap: 4px; }
+  .ls-item-name a:hover { opacity: 0.7; }
+
+  /* PREV/NEXT NAV */
+  .product-nav {
+    max-width: 1120px; margin: 0 auto;
+    padding: 0 40px 80px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .pnav-btn {
+    font-family: 'Manrope', sans-serif; font-size: 13px; font-weight: 600;
+    color: var(--ink); text-decoration: none;
+    display: flex; align-items: center; gap: 10px;
+    background: var(--surface);
+    border: 1px solid var(--border-ghost);
+    border-radius: var(--r-md);
+    padding: 12px 18px;
+    box-shadow: 0 4px 24px rgba(74,33,53,0.06);
+    transition: box-shadow 0.2s, transform 0.2s;
+  }
+  .pnav-btn.prev:hover { transform: translateX(-3px); box-shadow: 0 8px 32px rgba(74,33,53,0.10); }
+  .pnav-btn.next:hover { transform: translateX(3px);  box-shadow: 0 8px 32px rgba(74,33,53,0.10); }
+  .pnav-label {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    text-transform: uppercase; letter-spacing: 0.08em; display: block;
+  }
+  .pnav-label.prev-c { color: var(--shop-color); }
+  .pnav-label.next-c { color: var(--pink); }
+  .pnav-name { display: block; }
+  .nav-cta { font-family: 'Manrope', sans-serif; font-size: 13px; font-weight: 600; color: #fff; background: #b7004d; padding: 8px 18px; border-radius: 100px; text-decoration: none; white-space: nowrap; transition: background 0.2s, box-shadow 0.2s; box-shadow: 0 2px 10px rgba(183,0,77,0.25); }
+  .nav-cta:hover { background: #93003d; box-shadow: 0 4px 18px rgba(183,0,77,0.35); }
+
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; gap: 40px; padding: 48px 24px 40px; }
+    h1 { font-size: 40px; }
+    .features-grid { grid-template-columns: 1fr; }
+    .ls-row { grid-template-columns: 1fr 1fr; }
+    .kpi-row { grid-template-columns: 1fr 1fr 1fr; }
+    .section { padding: 0 24px 56px; }
+    .product-nav { padding: 0 24px 60px; flex-direction: column; gap: 12px; }
+    nav { padding: 0 20px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo"><div class="nav-dot"></div>EchoTribe</a>
+  <div class="nav-links">
+    <a href="echosignal.html" class="nav-link signal">EchoSignal</a>
+    <a href="echoroute.html"  class="nav-link route">EchoRoute</a>
+    <a href="echoshop.html"   class="nav-link shop">EchoShop</a>
+    <a href="echoboost.html"  class="nav-link boost active">EchoBoost</a>
+  </div>
+  <a href="#demo" class="nav-cta">Get a Demo →</a>
+</nav>
+<div class="hero-outer">
+  <div class="hero">
+    <div>
+    <span class="eyebrow boost"><span class="live-dot"></span> EchoBoost</span>
+    <h1>Signal in. <em>Boost out.</em> Four steps, zero waste.</h1>
+    <p class="hero-sub">Uses EchoShop's landing pages, EchoSignal's top products, and EchoRoute's best retailer — then amplifies the creator's own content with brand spend. The creator's original post is always the flagship creative.</p>
+    <div class="stats">
+      <div><div class="stat-val">4.6×</div><div class="stat-label">Avg ROAS</div></div>
+      <div><div class="stat-val">Multi</div><div class="stat-label">Channel Push</div></div>
+      <div><div class="stat-val">Signal</div><div class="stat-label">Led Spend</div></div>
+    </div>
+    </div>
+    <div class="boost-card">
+    <div class="bc-header">
+      <div class="bc-title">EchoBoost</div>
+      <div class="bc-badge"><div class="bc-badge-dot"></div>Campaign Live</div>
+    </div>
+
+    <div class="boost-steps">
+      <div class="bs-step done">
+        <div class="bs-num">1</div>
+        <div class="bs-content">
+          <div class="bs-label">EchoSignal</div>
+          <div class="bs-value">High-intent signal detected</div>
+        </div>
+        <div class="bs-check">✓</div>
+      </div>
+      <div class="bs-step done">
+        <div class="bs-num">2</div>
+        <div class="bs-content">
+          <div class="bs-label">EchoRoute</div>
+          <div class="bs-value">Best EPC retailer selected</div>
+        </div>
+        <div class="bs-check">✓</div>
+      </div>
+      <div class="bs-step done">
+        <div class="bs-num">3</div>
+        <div class="bs-content">
+          <div class="bs-label">EchoShop</div>
+          <div class="bs-value">Product page assembled</div>
+        </div>
+        <div class="bs-check">✓</div>
+      </div>
+      <div class="bs-step active">
+        <div class="bs-num">4</div>
+        <div class="bs-content">
+          <div class="bs-label">EchoBoost</div>
+          <div class="bs-value">Paid amplification live</div>
+        </div>
+        <div class="bs-arrow">▶</div>
+      </div>
+    </div>
+
+    <div class="kpi-row">
+      <div class="kpi"><div class="kpi-val">$1,500</div><div class="kpi-label">Spend</div></div>
+      <div class="kpi"><div class="kpi-val counting" id="roas-val">4.6×</div><div class="kpi-label">ROAS</div></div>
+      <div class="kpi"><div class="kpi-val counting" id="rev-val">$6,900</div><div class="kpi-label">Revenue</div></div>
+    </div>
+
+    <div class="campaign-live">
+      <div class="cl-left">
+        <div class="cl-label">Impressions</div>
+        <div class="cl-value" id="impr-val">24,318</div>
+      </div>
+      <div class="cl-right">
+        <div class="cl-delta" id="impr-delta">+142 / min</div>
+        <div class="cl-sub">Meta + TikTok · Live</div>
+      </div>
+    </div>
+
+    <div class="channels-label">Active channels</div>
+    <div class="channels">
+      <div class="ch-tag active">Meta</div>
+      <div class="ch-tag active">TikTok</div>
+      <div class="ch-tag">Pinterest</div>
+      <div class="ch-tag">YouTube</div>
+    </div>
+  </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<section class="section">
+  <div class="sec-label"><span>04</span> — How It Works</div>
+  <div class="sec-heading">Spend that knows<br>what it's <em>amplifying.</em></div>
+  <p class="sec-sub">EchoBoost doesn't run cold ads. It deploys spend against products and content that have already been validated by the network — at the exact moment the amplification window is open.</p>
+
+  <div class="features-grid">
+    <div class="feat-card">
+      <div class="feat-num">01 — Signal Trigger</div>
+      <div class="feat-title">Only amplifies proven content</div>
+      <div class="feat-body">EchoBoost only activates when EchoSignal has flagged an amplification window — a product whose click velocity has meaningfully exceeded its conversion baseline. Spend is never deployed on cold or unvalidated products.</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-num">02 — Routing Lock-in</div>
+      <div class="feat-title">Best merchant baked in at launch</div>
+      <div class="feat-body">Before a campaign goes live, EchoRoute has already determined the highest-EPC destination. Every ad click lands on the retailer with the best commission rate and conversion rate for that audience — locked in at campaign build time.</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-num">03 — Campaign Build</div>
+      <div class="feat-title">Brands or affiliates can self-serve</div>
+      <div class="feat-body">Brands fund campaigns directly against a specific window. Affiliates can self-boost their own top content. Both modes use the same ad builder — four steps from product selection to campaign launch across Meta, TikTok, and beyond.</div>
+    </div>
+  </div>
+
+  <div class="roas-bar">
+    <div class="roas-icon">🚀</div>
+    <div class="roas-text">
+      <div class="roas-title">Signal-led spend outperforms cold spend</div>
+      <div class="roas-body">By deploying against products with confirmed click velocity and conversion data, EchoBoost campaigns consistently deliver <strong>well above 4× ROAS</strong> — because they're amplifying what's already working, not testing from zero.</div>
+    </div>
+    <div class="roas-num">
+      <div class="roas-big">4.6×</div>
+      <div class="roas-unit">avg ROAS</div>
+    </div>
+  </div>
+
+  <!-- CLOSED LOOP SUMMARY -->
+  <div class="loop-summary">
+    <div class="ls-heading">The complete <em>closed loop.</em></div>
+    <div class="ls-sub">EchoBoost is where the loop completes — and where results feed back into EchoSignal for the next cycle. Every campaign generates new performance data that sharpens the signal for every affiliate in the network.</div>
+    <div class="ls-row">
+      <div class="ls-item">
+        <a href="echosignal.html"><div class="ls-item-icon signal">📡</div></a>
+        <div class="ls-item-name"><a href="echosignal.html">EchoSignal ↗</a></div>
+        <div class="ls-item-desc">Detects what's outperforming and flags amplification windows across the network.</div>
+      </div>
+      <div class="ls-item">
+        <a href="echoroute.html"><div class="ls-item-icon route">🔀</div></a>
+        <div class="ls-item-name"><a href="echoroute.html">EchoRoute ↗</a></div>
+        <div class="ls-item-desc">Routes every click to the highest-EPC retailer based on real CVR and commission data.</div>
+      </div>
+      <div class="ls-item">
+        <a href="echoshop.html"><div class="ls-item-icon shop">🛍️</div></a>
+        <div class="ls-item-name"><a href="echoshop.html">EchoShop ↗</a></div>
+        <div class="ls-item-desc">Creates shoppable product pages and assembles affiliate-linked storefronts ready to convert.</div>
+      </div>
+      <div class="ls-item">
+        <div class="ls-item-icon boost">🚀</div>
+        <div class="ls-item-name">EchoBoost</div>
+        <div class="ls-item-desc">Deploys paid spend at the exact moment signal confirms the window is open.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="product-nav">
+  <a href="echoshop.html" class="pnav-btn prev">
+    <div><span class="pnav-label prev-c">← Build & Convert</span><span class="pnav-name">EchoShop</span></div>
+  </a>
+  <a href="index.html" class="pnav-btn next">
+    <div><span class="pnav-label next-c">Back to overview</span><span class="pnav-name">Intelligence Stack →</span></div>
+  </a>
+</div>
+
+<script>
+  // Live impressions counter
+  let impr = 24318;
+  let rev = 6900;
+  const imprEl = document.getElementById('impr-val');
+  const revEl = document.getElementById('rev-val');
+
+  setInterval(() => {
+    const tick = Math.floor(Math.random() * 8) + 2;
+    impr += tick;
+    imprEl.textContent = impr.toLocaleString();
+
+    const revTick = Math.floor(Math.random() * 4) + 1;
+    rev += revTick;
+    revEl.textContent = '$' + rev.toLocaleString();
+
+    // Slightly fluctuate rate display
+    const rates = ['+138 / min', '+142 / min', '+151 / min', '+145 / min', '+139 / min'];
+    document.getElementById('impr-delta').textContent = rates[Math.floor(Math.random() * rates.length)];
+  }, 1200);
+</script>
+</body>
+</html>
