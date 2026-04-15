@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EchoShop — AI-Assembled Product Pages | EchoTribe</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;0,6..72,700;0,6..72,800;1,6..72,600;1,6..72,700&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F7F6F4; --ink: #4a2135; --ink-muted: rgba(74,33,53,0.55); --ink-3: rgba(74,33,53,0.70);
+    --surface: #ffffff; --surface-low: #F7F6F4; --surface-high: #f4f4f4;
+    --pink: #b7004d; --border-ghost: rgba(74,33,53,0.10);
+    --r-sm: 8px; --r-md: 12px; --r-lg: 16px; --r-full: 100px;
+    --signal-color: #b7004d; --signal-soft: #fce7ef; --signal-dark-accent: #ff6ba8;
+    --route-color: #00656f; --route-soft: #e0f4f5; --route-dark-accent: #4ecdc4;
+    --shop-color: #8930b0; --shop-soft: #f3e8fd; --shop-dark-accent: #c084f5;
+    --boost-color: #c95000; --boost-soft: #fff0e6; --boost-dark-accent: #fb923c;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Manrope', sans-serif; background: var(--bg); color: var(--ink); }
+
+  /* NAV */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(247,246,244,0.85);
+    backdrop-filter: blur(16px);
+    box-shadow: 0 1px 12px rgba(74,33,53,0.08);
+    padding: 0 40px; height: 58px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .nav-logo {
+    font-family: 'Newsreader', serif; font-size: 17px; font-weight: 700;
+    display: flex; align-items: center; gap: 8px;
+    color: var(--ink); text-decoration: none;
+  }
+  .nav-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--pink); animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(1.4)} }
+  .nav-links { display: flex; gap: 4px; }
+  .nav-link {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 500;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    padding: 6px 12px; border-radius: 8px;
+    text-decoration: none; color: var(--ink-muted);
+    transition: background 0.15s, color 0.15s;
+  }
+  .nav-link:hover          { background: var(--surface); color: var(--ink); }
+  .nav-link.signal         { color: var(--signal-color); }
+  .nav-link.route          { color: var(--route-color); }
+  .nav-link.shop           { color: var(--shop-color); }
+  .nav-link.boost          { color: var(--boost-color); }
+  .nav-link.active.shop    { background: var(--shop-soft); color: var(--shop-color); }
+
+  /* HERO */
+  .hero-outer { background: var(--shop-soft); }
+  .hero {
+    max-width: 1120px; margin: 0 auto;
+    padding: 80px 40px 64px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center;
+  }
+
+  /* EYEBROW */
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500;
+    text-transform: uppercase; letter-spacing: 0.12em;
+    border-radius: var(--r-full);
+    padding: 5px 12px;
+    display: inline-flex; align-items: center; gap: 7px;
+    margin-bottom: 24px;
+  }
+  .eyebrow.shop { color: var(--shop-color); background: var(--shop-soft); }
+  .live-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: currentColor; animation: pulse 1.5s ease-in-out infinite;
+  }
+
+  h1 {
+    font-family: 'Newsreader', serif; font-size: 48px; font-weight: 700;
+    line-height: 1.05; letter-spacing: -0.02em; margin-bottom: 20px;
+  }
+  h1 em { font-style: italic; color: var(--shop-color); }
+
+  .hero-sub {
+    font-size: 17px; line-height: 1.65; color: var(--ink-3);
+    margin-bottom: 36px; max-width: 420px;
+  }
+
+  .stats { display: flex; gap: 28px; }
+  .stat-val {
+    font-family: 'Newsreader', serif; font-size: 26px; font-weight: 700;
+    color: var(--ink);
+  }
+  .stat-label {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    color: var(--ink-muted); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 3px;
+  }
+
+  /* SHOP LIGHT CARD */
+  .shop-card {
+    background: var(--surface); border: 1px solid rgba(137,48,176,0.18); border-radius: 20px; padding: 28px;
+    position: relative; overflow: hidden;
+    box-shadow: 0 8px 40px rgba(137,48,176,0.07);
+  }
+  .shop-card::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 20% 80%, rgba(137,48,176,0.04) 0%, transparent 65%);
+    pointer-events: none;
+  }
+
+  /* Card header */
+  .sc-header {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    margin-bottom: 14px; position: relative;
+  }
+  .sc-title { font-family: 'Newsreader', serif; font-size: 20px; font-weight: 700; color: var(--ink); }
+  .sc-badge {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    text-transform: uppercase; letter-spacing: 0.1em;
+    background: var(--shop-soft); color: var(--shop-color);
+    border: 1px solid rgba(137,48,176,0.25); border-radius: 20px; padding: 4px 10px;
+    display: flex; align-items: center; gap: 5px;
+  }
+
+  /* Rotating collage ticker */
+  .collage-ticker {
+    height: 28px; overflow: hidden; margin-bottom: 14px; position: relative;
+    border-radius: 8px; background: var(--shop-soft);
+    border: 1px solid rgba(137,48,176,0.18);
+    display: flex; align-items: center; padding: 0 12px; gap: 8px;
+  }
+  .collage-ticker-label {
+    font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--ink-muted); flex-shrink: 0;
+  }
+  .collage-ticker-items {
+    flex: 1; overflow: hidden; position: relative; height: 100%;
+    display: flex; align-items: center;
+  }
+  .collage-ticker-track {
+    display: flex; gap: 24px;
+    animation: ticker-scroll 8s linear infinite;
+    white-space: nowrap;
+  }
+  .collage-ticker-item {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    color: var(--shop-color); display: flex; align-items: center; gap: 5px;
+  }
+  @keyframes ticker-scroll {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* Product tile grid (2x2) */
+  .product-tile-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+    position: relative;
+  }
+  .pt-tile {
+    background: var(--bg); border: 1px solid var(--border-ghost);
+    border-radius: 10px; padding: 12px; position: relative; overflow: hidden;
+    animation: tile-in 0.4s ease both;
+  }
+  .pt-tile:nth-child(1) { animation-delay: 0s; }
+  .pt-tile:nth-child(2) { animation-delay: 0.08s; }
+  .pt-tile:nth-child(3) { animation-delay: 0.16s; }
+  .pt-tile:nth-child(4) { animation-delay: 0.24s; }
+  @keyframes tile-in {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .pt-img-placeholder {
+    width: 100%; height: 60px; border-radius: 6px;
+    background: var(--shop-soft);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; margin-bottom: 8px;
+  }
+  .pt-name {
+    font-family: 'Manrope', sans-serif; font-size: 11px; font-weight: 600;
+    color: var(--ink); line-height: 1.3; margin-bottom: 3px;
+  }
+  .pt-price {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    color: var(--ink-muted); margin-bottom: 6px;
+  }
+  .pt-retailer {
+    font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    text-transform: uppercase; letter-spacing: 0.06em;
+    color: var(--ink-muted); margin-bottom: 8px;
+  }
+  .pt-cta {
+    display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em;
+    background: var(--shop-soft); color: var(--shop-color);
+    border: 1px solid rgba(137,48,176,0.30); border-radius: 5px; padding: 3px 8px;
+    white-space: nowrap;
+  }
+  .pt-live-badge {
+    position: absolute; top: 8px; right: 8px;
+    font-family: 'JetBrains Mono', monospace; font-size: 8px;
+    text-transform: uppercase; letter-spacing: 0.06em;
+    background: var(--shop-soft); color: var(--shop-color);
+    border: 1px solid rgba(137,48,176,0.30); border-radius: 4px; padding: 2px 6px;
+  }
+
+  /* Secondary section (D2) */
+  .sc-secondary {
+    border-top: 1px solid var(--border-ghost);
+    margin-top: 16px; padding-top: 16px;
+    position: relative;
+  }
+  .sc-secondary-inner {
+    background: var(--bg); border-radius: 10px; padding: 12px;
+  }
+  .sc-secondary-label {
+    font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--ink-muted); margin-bottom: 10px;
+  }
+
+  /* Chat bubbles */
+  .chat { display: flex; flex-direction: column; gap: 8px; }
+  .bubble { max-width: 88%; padding: 9px 12px; border-radius: 12px; }
+  .bubble.user {
+    background: var(--bg); border: 1px solid var(--border-ghost);
+    align-self: flex-end; border-bottom-right-radius: 4px;
+  }
+  .bubble.ai {
+    background: var(--shop-soft); border: 1px solid rgba(137,48,176,0.20);
+    align-self: flex-start; border-bottom-left-radius: 4px;
+  }
+  .bubble-sender {
+    font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px;
+  }
+  .bubble.user .bubble-sender { color: var(--ink-muted); text-align: right; }
+  .bubble.ai .bubble-sender   { color: var(--shop-color); }
+  .bubble-text { font-size: 11px; line-height: 1.5; }
+  .bubble.user .bubble-text { color: var(--ink-3); }
+  .bubble.ai   .bubble-text { color: var(--ink-2); }
+
+  /* SECTION */
+  .section { max-width: 1120px; margin: 0 auto; padding: 0 40px 72px; }
+  .sec-label {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-muted); margin-bottom: 12px;
+  }
+  .sec-label span { color: var(--shop-color); }
+  .sec-heading {
+    font-family: 'Newsreader', serif; font-size: 40px; font-weight: 700;
+    line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 10px;
+  }
+  .sec-heading em { font-style: italic; color: var(--shop-color); }
+  .sec-sub {
+    font-size: 16px; color: var(--ink-3); line-height: 1.65;
+    max-width: 540px; margin-bottom: 40px;
+  }
+
+  .divider {
+    max-width: 1120px; margin: 0 auto; padding: 0 40px;
+    border-bottom: 1px solid var(--border-ghost); margin-bottom: 64px;
+  }
+
+  /* FEATURES GRID */
+  .features-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+  .feat-card {
+    background: var(--surface);
+    border: 1px solid var(--border-ghost);
+    border-radius: var(--r-lg);
+    padding: 24px;
+    box-shadow: 0 4px 24px rgba(74,33,53,0.06);
+  }
+  .feat-num {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500;
+    color: var(--shop-color); text-transform: uppercase; letter-spacing: 0.1em;
+    margin-bottom: 14px; display: flex; align-items: center; gap: 8px;
+  }
+  .feat-num::after { content: ''; flex: 1; height: 1px; background: var(--border-ghost); }
+  .feat-title {
+    font-family: 'Newsreader', serif; font-size: 17px; font-weight: 600; margin-bottom: 10px;
+  }
+  .feat-body { font-size: 13px; line-height: 1.6; color: var(--ink-3); }
+
+  /* CREATOR APPROVAL CALLOUT */
+  .approval-card {
+    background: var(--shop-soft); border-radius: var(--r-lg); padding: 32px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start;
+    max-width: 1120px; margin: 0 auto;
+  }
+  .approval-eyebrow {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 500;
+    text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--shop-color); margin-bottom: 12px;
+  }
+  .approval-heading {
+    font-family: 'Newsreader', serif; font-size: 24px; font-weight: 700;
+    line-height: 1.2; margin-bottom: 14px; color: var(--ink);
+  }
+  .approval-body { font-size: 14px; line-height: 1.65; color: var(--ink-3); }
+
+  /* Product card preview — what the creator actually sees */
+  .approval-preview {
+    background: var(--surface); border-radius: var(--r-lg);
+    box-shadow: 0 8px 40px rgba(74,33,53,0.10);
+    overflow: hidden;
+  }
+  .preview-header {
+    padding: 14px 16px 12px;
+    border-bottom: 1px solid var(--border-ghost);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .preview-header-title {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-muted);
+  }
+  .preview-status {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    text-transform: uppercase; letter-spacing: 0.06em;
+    color: #d97706; background: #fffbeb;
+    border-radius: var(--r-full); padding: 3px 9px;
+  }
+  .preview-status-dot { width: 5px; height: 5px; border-radius: 50%; background: #d97706; animation: wpulse 2s ease-in-out infinite; }
+  @keyframes wpulse { 0%,100%{opacity:1} 50%{opacity:.6} }
+  .preview-products {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 14px;
+  }
+  .preview-product {
+    background: var(--surface-low); border-radius: var(--r-sm); padding: 10px;
+  }
+  .pp-img { width: 100%; height: 48px; border-radius: 6px;
+    background: linear-gradient(135deg, rgba(137,48,176,0.08), rgba(192,132,245,0.12));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; margin-bottom: 7px;
+  }
+  .pp-name { font-family: 'Manrope', sans-serif; font-size: 11px; font-weight: 600; color: var(--ink); line-height: 1.3; margin-bottom: 2px; }
+  .pp-price { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--ink-muted); margin-bottom: 5px; }
+  .pp-retailer { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--route-color); }
+  .preview-caption {
+    padding: 10px 14px;
+    border-top: 1px solid var(--border-ghost);
+  }
+  .preview-caption-label {
+    font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--shop-color); margin-bottom: 5px;
+  }
+  .preview-caption-text {
+    font-family: 'Manrope', sans-serif; font-size: 12px;
+    color: var(--ink-2); line-height: 1.5; font-style: italic;
+  }
+  .preview-actions {
+    padding: 12px 14px;
+    display: flex; gap: 8px;
+  }
+  .btn-approve {
+    font-family: 'Manrope', sans-serif; font-size: 12px; font-weight: 600;
+    background: var(--shop-color); color: #fff;
+    border: none; border-radius: var(--r-sm); padding: 9px 16px; cursor: pointer;
+    flex: 1; transition: opacity 0.15s;
+  }
+  .btn-approve:hover { opacity: 0.88; }
+  .btn-edit {
+    font-family: 'Manrope', sans-serif; font-size: 12px; font-weight: 600;
+    background: transparent; color: var(--shop-color);
+    border: 1px solid rgba(137,48,176,0.30); border-radius: var(--r-sm);
+    padding: 9px 16px; cursor: pointer; transition: background 0.15s;
+  }
+  .btn-edit:hover { background: rgba(137,48,176,0.07); }
+
+  /* PREV/NEXT NAV */
+  .product-nav {
+    max-width: 1120px; margin: 0 auto;
+    padding: 0 40px 80px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .pnav-btn {
+    font-family: 'Manrope', sans-serif; font-size: 13px; font-weight: 600;
+    color: var(--ink); text-decoration: none;
+    display: flex; align-items: center; gap: 10px;
+    background: var(--surface); border: 1px solid var(--border-ghost);
+    border-radius: var(--r-md); padding: 12px 18px;
+    box-shadow: 0 4px 24px rgba(74,33,53,0.06);
+    transition: box-shadow 0.2s, transform 0.2s;
+  }
+  .pnav-btn.prev:hover { transform: translateX(-3px); box-shadow: 0 8px 32px rgba(74,33,53,0.10); }
+  .pnav-btn.next:hover { transform: translateX(3px);  box-shadow: 0 8px 32px rgba(74,33,53,0.10); }
+  .pnav-label {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    text-transform: uppercase; letter-spacing: 0.08em; display: block;
+  }
+  .pnav-label.prev-c { color: var(--route-color); }
+  .pnav-label.next-c { color: var(--boost-color); }
+  .pnav-name { display: block; }
+
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; gap: 40px; padding: 48px 24px 40px; }
+    h1 { font-size: 38px; }
+    .features-grid { grid-template-columns: 1fr; }
+    .approval-card { grid-template-columns: 1fr; gap: 24px; }
+    .section { padding: 0 24px 56px; }
+    .product-nav { padding: 0 24px 60px; flex-direction: column; gap: 12px; }
+    nav { padding: 0 20px; }
+  }
+  .nav-cta { font-family: 'Manrope', sans-serif; font-size: 13px; font-weight: 600; color: #fff; background: #b7004d; padding: 8px 18px; border-radius: 100px; text-decoration: none; white-space: nowrap; transition: background 0.2s, box-shadow 0.2s; box-shadow: 0 2px 10px rgba(183,0,77,0.25); }
+  .nav-cta:hover { background: #93003d; box-shadow: 0 4px 18px rgba(183,0,77,0.35); }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo"><div class="nav-dot"></div>EchoTribe</a>
+  <div class="nav-links">
+    <a href="echosignal.html" class="nav-link signal">EchoSignal</a>
+    <a href="echoroute.html"  class="nav-link route">EchoRoute</a>
+    <a href="echoshop.html"   class="nav-link shop active">EchoShop</a>
+    <a href="echoboost.html"  class="nav-link boost">EchoBoost</a>
+  </div>
+  <a href="#demo" class="nav-cta">Get a Demo →</a>
+</nav>
+<div class="hero-outer">
+  <div class="hero">
+    <div>
+    <span class="eyebrow shop"><span class="live-dot"></span> EchoShop</span>
+    <h1>The product page <em>your affiliate</em> never has to build.</h1>
+    <p class="hero-sub">EchoShop auto-assembles live product landing pages from your affiliate feed — with the right images, copy, pricing, and retailer link — in under 2 minutes.</p>
+    <div class="stats">
+      <div><div class="stat-val">&lt; 2 min</div><div class="stat-label">Page Assembly</div></div>
+      <div><div class="stat-val">Live</div><div class="stat-label">Retailer Pricing</div></div>
+      <div><div class="stat-val">100%</div><div class="stat-label">Creator-Approved</div></div>
+    </div>
+    </div>
+    <!-- DARK HERO CARD -->
+  <div class="shop-card">
+    <div class="sc-header">
+      <div class="sc-title">EchoShop</div>
+      <div class="sc-badge"><div class="live-dot"></div>AI · Assembling</div>
+    </div>
+
+    <!-- Rotating product ticker -->
+    <div class="collage-ticker">
+      <div class="collage-ticker-label">Assembling</div>
+      <div class="collage-ticker-items">
+        <div class="collage-ticker-track">
+          <div class="collage-ticker-item">🏕️ Camping Hammock</div>
+          <div class="collage-ticker-item">🪀 Novelty Squishy</div>
+          <div class="collage-ticker-item">🏠 Playhouse Set</div>
+          <div class="collage-ticker-item">✨ Body Lotion</div>
+          <div class="collage-ticker-item">🎒 Trail Pack</div>
+          <div class="collage-ticker-item">🧴 Skincare Set</div>
+          <!-- duplicate for seamless loop -->
+          <div class="collage-ticker-item">🏕️ Camping Hammock</div>
+          <div class="collage-ticker-item">🪀 Novelty Squishy</div>
+          <div class="collage-ticker-item">🏠 Playhouse Set</div>
+          <div class="collage-ticker-item">✨ Body Lotion</div>
+          <div class="collage-ticker-item">🎒 Trail Pack</div>
+          <div class="collage-ticker-item">🧴 Skincare Set</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRIMARY: 2x2 product tile collage -->
+    <div class="product-tile-grid">
+
+      <div class="pt-tile">
+        <div class="pt-live-badge">LIVE</div>
+        <div class="pt-img-placeholder">🏕️</div>
+        <div class="pt-name">Outdoor · Camping Hammock</div>
+        <div class="pt-price">$38.99</div>
+        <div class="pt-retailer">Retailer A</div>
+        <div class="pt-cta">Shop Now →</div>
+      </div>
+
+      <div class="pt-tile">
+        <div class="pt-live-badge">LIVE</div>
+        <div class="pt-img-placeholder">🪀</div>
+        <div class="pt-name">Toys · Novelty Squishy</div>
+        <div class="pt-price">$13.49</div>
+        <div class="pt-retailer">Retailer B</div>
+        <div class="pt-cta">Shop Now →</div>
+      </div>
+
+      <div class="pt-tile">
+        <div class="pt-live-badge">LIVE</div>
+        <div class="pt-img-placeholder">🏠</div>
+        <div class="pt-name">Kids · Playhouse Set</div>
+        <div class="pt-price">$44.99</div>
+        <div class="pt-retailer">Retailer A</div>
+        <div class="pt-cta">Shop Now →</div>
+      </div>
+
+      <div class="pt-tile">
+        <div class="pt-live-badge">LIVE</div>
+        <div class="pt-img-placeholder">✨</div>
+        <div class="pt-name">Beauty · Body Lotion</div>
+        <div class="pt-price">$24.00</div>
+        <div class="pt-retailer">Retailer C</div>
+        <div class="pt-cta">Shop Now →</div>
+      </div>
+
+    </div>
+
+    <!-- SECONDARY: AI chat exchange (D2) -->
+    <div class="sc-secondary">
+      <div class="sc-secondary-inner">
+        <div class="sc-secondary-label">AI Assembly Log</div>
+        <div class="chat">
+          <div class="bubble user">
+            <div class="bubble-sender">Creator</div>
+            <div class="bubble-text">Build a shoppable page from my top products</div>
+          </div>
+          <div class="bubble ai">
+            <div class="bubble-sender">EchoShop</div>
+            <div class="bubble-text">&#x2713; Assembled 1 landing page — 4 products, 3 retailers, avg EPC $2.84</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- FEATURES -->
+<section class="section">
+  <div class="sec-label"><span>01</span> — How It Works</div>
+  <div class="sec-heading">Pages that are<br><em>already</em> optimized.</div>
+  <p class="sec-sub">EchoShop doesn't generate generic storefronts. It builds pages around your feed's best-performing products — with copy, imagery, and routing already dialed in before the creator hits approve.</p>
+
+  <div class="features-grid">
+    <div class="feat-card">
+      <div class="feat-num">01 — Auto-Assembly</div>
+      <div class="feat-title">From feed to live page in minutes</div>
+      <div class="feat-body">EchoShop ingests your affiliate product feed, selects the best-performing SKUs for the content context, and assembles a complete landing page — images, descriptions, pricing, retailer badges, and CTA — without a single line of code.</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-num">02 — Dynamic Content</div>
+      <div class="feat-title">Copy and imagery that converts</div>
+      <div class="feat-body">Every assembled page gets AI-written product descriptions tuned for conversion — not just lifted from the manufacturer feed. Images are sourced from the best available creative, prioritizing lifestyle over spec shots.</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-num">03 — Smart Routing</div>
+      <div class="feat-title">Every product link routes to the highest EPC</div>
+      <div class="feat-body">EchoShop doesn't just build pages — it wires every buy button through EchoRoute, so each click routes to the retailer paying the highest commission right now. No manual link management. No stale affiliate codes.</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CREATOR APPROVAL CALLOUT -->
+<section class="section">
+  <div class="approval-card">
+    <div>
+      <div class="approval-eyebrow">Creator Approval Flow</div>
+      <div class="approval-heading">Creators see exactly what goes live — before it does.</div>
+      <p class="approval-body">Every auto-assembled page enters a creator approval queue. The creator sees the full page: product cards, AI-generated caption in their voice, retailer routing, and pricing. One click to approve, one click to edit. Nothing publishes until they say so.</p>
+    </div>
+    <div class="approval-preview">
+      <div class="preview-header">
+        <div class="preview-header-title">Page ready for review</div>
+        <div class="preview-status">
+          <div class="preview-status-dot"></div>
+          Awaiting Approval
+        </div>
+      </div>
+      <div class="preview-products">
+        <div class="preview-product">
+          <div class="pp-img">🏕️</div>
+          <div class="pp-name">Outdoor · Camping Hammock</div>
+          <div class="pp-price">$38.99</div>
+          <div class="pp-retailer">Retailer A · Best EPC</div>
+        </div>
+        <div class="preview-product">
+          <div class="pp-img">🪀</div>
+          <div class="pp-name">Toys · Novelty Squishy</div>
+          <div class="pp-price">$13.49</div>
+          <div class="pp-retailer">Retailer B · Best EPC</div>
+        </div>
+      </div>
+      <div class="preview-caption">
+        <div class="preview-caption-label">AI-generated caption · your voice</div>
+        <div class="preview-caption-text">"These are my top picks this week — both back in stock and both under $40. Links below 🔗"</div>
+      </div>
+      <div class="preview-actions">
+        <button class="btn-approve">✓ Approve &amp; Publish</button>
+        <button class="btn-edit">Edit</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- PREV / NEXT NAV -->
+<div class="product-nav">
+  <a href="echoroute.html" class="pnav-btn prev">
+    <div><span class="pnav-label prev-c">← Highest-EPC routing</span><span class="pnav-name">EchoRoute</span></div>
+  </a>
+  <a href="echoboost.html" class="pnav-btn next">
+    <div><span class="pnav-label next-c">Next — Paid amplification</span><span class="pnav-name">EchoBoost →</span></div>
+  </a>
+</div>
+
+</body>
+</html>
