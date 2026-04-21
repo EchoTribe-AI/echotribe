@@ -30,6 +30,25 @@
 </script>
 <style>
   .glass-panel{background:rgba(255,255,255,0.72);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);}
+  @keyframes signal-beat {
+    0%,100% { transform: scale(1); filter: brightness(1) saturate(1); }
+    50%     { transform: scale(1.025); filter: brightness(1.12) saturate(1.15); }
+  }
+  .signal-pulse { animation: signal-beat 2.4s ease-in-out infinite; transform-origin: center; will-change: transform, filter; }
+  @keyframes signal-sweep {
+    0%   { transform: translateX(-100%); opacity: 0; }
+    50%  { opacity: 0.55; }
+    100% { transform: translateX(100%); opacity: 0; }
+  }
+  .signal-sweep::after {
+    content:''; position:absolute; inset:0; pointer-events:none;
+    background: linear-gradient(110deg, transparent 30%, rgba(236,26,141,0.18) 50%, transparent 70%);
+    animation: signal-sweep 3.6s ease-in-out infinite;
+    mix-blend-mode: screen;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .signal-pulse, .signal-sweep::after { animation: none; }
+  }
   .text-gradient{background:linear-gradient(135deg,#b50552 0%,#ff7198 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
   .bg-primary-gradient{background:linear-gradient(135deg,#b50552 0%,#ff7198 100%);}
 
@@ -151,9 +170,9 @@
       </div>
 
       <div class="lg:col-span-5 relative">
-        <div class="aspect-square rounded-[3rem] overflow-hidden bg-surface-container-low relative shadow-2xl">
-          <img alt="Abstract fluid 3D render with magenta and cyan gradients" class="w-full h-full object-cover"
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDJ0li3qKNT--xWPfmEYtD4_5NoiGvEx0UE80jsIX9miLUnPxkOE9xzAdCsAIauE6KEr5mv_Hn0X9olVrOls7p8pqedgDqLP4mgiFJjC8_i-_CwbXFhlBC9J_ITTysQ7MQJWREgP7Ng_L_lqQKUIvFeiAV7HfUpMJqCMqir96kOVeRhmcQ2uAQpZ2TbmgF20bGRdjCMPoYDdOwuPOHS4XCrmdfjG3jGGU12axt2KwdanMxWQrIvY3hD35P2NRMbC-ENwSQcF140cEsJ"/>
+        <div class="aspect-square rounded-[3rem] overflow-hidden bg-surface-container-low relative shadow-2xl signal-sweep">
+          <img alt="EchoSignal — pulsing neon beat visualization flowing along a futuristic signal path" class="w-full h-full object-cover signal-pulse"
+            src="images/echo_signal_hero.png"/>
           <div class="absolute inset-0 bg-gradient-to-t from-primary/20 to-transparent"></div>
           <div class="absolute bottom-8 -left-8 glass-panel p-6 rounded-2xl shadow-2xl border-l border-t border-white/30 max-w-xs">
             <div class="flex items-center gap-4 mb-3">
