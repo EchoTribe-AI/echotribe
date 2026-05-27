@@ -219,6 +219,7 @@
     background: rgba(201,80,0,0.12); border: 1px solid rgba(201,80,0,0.25);
     display: flex; align-items: center; justify-content: center;
     font-size: 22px; flex-shrink: 0; position: relative;
+    color: var(--boost-color);
   }
   .roas-text { flex: 1; position: relative; }
   .roas-title { font-family: 'Outfit', sans-serif; font-size: 18px; font-weight: 700; color: var(--ink); margin-bottom: 5px; }
@@ -245,11 +246,11 @@
   .ls-sub { font-size: 14px; color: var(--ink-3); margin-bottom: 28px; line-height: 1.6; }
   .ls-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
   .ls-item { display: flex; flex-direction: column; gap: 8px; }
-  .ls-item-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
-  .ls-item-icon.signal { background: var(--signal-soft); }
-  .ls-item-icon.route  { background: var(--route-soft); }
-  .ls-item-icon.shop   { background: var(--shop-soft); }
-  .ls-item-icon.boost  { background: var(--boost-soft); }
+  .ls-item-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; }
+  .ls-item-icon.signal { background: var(--signal-soft); color: var(--signal-color); }
+  .ls-item-icon.route  { background: var(--route-soft);  color: var(--route-color); }
+  .ls-item-icon.shop   { background: var(--shop-soft);   color: var(--shop-color); }
+  .ls-item-icon.boost  { background: var(--boost-soft);  color: var(--boost-color); }
   .ls-item-name { font-family: 'Outfit', sans-serif; font-size: 15px; font-weight: 700; }
   .ls-item-desc { font-size: 12px; color: var(--ink-3); line-height: 1.5; }
   .ls-item a { text-decoration: none; color: inherit; }
@@ -416,7 +417,7 @@
   </div>
 
   <div class="roas-bar">
-    <div class="roas-icon">🚀</div>
+    <div class="roas-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg></div>
     <div class="roas-text">
       <div class="roas-title">Signal-led spend outperforms cold spend</div>
       <div class="roas-body">By deploying against products with confirmed click velocity and conversion data, EchoBoost campaigns consistently deliver <strong>well above 4× ROAS</strong> — because they're amplifying what's already working, not testing from zero.</div>
@@ -433,22 +434,22 @@
     <div class="ls-sub">EchoBoost is where the loop completes — and where results feed back into EchoSignal for the next cycle. Every campaign generates new performance data that sharpens the signal for every affiliate in the network.</div>
     <div class="ls-row">
       <div class="ls-item">
-        <a href="echosignal.html"><div class="ls-item-icon signal">📡</div></a>
+        <a href="echosignal.html"><div class="ls-item-icon signal"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4.9 16.1C1 12.2 1 5.8 4.9 1.9"/><path d="M7.8 4.7a6.14 6.14 0 0 0-.8 7.5"/><circle cx="12" cy="9" r="2"/><path d="M16.2 4.8c2 2 2.26 5.11.8 7.47"/><path d="M19.1 1.9a9.96 9.96 0 0 1 0 14.1"/><path d="M9.5 18h5"/><path d="m8 22 4-11 4 11"/></svg></div></a>
         <div class="ls-item-name"><a href="echosignal.html">EchoSignal ↗</a></div>
         <div class="ls-item-desc">Detects what's outperforming and flags amplification windows across the network.</div>
       </div>
       <div class="ls-item">
-        <a href="echoroute.html"><div class="ls-item-icon route">🔀</div></a>
+        <a href="echoroute.html"><div class="ls-item-icon route"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><circle cx="18" cy="6" r="3"/><path d="M18 9v2c0 .6-.4 1-1 1H7c-.6 0-1-.4-1-1V9"/><path d="M12 12v3"/></svg></div></a>
         <div class="ls-item-name"><a href="echoroute.html">EchoRoute ↗</a></div>
         <div class="ls-item-desc">Routes every click to the highest-EPC retailer based on real CVR and commission data.</div>
       </div>
       <div class="ls-item">
-        <a href="echoshop.html"><div class="ls-item-icon shop">🛍️</div></a>
+        <a href="echoshop.html"><div class="ls-item-icon shop"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></div></a>
         <div class="ls-item-name"><a href="echoshop.html">EchoShop ↗</a></div>
         <div class="ls-item-desc">Creates shoppable product pages and assembles affiliate-linked storefronts ready to convert.</div>
       </div>
       <div class="ls-item">
-        <div class="ls-item-icon boost">🚀</div>
+        <div class="ls-item-icon boost"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg></div>
         <div class="ls-item-name">EchoBoost</div>
         <div class="ls-item-desc">Deploys paid spend at the exact moment signal confirms the window is open.</div>
       </div>
