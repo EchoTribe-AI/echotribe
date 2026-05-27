@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>EchoTribe — The Intelligence Stack</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
     --bg: #F7F6F4;
@@ -42,7 +42,7 @@
   @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(1.4)} }
   .nav-links { display: flex; gap: 4px; }
   .nav-link {
-    font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 500;
+    font-family: 'Inter', sans-serif; font-size: 10px; font-weight: 500;
     text-transform: uppercase; letter-spacing: 0.08em; padding: 6px 12px;
     border-radius: 8px; text-decoration: none; color: var(--ink-muted);
     transition: background 0.15s, color 0.15s;
@@ -53,9 +53,34 @@
   .nav-link.shop   { color: var(--shop-color); }
   .nav-link.boost  { color: var(--boost-color); }
 
-  .hero { max-width: 1120px; margin: 0 auto; padding: 88px 40px 72px; text-align: center; }
+  .hero { max-width: 1120px; margin: 0 auto; padding: 72px 40px 64px; text-align: center; }
+
+  .hero-flywheel { width: 360px; height: 360px; margin: 0 auto 36px; position: relative; }
+  .hero-flywheel svg { width: 100%; height: 100%; display: block; overflow: visible; }
+  .hf-ring { transform-origin: 140px 140px; animation: hf-spin 28s linear infinite; }
+  .hf-ring-inner { transform-origin: 140px 140px; animation: hf-spin-rev 36s linear infinite; }
+  .hf-orbit-dot { transform-origin: 140px 140px; animation: hf-spin 9s linear infinite; }
+  .hf-node-pulse { transform-origin: center; animation: hf-pulse 3.2s ease-in-out infinite; transform-box: fill-box; }
+  .hf-node.signal .hf-node-pulse { animation-delay: 0s; }
+  .hf-node.route  .hf-node-pulse { animation-delay: 0.8s; }
+  .hf-node.shop   .hf-node-pulse { animation-delay: 1.6s; }
+  .hf-node.boost  .hf-node-pulse { animation-delay: 2.4s; }
+  .hf-center-glow { transform-origin: 140px 140px; animation: hf-glow 4s ease-in-out infinite; }
+  @keyframes hf-spin { to { transform: rotate(360deg); } }
+  @keyframes hf-spin-rev { to { transform: rotate(-360deg); } }
+  @keyframes hf-pulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.08); opacity: 0.92; }
+  }
+  @keyframes hf-glow {
+    0%, 100% { opacity: 0.18; transform: scale(1); }
+    50% { opacity: 0.32; transform: scale(1.06); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hf-ring, .hf-ring-inner, .hf-orbit-dot, .hf-node-pulse, .hf-center-glow { animation: none; }
+  }
   .hero-eyebrow {
-    font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500;
+    font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 500;
     text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink-muted);
     margin-bottom: 20px;
   }
@@ -89,7 +114,7 @@
     pointer-events: none;
   }
   .loop-label {
-    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    font-family: 'Inter', sans-serif; font-size: 11px;
     text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-muted);
     text-align: center; margin-bottom: 44px;
   }
@@ -107,7 +132,7 @@
   .loop-icon.shop   { background: var(--shop-soft);   border-color: rgba(137,48,176,0.25); }
   .loop-icon.boost  { background: var(--boost-soft);  border-color: rgba(201,80,0,0.25); }
   .loop-node-name { font-family: 'Outfit', sans-serif; font-size: 15px; font-weight: 700; }
-  .loop-node-tag { font-family: 'JetBrains Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; }
+  .loop-node-tag { font-family: 'Inter', sans-serif; font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; }
   .loop-node-tag.signal { color: var(--signal-color); }
   .loop-node-tag.route  { color: var(--route-color); }
   .loop-node-tag.shop   { color: var(--shop-color); }
@@ -116,10 +141,10 @@
   .arrow-line { width: 64px; height: 2px; position: relative; overflow: hidden; border-radius: 2px; background: rgba(74,33,53,0.08); }
   .arrow-line::after { content: ''; position: absolute; top:0; left:-100%; width:100%; height:100%; background: linear-gradient(90deg, transparent, var(--pink), transparent); animation: flow 2.2s linear infinite; }
   @keyframes flow { to { left: 100%; } }
-  .arrow-label { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 0.08em; white-space: nowrap; }
+  .arrow-label { font-family: 'Inter', sans-serif; font-size: 9px; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 0.08em; white-space: nowrap; }
 
   .grid-wrap { max-width: 1120px; margin: 0 auto; padding: 0 40px 88px; }
-  .grid-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-muted); margin-bottom: 24px; }
+  .grid-label { font-family: 'Inter', sans-serif; font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-muted); margin-bottom: 24px; }
   .grid-label span { color: var(--pink); }
   .products-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
   .product-card {
@@ -142,7 +167,7 @@
   .product-card.route  .card-icon { background: var(--route-soft); }
   .product-card.shop   .card-icon { background: var(--shop-soft); }
   .product-card.boost  .card-icon { background: var(--boost-soft); }
-  .card-eyebrow { font-family: 'JetBrains Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-muted); margin-bottom: 4px; }
+  .card-eyebrow { font-family: 'Inter', sans-serif; font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-muted); margin-bottom: 4px; }
   .card-name { font-family: 'Outfit', sans-serif; font-size: 22px; font-weight: 700; line-height: 1.1; }
   .product-card.signal .card-name em { color: var(--signal-color); }
   .product-card.route  .card-name em { color: var(--route-color); }
@@ -152,14 +177,14 @@
   .card-desc { font-family: 'Inter', sans-serif; font-size: 14px; line-height: 1.65; color: var(--ink-3); margin-bottom: 20px; }
   .card-footer { display: flex; align-items: center; justify-content: space-between; padding-top: 16px; border-top: 1px solid rgba(74,33,53,0.15); }
   .card-tags { display: flex; gap: 6px; flex-wrap: wrap; }
-  .card-tag { font-family: 'JetBrains Mono', monospace; font-size: 10px; background: var(--surface-low); border-radius: var(--r-full); padding: 3px 10px; color: var(--ink-3); }
+  .card-tag { font-family: 'Inter', sans-serif; font-size: 10px; background: var(--surface-low); border-radius: var(--r-full); padding: 3px 10px; color: var(--ink-3); }
   .card-arrow { font-size: 16px; color: var(--ink-muted); opacity: 0.35; transition: opacity 0.2s, transform 0.2s; }
   .product-card:hover .card-arrow { opacity: 1; transform: translateX(3px); }
 
   .audience-section { background: var(--surface-low); padding: 80px 40px; }
   .audience-inner { max-width: 1120px; margin: 0 auto; }
   .section-eyebrow {
-    font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500;
+    font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 500;
     text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink-muted);
     margin-bottom: 16px;
   }
@@ -175,7 +200,7 @@
   }
   .audience-icon { font-size: 28px; margin-bottom: 14px; display: block; }
   .audience-eyebrow {
-    font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 500;
+    font-family: 'Inter', sans-serif; font-size: 10px; font-weight: 500;
     text-transform: uppercase; letter-spacing: 0.10em; color: var(--ink-muted);
     margin-bottom: 8px;
   }
@@ -189,7 +214,7 @@
   }
   .audience-tags { display: flex; gap: 6px; flex-wrap: wrap; }
   .audience-tag {
-    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    font-family: 'Inter', sans-serif; font-size: 10px;
     background: var(--surface-low); border-radius: var(--r-full);
     padding: 3px 10px; color: var(--ink-3);
   }
@@ -206,7 +231,7 @@
   }
   .flywheel-node { display: flex; flex-direction: column; align-items: center; gap: 8px; }
   .flywheel-pill {
-    font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 600;
+    font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 600;
     text-transform: uppercase; letter-spacing: 0.06em;
     padding: 10px 20px; border-radius: var(--r-full); display: inline-block;
   }
@@ -242,7 +267,7 @@
     pointer-events: none;
   }
   .compounding-eyebrow {
-    font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500;
+    font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 500;
     text-transform: uppercase; letter-spacing: 0.12em;
     color: var(--signal-color); margin-bottom: 16px;
   }
@@ -267,7 +292,7 @@
     font-size: 14px; z-index: 1;
   }
   .compounding-stat-label {
-    font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 500;
+    font-family: 'Inter', sans-serif; font-size: 10px; font-weight: 500;
     text-transform: uppercase; letter-spacing: 0.10em;
     color: rgba(255,255,255,0.35); margin-bottom: 8px;
   }
@@ -301,16 +326,73 @@
   .footer-copy { font-family: 'Inter', sans-serif; font-size: 13px; color: var(--ink-muted); }
 
   @media (max-width: 768px) {
-    .hero h1 { font-size: 42px; }
-    .hero-stats { flex-direction: column; gap: 20px; }
-    .products-grid { grid-template-columns: 1fr; }
-    .product-card { padding: 24px 24px 20px; }
-    .audience-grid { grid-template-columns: 1fr; }
-    .flywheel-flow { flex-direction: column; gap: 8px; }
+    nav { padding: 0 20px; height: 56px; }
+    .nav-links { gap: 0; }
+    .nav-link { padding: 6px 8px; font-size: 9px; }
+    .nav-cta { padding: 10px 16px; font-size: 12px; min-height: 44px; display: inline-flex; align-items: center; }
+
+    .hero { padding: 48px 20px 48px; }
+    .hero h1 { font-size: 40px; letter-spacing: -0.025em; }
+    .hero-sub { font-size: 16px; padding: 0 4px; }
+    .hero-stats { flex-direction: row; flex-wrap: wrap; gap: 20px 24px; justify-content: space-around; padding-top: 28px; margin-top: 28px; }
+    .hero-stat { flex: 1 1 28%; min-width: 90px; }
+    .stat-num { font-size: 24px; }
+    .stat-label { font-size: 12px; text-align: center; }
+
+    .hero-flywheel { width: 280px; height: 280px; margin-bottom: 28px; }
+
+    .loop-wrap { padding: 0 20px 56px; }
+    .loop-card { padding: 32px 20px; border-radius: 16px; }
+    .loop-label { margin-bottom: 28px; font-size: 10px; }
+    .loop-row { grid-template-columns: 1fr; gap: 14px; }
+    .loop-node { flex-direction: row; justify-content: center; gap: 14px; }
+    .loop-icon { width: 56px; height: 56px; font-size: 24px; border-radius: 14px; min-width: 56px; }
+    .loop-node-name { font-size: 14px; }
+    .loop-arrow { padding: 4px 0; transform: rotate(90deg); }
+    .arrow-line { width: 32px; }
+
+    .grid-wrap { padding: 0 20px 64px; }
+    .products-grid { grid-template-columns: 1fr; gap: 16px; }
+    .product-card { padding: 24px 22px 20px; }
+    .card-name { font-size: 20px; }
+    .card-desc { font-size: 13.5px; }
+
+    .audience-section { padding: 56px 20px; }
+    .section-heading { font-size: 28px; margin-bottom: 32px; }
+    .audience-grid { grid-template-columns: 1fr; gap: 16px; }
+    .audience-card { padding: 24px; }
+
+    .flywheel-section { padding: 56px 20px 0; }
+    .flywheel-heading { font-size: 28px; margin-bottom: 32px; }
+    .flywheel-flow { flex-direction: column; gap: 10px; }
     .flywheel-arrow { padding: 0; transform: rotate(90deg); }
+    .flywheel-tagline { font-size: 16px; padding: 0 12px; }
+
+    .compounding-section { padding: 40px 20px 64px; }
+    .compounding-card { padding: 28px 22px; border-radius: 16px; }
+    .compounding-headline { font-size: 24px; }
+    .compounding-body { font-size: 14px; }
+    .compounding-proof { gap: 12px; margin-top: 24px; }
+    .compounding-proof-stat { font-size: 44px; }
+    .compounding-proof-detail { font-size: 14px; }
     .compounding-stats { grid-template-columns: 1fr 1fr; }
-    .footer-inner { grid-template-columns: 1fr; }
+
+    .site-footer { padding: 32px 20px; }
+    .footer-inner { grid-template-columns: 1fr; gap: 24px; }
     .footer-right { align-items: flex-start; }
+  }
+
+  @media (max-width: 480px) {
+    .nav-logo { font-size: 15px; }
+    .nav-links { display: none; }
+    .hero h1 { font-size: 34px; }
+    .hero-flywheel { width: 240px; height: 240px; margin-bottom: 24px; }
+    .hero-stats { gap: 16px; }
+    .stat-num { font-size: 22px; }
+    .section-heading, .flywheel-heading { font-size: 24px; }
+    .compounding-headline { font-size: 22px; }
+    .compounding-proof-stat { font-size: 38px; }
+    .loop-icon { width: 52px; height: 52px; min-width: 52px; }
   }
   .compounding-proof {
     display: flex; align-items: baseline; gap: 16px;
@@ -343,6 +425,73 @@
 
 <section class="hero">
   <div class="hero-eyebrow"><span>EchoTribe</span> — Intelligence Stack</div>
+
+  <div class="hero-flywheel" role="img" aria-label="EchoTribe closed loop: Signal, Route, Shop, Boost orbiting a central hub">
+    <svg viewBox="0 0 280 280" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="hfGrad" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#b7004d" stop-opacity="0.85"/>
+          <stop offset="50%" stop-color="#b7004d" stop-opacity="0.15"/>
+          <stop offset="100%" stop-color="#b7004d" stop-opacity="0.85"/>
+        </linearGradient>
+        <radialGradient id="hfCenterGlow" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#b7004d" stop-opacity="0.35"/>
+          <stop offset="100%" stop-color="#b7004d" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+
+      <circle class="hf-center-glow" cx="140" cy="140" r="70" fill="url(#hfCenterGlow)"/>
+
+      <g class="hf-ring">
+        <circle cx="140" cy="140" r="118" fill="none" stroke="url(#hfGrad)" stroke-width="1.5" stroke-dasharray="4 8"/>
+      </g>
+      <g class="hf-ring-inner">
+        <circle cx="140" cy="140" r="92" fill="none" stroke="rgba(74,33,53,0.12)" stroke-width="1" stroke-dasharray="2 6"/>
+      </g>
+
+      <g class="hf-orbit-dot">
+        <circle cx="140" cy="22" r="5" fill="#b7004d"/>
+        <circle cx="140" cy="22" r="9" fill="#b7004d" opacity="0.25"/>
+      </g>
+
+      <circle cx="140" cy="140" r="46" fill="#ffffff" stroke="rgba(74,33,53,0.10)" stroke-width="1"/>
+      <text x="140" y="136" text-anchor="middle" font-family="Outfit, sans-serif" font-weight="700" font-size="15" fill="#4a2135">EchoTribe</text>
+      <text x="140" y="154" text-anchor="middle" font-family="Inter, sans-serif" font-weight="600" font-size="8" letter-spacing="1.4" fill="#b7004d">CLOSED LOOP</text>
+
+      <g class="hf-node signal" transform="translate(140 22)">
+        <g class="hf-node-pulse">
+          <circle r="22" fill="#fce7ef" stroke="#b7004d" stroke-width="1.5"/>
+          <text y="6" text-anchor="middle" font-size="20">📡</text>
+        </g>
+      </g>
+      <text x="140" y="-8" text-anchor="middle" font-family="Inter, sans-serif" font-weight="600" font-size="9" letter-spacing="0.8" fill="#b7004d">SIGNAL</text>
+
+      <g class="hf-node route" transform="translate(258 140)">
+        <g class="hf-node-pulse">
+          <circle r="22" fill="#e0f4f5" stroke="#00656f" stroke-width="1.5"/>
+          <text y="6" text-anchor="middle" font-size="20">🔀</text>
+        </g>
+      </g>
+      <text x="288" y="143" text-anchor="start" font-family="Inter, sans-serif" font-weight="600" font-size="9" letter-spacing="0.8" fill="#00656f">ROUTE</text>
+
+      <g class="hf-node shop" transform="translate(140 258)">
+        <g class="hf-node-pulse">
+          <circle r="22" fill="#f3e8fd" stroke="#8930b0" stroke-width="1.5"/>
+          <text y="6" text-anchor="middle" font-size="20">🛍️</text>
+        </g>
+      </g>
+      <text x="140" y="295" text-anchor="middle" font-family="Inter, sans-serif" font-weight="600" font-size="9" letter-spacing="0.8" fill="#8930b0">SHOP</text>
+
+      <g class="hf-node boost" transform="translate(22 140)">
+        <g class="hf-node-pulse">
+          <circle r="22" fill="#fff0e6" stroke="#c95000" stroke-width="1.5"/>
+          <text y="6" text-anchor="middle" font-size="20">🚀</text>
+        </g>
+      </g>
+      <text x="-8" y="143" text-anchor="end" font-family="Inter, sans-serif" font-weight="600" font-size="9" letter-spacing="0.8" fill="#c95000">BOOST</text>
+    </svg>
+  </div>
+
   <h1>Four products.<br>One <em>closed loop.</em></h1>
   <p class="hero-sub">Each product does one job precisely. Together they cover the full path from detecting what's working, to routing for maximum EPC, to creating shoppable pages, to amplifying with paid spend — across every affiliate in the network.</p>
   <div class="hero-stats">
