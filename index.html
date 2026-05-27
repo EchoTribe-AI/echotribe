@@ -90,7 +90,22 @@
     line-height: 1.0; letter-spacing: -0.02em; margin-bottom: 22px;
   }
   .hero h1 em { font-style: italic; color: var(--pink); }
-  .hero-sub { font-family: 'Inter', sans-serif; font-size: 18px; line-height: 1.65; color: var(--ink-3); max-width: 560px; margin: 0 auto 40px; }
+  .hero-sub { font-family: 'Inter', sans-serif; font-size: 18px; line-height: 1.65; color: var(--ink-3); max-width: 560px; margin: 0 auto 32px; }
+
+  .hero-cta-row { display: flex; flex-direction: column; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .hero-cta-primary {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-family: 'Inter', sans-serif; font-size: 16px; font-weight: 600;
+    color: #fff; background: var(--pink);
+    padding: 16px 32px; border-radius: 100px; text-decoration: none;
+    box-shadow: 0 4px 18px rgba(183,0,77,0.28);
+    transition: background 0.2s, box-shadow 0.2s, transform 0.15s;
+    min-height: 52px;
+  }
+  .hero-cta-primary:hover { background: #93003d; box-shadow: 0 8px 26px rgba(183,0,77,0.38); transform: translateY(-1px); }
+  .hero-cta-primary span { transition: transform 0.2s; display: inline-block; }
+  .hero-cta-primary:hover span { transform: translateX(3px); }
+  .hero-cta-note { font-family: 'Inter', sans-serif; font-size: 13px; color: var(--ink-muted); }
 
   .hero-stats {
     display: flex; gap: 32px; margin-top: 32px; padding-top: 24px;
@@ -326,10 +341,11 @@
   .footer-copy { font-family: 'Inter', sans-serif; font-size: 13px; color: var(--ink-muted); }
 
   @media (max-width: 768px) {
-    nav { padding: 0 20px; height: 56px; }
+    nav { padding: 0 16px; height: 56px; gap: 12px; }
+    .nav-logo { font-size: 16px; }
     .nav-links { gap: 0; }
-    .nav-link { padding: 6px 8px; font-size: 9px; }
-    .nav-cta { padding: 10px 16px; font-size: 12px; min-height: 44px; display: inline-flex; align-items: center; }
+    .nav-link { padding: 6px 8px; font-size: 9px; letter-spacing: 0.06em; }
+    .nav-cta { padding: 10px 16px; font-size: 12px; min-height: 44px; display: inline-flex; align-items: center; white-space: nowrap; }
 
     .hero { padding: 48px 20px 48px; }
     .hero h1 { font-size: 40px; letter-spacing: -0.025em; }
@@ -382,14 +398,18 @@
     .footer-right { align-items: flex-start; }
   }
 
+  @media (max-width: 600px) {
+    .nav-links { display: none; }
+  }
+
   @media (max-width: 480px) {
     .nav-logo { font-size: 15px; }
-    .nav-links { display: none; }
     .hero h1 { font-size: 34px; }
     .hero-flywheel { width: 240px; height: 240px; margin-bottom: 24px; }
+    .hero-cta-primary { padding: 14px 24px; font-size: 15px; }
     .hero-stats { gap: 16px; }
     .stat-num { font-size: 22px; }
-    .section-heading, .flywheel-heading { font-size: 24px; }
+    .section-heading { font-size: 24px; }
     .compounding-headline { font-size: 22px; }
     .compounding-proof-stat { font-size: 38px; }
     .loop-icon { width: 52px; height: 52px; min-width: 52px; }
@@ -517,6 +537,10 @@
 
   <h1>Four products.<br>One <em>closed loop.</em></h1>
   <p class="hero-sub">Each product does one job precisely. Together they cover the full path from detecting what's working, to routing for maximum EPC, to creating shoppable pages, to amplifying with paid spend — across every affiliate in the network.</p>
+  <div class="hero-cta-row">
+    <a href="echosignal.html" class="hero-cta-primary">Start the loop with EchoSignal <span aria-hidden="true">→</span></a>
+    <div class="hero-cta-note">Signal is where every loop begins.</div>
+  </div>
   <div class="hero-stats">
     <div class="hero-stat">
       <span class="stat-num">4.2×</span>
@@ -691,35 +715,6 @@
         </div>
       </div>
     </div>
-  </div>
-</section>
-
-<section class="flywheel-section">
-  <div class="flywheel-inner">
-    <div class="section-eyebrow">The Platform</div>
-    <h2 class="flywheel-heading">Four products. One compounding loop.</h2>
-    <div class="flywheel-flow">
-      <div class="flywheel-node">
-        <span class="flywheel-pill signal">EchoSignal</span>
-        <span class="flywheel-descriptor">Intent</span>
-      </div>
-      <div class="flywheel-arrow">→</div>
-      <div class="flywheel-node">
-        <span class="flywheel-pill route">EchoRoute</span>
-        <span class="flywheel-descriptor">Route</span>
-      </div>
-      <div class="flywheel-arrow">→</div>
-      <div class="flywheel-node">
-        <span class="flywheel-pill shop">EchoShop</span>
-        <span class="flywheel-descriptor">Page</span>
-      </div>
-      <div class="flywheel-arrow">→</div>
-      <div class="flywheel-node">
-        <span class="flywheel-pill boost">EchoBoost</span>
-        <span class="flywheel-descriptor">Amplify</span>
-      </div>
-    </div>
-    <p class="flywheel-tagline">Every product feeds the next. The loop closes itself.</p>
   </div>
 </section>
 
