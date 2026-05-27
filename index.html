@@ -127,10 +127,10 @@
     text-decoration: none; transition: transform 0.2s, box-shadow 0.2s;
   }
   .loop-icon:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(74,33,53,0.12); }
-  .loop-icon.signal { background: var(--signal-soft); border-color: rgba(183,0,77,0.25); }
-  .loop-icon.route  { background: var(--route-soft);  border-color: rgba(0,101,111,0.25); }
-  .loop-icon.shop   { background: var(--shop-soft);   border-color: rgba(137,48,176,0.25); }
-  .loop-icon.boost  { background: var(--boost-soft);  border-color: rgba(201,80,0,0.25); }
+  .loop-icon.signal { background: var(--signal-soft); border-color: rgba(183,0,77,0.25); color: var(--signal-color); }
+  .loop-icon.route  { background: var(--route-soft);  border-color: rgba(0,101,111,0.25);  color: var(--route-color); }
+  .loop-icon.shop   { background: var(--shop-soft);   border-color: rgba(137,48,176,0.25); color: var(--shop-color); }
+  .loop-icon.boost  { background: var(--boost-soft);  border-color: rgba(201,80,0,0.25);   color: var(--boost-color); }
   .loop-node-name { font-family: 'Outfit', sans-serif; font-size: 15px; font-weight: 700; }
   .loop-node-tag { font-family: 'Inter', sans-serif; font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; }
   .loop-node-tag.signal { color: var(--signal-color); }
@@ -163,10 +163,10 @@
   .product-card.boost  .product-card-bar { background: linear-gradient(90deg, var(--boost-color),  var(--boost-dark-accent)); }
   .card-header { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 16px; }
   .card-icon { width: 44px; height: 44px; border-radius: var(--r-md); display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
-  .product-card.signal .card-icon { background: var(--signal-soft); }
-  .product-card.route  .card-icon { background: var(--route-soft); }
-  .product-card.shop   .card-icon { background: var(--shop-soft); }
-  .product-card.boost  .card-icon { background: var(--boost-soft); }
+  .product-card.signal .card-icon { background: var(--signal-soft); color: var(--signal-color); }
+  .product-card.route  .card-icon { background: var(--route-soft);  color: var(--route-color); }
+  .product-card.shop   .card-icon { background: var(--shop-soft);   color: var(--shop-color); }
+  .product-card.boost  .card-icon { background: var(--boost-soft);  color: var(--boost-color); }
   .card-eyebrow { font-family: 'Inter', sans-serif; font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-muted); margin-bottom: 4px; }
   .card-name { font-family: 'Outfit', sans-serif; font-size: 22px; font-weight: 700; line-height: 1.1; }
   .product-card.signal .card-name em { color: var(--signal-color); }
@@ -461,7 +461,15 @@
       <g class="hf-node signal" transform="translate(140 22)">
         <g class="hf-node-pulse">
           <circle r="22" fill="#fce7ef" stroke="#b7004d" stroke-width="1.5"/>
-          <text y="6" text-anchor="middle" font-size="20">📡</text>
+          <g transform="translate(-10 -10)" stroke="#b7004d" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4.9 16.1C1 12.2 1 5.8 4.9 1.9"/>
+            <path d="M7.8 4.7a6.14 6.14 0 0 0-.8 7.5"/>
+            <circle cx="12" cy="9" r="2"/>
+            <path d="M16.2 4.8c2 2 2.26 5.11.8 7.47"/>
+            <path d="M19.1 1.9a9.96 9.96 0 0 1 0 14.1"/>
+            <path d="M9.5 18h5"/>
+            <path d="m8 22 4-11 4 11"/>
+          </g>
         </g>
       </g>
       <text x="140" y="-8" text-anchor="middle" font-family="Inter, sans-serif" font-weight="600" font-size="9" letter-spacing="0.8" fill="#b7004d">SIGNAL</text>
@@ -469,7 +477,13 @@
       <g class="hf-node route" transform="translate(258 140)">
         <g class="hf-node-pulse">
           <circle r="22" fill="#e0f4f5" stroke="#00656f" stroke-width="1.5"/>
-          <text y="6" text-anchor="middle" font-size="20">🔀</text>
+          <g transform="translate(-10 -10)" stroke="#00656f" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="18" r="3"/>
+            <circle cx="6" cy="6" r="3"/>
+            <circle cx="18" cy="6" r="3"/>
+            <path d="M18 9v2c0 .6-.4 1-1 1H7c-.6 0-1-.4-1-1V9"/>
+            <path d="M12 12v3"/>
+          </g>
         </g>
       </g>
       <text x="288" y="143" text-anchor="start" font-family="Inter, sans-serif" font-weight="600" font-size="9" letter-spacing="0.8" fill="#00656f">ROUTE</text>
@@ -477,7 +491,11 @@
       <g class="hf-node shop" transform="translate(140 258)">
         <g class="hf-node-pulse">
           <circle r="22" fill="#f3e8fd" stroke="#8930b0" stroke-width="1.5"/>
-          <text y="6" text-anchor="middle" font-size="20">🛍️</text>
+          <g transform="translate(-10 -10)" stroke="#8930b0" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/>
+            <path d="M3 6h18"/>
+            <path d="M16 10a4 4 0 0 1-8 0"/>
+          </g>
         </g>
       </g>
       <text x="140" y="295" text-anchor="middle" font-family="Inter, sans-serif" font-weight="600" font-size="9" letter-spacing="0.8" fill="#8930b0">SHOP</text>
@@ -485,7 +503,12 @@
       <g class="hf-node boost" transform="translate(22 140)">
         <g class="hf-node-pulse">
           <circle r="22" fill="#fff0e6" stroke="#c95000" stroke-width="1.5"/>
-          <text y="6" text-anchor="middle" font-size="20">🚀</text>
+          <g transform="translate(-10 -10)" stroke="#c95000" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/>
+            <path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/>
+            <path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/>
+            <path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/>
+          </g>
         </g>
       </g>
       <text x="-8" y="143" text-anchor="end" font-family="Inter, sans-serif" font-weight="600" font-size="9" letter-spacing="0.8" fill="#c95000">BOOST</text>
@@ -515,7 +538,9 @@
     <div class="loop-label">The closed loop — click any product to explore</div>
     <div class="loop-row">
       <div class="loop-node">
-        <a href="echosignal.html" class="loop-icon signal">📡</a>
+        <a href="echosignal.html" class="loop-icon signal" aria-label="EchoSignal">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4.9 16.1C1 12.2 1 5.8 4.9 1.9"/><path d="M7.8 4.7a6.14 6.14 0 0 0-.8 7.5"/><circle cx="12" cy="9" r="2"/><path d="M16.2 4.8c2 2 2.26 5.11.8 7.47"/><path d="M19.1 1.9a9.96 9.96 0 0 1 0 14.1"/><path d="M9.5 18h5"/><path d="m8 22 4-11 4 11"/></svg>
+        </a>
         <div class="loop-node-name">EchoSignal</div>
         <div class="loop-node-tag signal">Monitor & Detect</div>
       </div>
@@ -524,7 +549,9 @@
         <div class="arrow-label">top products</div>
       </div>
       <div class="loop-node">
-        <a href="echoroute.html" class="loop-icon route">🔀</a>
+        <a href="echoroute.html" class="loop-icon route" aria-label="EchoRoute">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><circle cx="18" cy="6" r="3"/><path d="M18 9v2c0 .6-.4 1-1 1H7c-.6 0-1-.4-1-1V9"/><path d="M12 12v3"/></svg>
+        </a>
         <div class="loop-node-name">EchoRoute</div>
         <div class="loop-node-tag route">Route & Maximize</div>
       </div>
@@ -533,7 +560,9 @@
         <div class="arrow-label">best merchant</div>
       </div>
       <div class="loop-node">
-        <a href="echoshop.html" class="loop-icon shop">🛍️</a>
+        <a href="echoshop.html" class="loop-icon shop" aria-label="EchoShop">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+        </a>
         <div class="loop-node-name">EchoShop</div>
         <div class="loop-node-tag shop">Create & Engage</div>
       </div>
@@ -542,7 +571,9 @@
         <div class="arrow-label">top content</div>
       </div>
       <div class="loop-node">
-        <a href="echoboost.html" class="loop-icon boost">🚀</a>
+        <a href="echoboost.html" class="loop-icon boost" aria-label="EchoBoost">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg>
+        </a>
         <div class="loop-node-name">EchoBoost</div>
         <div class="loop-node-tag boost">Amplify & Convert</div>
       </div>
@@ -557,7 +588,7 @@
     <a href="echosignal.html" class="product-card signal">
       <div class="product-card-bar"></div>
       <div class="card-header">
-        <div class="card-icon">📡</div>
+        <div class="card-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4.9 16.1C1 12.2 1 5.8 4.9 1.9"/><path d="M7.8 4.7a6.14 6.14 0 0 0-.8 7.5"/><circle cx="12" cy="9" r="2"/><path d="M16.2 4.8c2 2 2.26 5.11.8 7.47"/><path d="M19.1 1.9a9.96 9.96 0 0 1 0 14.1"/><path d="M9.5 18h5"/><path d="m8 22 4-11 4 11"/></svg></div>
         <div>
           <div class="card-eyebrow">Monitor & Detect</div>
           <div class="card-name">Echo<em>Signal</em></div>
@@ -573,7 +604,7 @@
     <a href="echoroute.html" class="product-card route">
       <div class="product-card-bar"></div>
       <div class="card-header">
-        <div class="card-icon">🔀</div>
+        <div class="card-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><circle cx="18" cy="6" r="3"/><path d="M18 9v2c0 .6-.4 1-1 1H7c-.6 0-1-.4-1-1V9"/><path d="M12 12v3"/></svg></div>
         <div>
           <div class="card-eyebrow">Route & Maximize EPC</div>
           <div class="card-name">Echo<em>Route</em></div>
@@ -589,7 +620,7 @@
     <a href="echoshop.html" class="product-card shop">
       <div class="product-card-bar"></div>
       <div class="card-header">
-        <div class="card-icon">🛍️</div>
+        <div class="card-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></div>
         <div>
           <div class="card-eyebrow">Create & Engage</div>
           <div class="card-name">Echo<em>Shop</em></div>
@@ -605,7 +636,7 @@
     <a href="echoboost.html" class="product-card boost">
       <div class="product-card-bar"></div>
       <div class="card-header">
-        <div class="card-icon">🚀</div>
+        <div class="card-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg></div>
         <div>
           <div class="card-eyebrow">Amplify & Convert</div>
           <div class="card-name">Echo<em>Boost</em></div>
@@ -627,7 +658,7 @@
     <h2 class="section-heading">Built for the operators who power the creator economy</h2>
     <div class="audience-grid">
       <div class="audience-card">
-        <span class="audience-icon">🌐</span>
+        <span class="audience-icon" style="color: var(--signal-color);"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg></span>
         <div class="audience-eyebrow">Affiliate Networks</div>
         <div class="audience-title">Give your publisher network an intelligence layer</div>
         <p class="audience-body">EchoSignal surfaces highest-converting content across social creators and content publishers alike. EchoBoost turns open windows into incremental brand revenue — without replacing any infrastructure you've already built.</p>
@@ -638,7 +669,7 @@
         </div>
       </div>
       <div class="audience-card">
-        <span class="audience-icon">📱</span>
+        <span class="audience-icon" style="color: var(--route-color);"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg></span>
         <div class="audience-eyebrow">Creator Platforms</div>
         <div class="audience-title">Your creators earn more without changing how they create</div>
         <p class="audience-body">Your creators earn more per click and build shoppable infrastructure they actually own. Works for social creators and editorial publishers on the same platform — same loop, different content format.</p>
@@ -649,7 +680,7 @@
         </div>
       </div>
       <div class="audience-card">
-        <span class="audience-icon">🏢</span>
+        <span class="audience-icon" style="color: var(--shop-color);"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"/><path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/><path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"/><path d="M10 6h4"/><path d="M10 10h4"/><path d="M10 14h4"/><path d="M10 18h4"/></svg></span>
         <div class="audience-eyebrow">Agencies & Managed Services</div>
         <div class="audience-title">Run the full closed loop across your client portfolio</div>
         <p class="audience-body">Connect your creator or brand data and the full intelligence stack activates immediately. Signal, routing, shoppable pages, and paid amplification — running across your clients. We earn when you earn.</p>

@@ -175,10 +175,15 @@
     to   { opacity: 1; transform: translateY(0); }
   }
   .pt-img-placeholder {
-    width: 100%; height: 60px; border-radius: 6px;
-    background: var(--shop-soft);
+    width: 100%; height: 88px; border-radius: 6px;
+    background: #fff;
     display: flex; align-items: center; justify-content: center;
-    font-size: 22px; margin-bottom: 8px;
+    margin-bottom: 8px; overflow: hidden;
+    border: 1px solid rgba(74,33,53,0.06);
+  }
+  .pt-img-placeholder img {
+    width: 100%; height: 100%; object-fit: contain; display: block;
+    mix-blend-mode: multiply;
   }
   .pt-name {
     font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 600;
@@ -469,8 +474,8 @@
 
       <div class="pt-tile">
         <div class="pt-live-badge">LIVE</div>
-        <div class="pt-img-placeholder">🏕️</div>
-        <div class="pt-name">Outdoor · Camping Hammock</div>
+        <div class="pt-img-placeholder"><img src="assets/products/hammock.jpg" alt="Hammock Egg Chair" loading="lazy"></div>
+        <div class="pt-name">Outdoor · Hammock Chair</div>
         <div class="pt-price">$38.99</div>
         <div class="pt-retailer">Retailer A</div>
         <div class="pt-cta">Shop Now →</div>
@@ -478,8 +483,8 @@
 
       <div class="pt-tile">
         <div class="pt-live-badge">LIVE</div>
-        <div class="pt-img-placeholder">🪀</div>
-        <div class="pt-name">Toys · Novelty Squishy</div>
+        <div class="pt-img-placeholder"><img src="assets/products/toy.jpg" alt="LEGO Star Wars Set" loading="lazy"></div>
+        <div class="pt-name">Toys · LEGO Star Wars Set</div>
         <div class="pt-price">$13.49</div>
         <div class="pt-retailer">Retailer B</div>
         <div class="pt-cta">Shop Now →</div>
@@ -487,8 +492,8 @@
 
       <div class="pt-tile">
         <div class="pt-live-badge">LIVE</div>
-        <div class="pt-img-placeholder">🏠</div>
-        <div class="pt-name">Kids · Playhouse Set</div>
+        <div class="pt-img-placeholder"><img src="assets/products/playhouse.jpg" alt="Barbie Dreamhouse" loading="lazy"></div>
+        <div class="pt-name">Kids · Barbie Dreamhouse</div>
         <div class="pt-price">$44.99</div>
         <div class="pt-retailer">Retailer A</div>
         <div class="pt-cta">Shop Now →</div>
@@ -496,8 +501,8 @@
 
       <div class="pt-tile">
         <div class="pt-live-badge">LIVE</div>
-        <div class="pt-img-placeholder">✨</div>
-        <div class="pt-name">Beauty · Body Lotion</div>
+        <div class="pt-img-placeholder"><img src="assets/products/lotion.jpg" alt="CeraVe Moisturizer" loading="lazy"></div>
+        <div class="pt-name">Beauty · CeraVe Moisturizer</div>
         <div class="pt-price">$24.00</div>
         <div class="pt-retailer">Retailer C</div>
         <div class="pt-cta">Shop Now →</div>
