@@ -750,24 +750,22 @@
   </div>
 </footer>
 
-  I am not a coder, give me the exact section here to replace:
   <script>
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.style.opacity = '1';
-          entry.target.style.transform = 'translateY(0)';
-        }
-      });
-    }, { threshold: 0.08 });
-    document.querySelectorAll('.audience-card, .product-card, .compounding-stat').forEach(el => {
-      el.style.opacity = '0';
-      el.style.transform = 'translateY(16px)';
-      el.style.transition = 'opacity 0.45s ease, transform 0.45s ease';
-      observer.observe(el);
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = '1';
+        entry.target.style.transform = 'translateY(0)';
+      }
     });
-  </script>
-  <script src="confidential-gate.js"></script>
-  <script src="demo-modal.js"></script>
-  </body>
-  </html>
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.audience-card, .product-card, .compounding-stat').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(16px)';
+    el.style.transition = 'opacity 0.45s ease, transform 0.45s ease';
+    observer.observe(el);
+  });
+</script>
+<script src="demo-modal.js"></script>
+</body>
+</html>
