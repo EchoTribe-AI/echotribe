@@ -167,6 +167,31 @@
     .sf{padding:18px}
     .quoteband,.final{padding-left:0;padding-right:0}
   }
+
+  /* DEMO REQUEST MODAL */
+  .ovl{position:fixed;inset:0;z-index:200;display:none;align-items:center;justify-content:center;padding:20px}
+  .ovl.open{display:flex}
+  .ovl-bd{position:absolute;inset:0;background:rgba(5,5,31,.55);backdrop-filter:blur(4px)}
+  .modal{position:relative;background:#fff;border-radius:20px;width:100%;max-width:460px;max-height:92vh;overflow-y:auto;box-shadow:0 24px 70px rgba(5,5,31,.35);padding:34px}
+  .modal-x{position:absolute;top:14px;right:14px;width:34px;height:34px;border-radius:50%;border:1px solid var(--border);background:#fff;color:var(--muted);font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1}
+  .modal-x:hover{color:var(--ink);border-color:var(--ink)}
+  .modal .eyebrow{color:var(--muted)}
+  .modal h3{font-family:var(--serif);font-size:27px;font-weight:700;letter-spacing:-.01em;margin-top:10px;line-height:1.15}
+  .modal .sub{color:var(--muted);font-size:14.5px;margin-top:9px}
+  .fld{margin-top:16px}
+  .fld label{display:block;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:7px}
+  .fld input,.fld select{width:100%;font-family:var(--sans);font-size:15px;color:var(--ink);background:#fff;border:1px solid var(--border);border-radius:11px;padding:12px 14px;transition:.15s}
+  .fld input:focus,.fld select:focus{outline:none;border-color:#8127CF;box-shadow:0 0 0 3px rgba(129,39,207,.14)}
+  .modal .btn-grad{width:100%;justify-content:center;margin-top:22px;padding:14px;font-size:15px}
+  .modal .btn-grad[disabled]{opacity:.6;cursor:default;transform:none;box-shadow:none}
+  .ferr{display:none;color:#D81B60;font-size:13.5px;font-weight:600;margin-top:14px}
+  .ferr.show{display:block}
+  .fnote{text-align:center;font-size:12px;color:#9a9aa5;margin-top:14px}
+  .fok{text-align:center;padding:8px 0 4px}
+  .fok .chk{width:60px;height:60px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;margin:4px auto 18px}
+  .fok h3{font-family:var(--serif);font-size:25px;font-weight:700}
+  .fok p{color:var(--muted);font-size:14.5px;margin-top:10px}
+  .fok .btn{margin-top:22px}
 </style>
 </head>
 <body id="top">
@@ -182,7 +207,7 @@
       <a href="#ecosystem">Company <span class="caret">▾</span></a>
     </div>
     <div style="display:flex;align-items:center;gap:14px">
-      <a href="mailto:kelly@echotribe.ai?subject=EchoTribe%20Demo%20Request" class="btn btn-grad">Request Demo</a>
+      <a href="#demo" class="btn btn-grad" onclick="openDemo(event)">Request Demo</a>
       <button class="menu-btn" id="menuBtn" aria-label="Menu">☰</button>
     </div>
   </div>
@@ -372,7 +397,7 @@
   <div class="wrap">
     <h2 class="reveal">Let's connect signals to <span class="grad">revenue</span>.</h2>
     <div class="final-cta reveal">
-      <a href="mailto:kelly@echotribe.ai?subject=EchoTribe%20Ecosystem%20Partnership" class="btn btn-grad">Partner with EchoTribe</a>
+      <a href="#demo" class="btn btn-grad" onclick="openDemo(event)">Partner with EchoTribe</a>
       <a href="https://shop.mommyandmecollective.com/mediakit" target="_blank" rel="noopener" class="btn btn-outline-light">View the media kit</a>
     </div>
     <div class="final-foot">
@@ -387,12 +412,109 @@
   </div>
 </section>
 
+<!-- DEMO REQUEST MODAL -->
+<div class="ovl" id="demoOvl" role="dialog" aria-modal="true" aria-labelledby="demoTitle">
+  <div class="ovl-bd" onclick="closeDemo()"></div>
+  <div class="modal">
+    <button class="modal-x" onclick="closeDemo()" aria-label="Close">✕</button>
+    <div id="demoView">
+      <span class="eyebrow">Early Access</span>
+      <h3 id="demoTitle">Request a demo</h3>
+      <p class="sub">Tell us a little about you and we'll follow up within one business day to schedule a walkthrough.</p>
+      <form id="demoForm" novalidate>
+        <div class="fld"><label for="d-name">Full name</label><input id="d-name" name="name" type="text" placeholder="Your name" required></div>
+        <div class="fld"><label for="d-email">Work email</label><input id="d-email" name="email" type="email" placeholder="you@company.com" required></div>
+        <div class="fld"><label for="d-company">Company</label><input id="d-company" name="company" type="text" placeholder="Your company" required></div>
+        <div class="fld"><label for="d-role">You are a…</label>
+          <select id="d-role" name="role" required>
+            <option value="" disabled selected>Select one</option>
+            <option>Brand or Advertiser</option>
+            <option>Creator Platform</option>
+            <option>Affiliate Network</option>
+            <option>Agency or Managed Service</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <input type="checkbox" name="botcheck" style="display:none" tabindex="-1" autocomplete="off">
+        <div class="ferr" id="demoErr">Please fill in all fields.</div>
+        <button type="submit" class="btn btn-grad">Request demo</button>
+        <p class="fnote">No spam. We'll only reach out to schedule your demo.</p>
+      </form>
+    </div>
+    <div id="demoOk" class="fok" style="display:none">
+      <div class="chk"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div>
+      <h3>You're on the list.</h3>
+      <p>Thanks — we'll be in touch within one business day. Check your inbox (including spam, just in case).</p>
+      <button class="btn btn-outline" onclick="closeDemo()">Close</button>
+    </div>
+  </div>
+</div>
+
 <script>
   const mb=document.getElementById('menuBtn'), nl=document.getElementById('navlinks');
   mb&&mb.addEventListener('click',()=>nl.classList.toggle('open'));
   nl&&nl.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>nl.classList.remove('open')));
   const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.12});
   document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+  /* ── DEMO REQUEST FORM ───────────────────────────────────────────────
+     Submissions are emailed to kelly@echotribe.ai via Web3Forms.
+     TO GO LIVE: get a free access key (no account) at https://web3forms.com
+     — enter kelly@echotribe.ai, they email you a key, paste it below.
+     Until then (or if the service is unreachable) the form falls back to
+     opening the visitor's mail app pre-filled, so no lead is ever lost. */
+  const WEB3FORMS_KEY='YOUR_WEB3FORMS_ACCESS_KEY';
+  const DEMO_EMAIL='kelly@echotribe.ai';
+
+  const demoOvl=document.getElementById('demoOvl');
+  let demoLastFocus=null;
+  function openDemo(e){ if(e&&e.preventDefault)e.preventDefault();
+    demoLastFocus=document.activeElement;
+    document.getElementById('demoView').style.display='block';
+    document.getElementById('demoOk').style.display='none';
+    document.getElementById('demoErr').classList.remove('show');
+    document.getElementById('demoForm').reset();
+    demoOvl.classList.add('open'); document.body.style.overflow='hidden';
+    setTimeout(()=>document.getElementById('d-name').focus(),40);
+  }
+  function closeDemo(){ demoOvl.classList.remove('open'); document.body.style.overflow='';
+    if(demoLastFocus&&demoLastFocus.focus)demoLastFocus.focus();
+  }
+  document.addEventListener('keydown',e=>{ if(e.key==='Escape'&&demoOvl.classList.contains('open'))closeDemo(); });
+  function showDemoOk(){ document.getElementById('demoView').style.display='none'; document.getElementById('demoOk').style.display='block'; }
+
+  const demoForm=document.getElementById('demoForm');
+  demoForm&&demoForm.addEventListener('submit',async function(e){
+    e.preventDefault();
+    const name=document.getElementById('d-name').value.trim();
+    const email=document.getElementById('d-email').value.trim();
+    const company=document.getElementById('d-company').value.trim();
+    const role=document.getElementById('d-role').value;
+    const err=document.getElementById('demoErr');
+    if(!name||!email||!company||!role){ err.classList.add('show'); return; }
+    err.classList.remove('show');
+    const btn=demoForm.querySelector('button[type=submit]'); const orig=btn.textContent;
+    btn.textContent='Sending…'; btn.disabled=true;
+    const keyReady=WEB3FORMS_KEY && WEB3FORMS_KEY.indexOf('YOUR_')!==0;
+    if(keyReady){
+      try{
+        const fd=new FormData();
+        fd.append('access_key',WEB3FORMS_KEY);
+        fd.append('subject','New EchoTribe demo request — '+company);
+        fd.append('from_name','EchoTribe Website');
+        fd.append('name',name); fd.append('email',email);
+        fd.append('company',company); fd.append('role',role);
+        const r=await fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Accept':'application/json'},body:fd});
+        const j=await r.json();
+        if(j.success){ showDemoOk(); btn.textContent=orig; btn.disabled=false; return; }
+      }catch(_){ /* fall through to mailto */ }
+    }
+    /* Fallback: open the visitor's mail client pre-filled so the lead still reaches the inbox */
+    const sub=encodeURIComponent('EchoTribe demo request — '+company);
+    const body=encodeURIComponent('Name: '+name+'\nEmail: '+email+'\nCompany: '+company+'\nYou are a: '+role);
+    window.location.href='mailto:'+DEMO_EMAIL+'?subject='+sub+'&body='+body;
+    setTimeout(()=>{ showDemoOk(); btn.textContent=orig; btn.disabled=false; },300);
+  });
 </script>
 </body>
 </html>
