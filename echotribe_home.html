@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>EchoTribe — Creator Commerce, Run as a System</title>
+<meta name="description" content="EchoTribe is the operating layer for performance-driven creator commerce — connecting what to promote, where the click goes, and whether to amplify it. Proven live. Built to scale." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500;1,9..144,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#F7F6F4; --surface:#FFFFFF; --ink:#16161A; --ink-soft:#5C5C66;
+    --pink:#EC1A8D; --pink-soft:#FCE6F2; --border:#E8E6E1; --dark:#0F1020;
+    --radius:14px; --maxw:1140px;
+    --display:"Fraunces",Georgia,serif; --body:"Plus Jakarta Sans",system-ui,sans-serif; --mono:"JetBrains Mono",monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);font-family:var(--body);line-height:1.6;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  img{max-width:100%;display:block}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px}
+  .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--pink);display:inline-block}
+  .pill{display:inline-flex;align-items:center;gap:8px;background:var(--pink-soft);color:var(--pink);font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:7px 14px;border-radius:999px}
+  h1,h2,h3{font-family:var(--display);font-weight:500;line-height:1.08;letter-spacing:-.01em}
+  h1{font-size:clamp(40px,6vw,68px)}
+  h2{font-size:clamp(30px,4vw,46px)}
+  em,.it{font-style:italic;color:var(--pink)}
+  .btn{display:inline-flex;align-items:center;gap:9px;font-family:var(--body);font-weight:600;font-size:15px;padding:14px 24px;border-radius:999px;border:1px solid transparent;transition:.18s;cursor:pointer}
+  .btn-primary{background:var(--pink);color:#fff}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(236,26,141,.28)}
+  .btn-ghost{background:transparent;color:var(--ink);border-color:var(--border)}
+  .btn-ghost:hover{border-color:var(--ink)}
+  .btn-light{background:#fff;color:var(--dark)}
+  .btn-light:hover{transform:translateY(-2px)}
+  .btn-outline-light{background:transparent;color:#fff;border-color:rgba(255,255,255,.28)}
+  .btn-outline-light:hover{border-color:#fff}
+
+  /* NAV */
+  nav{position:sticky;top:0;z-index:50;background:rgba(247,246,244,.86);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+  .nav-in{display:flex;align-items:center;justify-content:space-between;height:68px}
+  .brand{display:flex;align-items:center;gap:10px;font-family:var(--display);font-size:22px;font-weight:600;letter-spacing:-.01em}
+  .brand svg{flex:none}
+  .nav-links{display:flex;gap:28px;align-items:center}
+  .nav-links a{font-size:14.5px;font-weight:500;color:var(--ink-soft)}
+  .nav-links a:hover{color:var(--ink)}
+  .nav-cta{display:flex;align-items:center;gap:14px}
+  .menu-btn{display:none;background:none;border:none;font-size:24px;cursor:pointer}
+
+  /* HERO */
+  .hero{position:relative;padding:84px 0 64px;overflow:hidden}
+  .hero-rings{position:absolute;top:-120px;right:-160px;width:560px;height:560px;opacity:.5;pointer-events:none}
+  .hero-grid{display:grid;grid-template-columns:1.1fr;gap:30px;position:relative}
+  .hero h1{margin:22px 0 0}
+  .hero .lede{font-size:clamp(17px,1.9vw,20px);color:var(--ink-soft);max-width:620px;margin:22px 0 30px}
+  .hero-cta{display:flex;gap:14px;flex-wrap:wrap}
+
+  /* STAT BAND */
+  .statband{border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--surface)}
+  .stat-grid{display:grid;grid-template-columns:repeat(4,1fr)}
+  .stat{padding:34px 26px;border-right:1px solid var(--border)}
+  .stat:last-child{border-right:none}
+  .stat .num{font-family:var(--display);font-size:clamp(28px,3.4vw,40px);font-weight:600;letter-spacing:-.02em}
+  .stat .lbl{font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);margin-top:6px}
+  .statband .src{font-family:var(--mono);font-size:11px;color:var(--ink-soft);padding:12px 26px;border-top:1px solid var(--border);letter-spacing:.03em}
+
+  /* SECTIONS */
+  section.block{padding:84px 0}
+  .sechead{max-width:760px}
+  .sechead h2{margin:16px 0 0}
+  .sechead p{color:var(--ink-soft);font-size:17px;margin-top:18px}
+  .secnum{font-family:var(--mono);font-size:12px;letter-spacing:.1em;color:var(--ink-soft)}
+
+  /* FEATURED CLIENT */
+  .feat-top{display:grid;grid-template-columns:1.15fr .85fr;gap:48px;align-items:start}
+  .feat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:30px}
+  .feat-handle{font-family:var(--mono);font-size:13px;color:var(--pink);letter-spacing:.04em}
+  .feat-card h3{font-size:26px;margin:6px 0 14px}
+  .feat-card p{color:var(--ink-soft);font-size:15.5px}
+  .feat-stats{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:36px}
+  .mini{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:22px}
+  .mini .n{font-family:var(--display);font-size:30px;font-weight:600;letter-spacing:-.02em}
+  .mini .l{font-size:13.5px;color:var(--ink-soft);margin-top:4px}
+  .feat-cta{margin-top:24px}
+
+  /* SYSTEM */
+  .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:48px}
+  .step{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:26px;position:relative}
+  .step .k{font-family:var(--mono);font-size:12px;color:var(--pink)}
+  .step h3{font-size:20px;margin:14px 0 8px}
+  .step p{font-size:14.5px;color:var(--ink-soft)}
+  .flowline{font-family:var(--mono);font-size:13px;color:var(--ink-soft);text-align:center;margin-top:34px;letter-spacing:.04em}
+  .flowline b{color:var(--pink)}
+
+  /* DEMO */
+  .demo{background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+  .demo-disclaimer{display:inline-flex;align-items:center;gap:9px;background:#FFF7E6;border:1px solid #F2D58A;color:#8A6A14;font-family:var(--mono);font-size:12px;letter-spacing:.03em;padding:8px 14px;border-radius:999px;margin-top:18px}
+  .browser{margin-top:40px;border:1px solid var(--border);border-radius:16px;overflow:hidden;box-shadow:0 24px 60px rgba(16,16,32,.08);background:#fff}
+  .browser-bar{display:flex;align-items:center;gap:8px;padding:13px 16px;border-bottom:1px solid var(--border);background:#FBFAF8}
+  .dot{width:11px;height:11px;border-radius:50%}
+  .browser-url{margin-left:12px;font-family:var(--mono);font-size:12.5px;color:var(--ink-soft);background:#fff;border:1px solid var(--border);border-radius:8px;padding:5px 12px;flex:1}
+  .browser-body{padding:26px}
+  .demo-row-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+  .demo-row-h .t{font-family:var(--display);font-size:20px;font-weight:600}
+  .demo-row-h .live{font-family:var(--mono);font-size:11px;color:var(--pink);display:inline-flex;align-items:center;gap:6px}
+  .blink{width:8px;height:8px;border-radius:50%;background:var(--pink);display:inline-block;animation:blink 1.6s infinite}
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+  .pgrid{display:grid;grid-template-columns:repeat(6,1fr);gap:14px}
+  .pcard{border:1px solid var(--border);border-radius:12px;overflow:hidden;background:#fff}
+  .pcard .imgwrap{aspect-ratio:1/1;background:#F4F3F1;display:flex;align-items:center;justify-content:center;padding:10px}
+  .pcard .imgwrap img{max-height:100%;width:auto;object-fit:contain}
+  .pcard .meta{padding:10px 11px}
+  .pcard .ret{font-family:var(--mono);font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-soft)}
+  .pcard .nm{font-size:12px;line-height:1.3;margin:3px 0 5px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:31px}
+  .pcard .pr{font-weight:700;font-size:13px;color:var(--pink)}
+  .demo-cta{margin-top:30px}
+
+  /* ARTICLE */
+  .article{text-align:center}
+  .quote{font-family:var(--display);font-style:italic;font-size:clamp(28px,3.8vw,42px);font-weight:500;line-height:1.18;max-width:880px;margin:26px auto 0}
+  .quote .mark{color:var(--pink)}
+  .byline{font-family:var(--mono);font-size:13px;color:var(--ink-soft);margin-top:26px;letter-spacing:.03em}
+  .quote-sub{color:var(--ink-soft);font-size:17px;max-width:640px;margin:22px auto 30px}
+
+  /* ECOSYSTEM */
+  .eco-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:48px}
+  .eco{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:28px}
+  .eco .k{font-family:var(--mono);font-size:12px;color:var(--pink)}
+  .eco h3{font-size:21px;margin:12px 0 9px}
+  .eco p{font-size:14.5px;color:var(--ink-soft)}
+
+  /* FINAL CTA */
+  .final{background:var(--dark);color:#fff;border-radius:24px;padding:64px 48px;text-align:center;position:relative;overflow:hidden}
+  .final h2{color:#fff;font-size:clamp(32px,4.4vw,52px)}
+  .final h2 em{color:var(--pink)}
+  .final p{color:rgba(255,255,255,.72);font-size:18px;margin:18px auto 32px;max-width:560px}
+  .final-cta{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+  .final .contact{font-family:var(--mono);font-size:13px;color:rgba(255,255,255,.6);margin-top:30px;letter-spacing:.04em}
+  .final-rings{position:absolute;bottom:-200px;left:-160px;width:480px;height:480px;opacity:.28;pointer-events:none}
+
+  /* FOOTER */
+  footer{padding:48px 0 56px}
+  .foot-in{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px;border-top:1px solid var(--border);padding-top:34px}
+  .foot-links{display:flex;gap:24px;flex-wrap:wrap}
+  .foot-links a{font-size:14px;color:var(--ink-soft)}
+  .foot-links a:hover{color:var(--pink)}
+  .foot-meta{font-family:var(--mono);font-size:12px;color:var(--ink-soft);letter-spacing:.03em}
+
+  /* reveal */
+  .reveal{opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease}
+  .reveal.in{opacity:1;transform:none}
+
+  /* RESPONSIVE */
+  @media(max-width:980px){
+    .stat-grid{grid-template-columns:repeat(2,1fr)}
+    .stat:nth-child(2){border-right:none}
+    .stat:nth-child(1),.stat:nth-child(2){border-bottom:1px solid var(--border)}
+    .feat-top{grid-template-columns:1fr;gap:32px}
+    .steps{grid-template-columns:repeat(2,1fr)}
+    .pgrid{grid-template-columns:repeat(3,1fr)}
+    .eco-cards{grid-template-columns:1fr}
+  }
+  @media(max-width:680px){
+    .wrap{padding:0 20px}
+    .nav-links{display:none}
+    .menu-btn{display:block}
+    .nav-links.open{display:flex;position:absolute;top:68px;left:0;right:0;flex-direction:column;background:var(--bg);border-bottom:1px solid var(--border);padding:18px 24px;gap:16px}
+    .feat-stats{grid-template-columns:1fr 1fr}
+    .pgrid{grid-template-columns:repeat(2,1fr)}
+    .final{padding:48px 24px}
+    section.block{padding:62px 0}
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="wrap nav-in">
+    <a href="#top" class="brand">
+      <svg width="26" height="26" viewBox="0 0 26 26" fill="none"><circle cx="13" cy="13" r="3" fill="#EC1A8D"/><circle cx="13" cy="13" r="7" stroke="#EC1A8D" stroke-width="1.6" opacity=".55"/><circle cx="13" cy="13" r="11.2" stroke="#EC1A8D" stroke-width="1.3" opacity=".28"/></svg>
+      EchoTribe
+    </a>
+    <div class="nav-links" id="navlinks">
+      <a href="#proof">The Proof</a>
+      <a href="#system">The System</a>
+      <a href="#demo">Live Demo</a>
+      <a href="#featured">Featured</a>
+      <a href="#ecosystem">Ecosystem</a>
+    </div>
+    <div class="nav-cta">
+      <a href="mailto:kelly@echotribe.ai?subject=EchoTribe%20Partnership" class="btn btn-primary">Partner with us</a>
+      <button class="menu-btn" id="menuBtn" aria-label="Menu">☰</button>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero" id="top">
+  <svg class="hero-rings" viewBox="0 0 560 560" fill="none">
+    <circle cx="280" cy="280" r="60" fill="#EC1A8D" opacity=".08"/>
+    <circle cx="280" cy="280" r="120" stroke="#EC1A8D" stroke-width="2" opacity=".18"/>
+    <circle cx="280" cy="280" r="190" stroke="#EC1A8D" stroke-width="2" opacity=".12"/>
+    <circle cx="280" cy="280" r="260" stroke="#EC1A8D" stroke-width="2" opacity=".07"/>
+  </svg>
+  <div class="wrap hero-grid">
+    <div>
+      <span class="pill">Creator Commerce Infrastructure</span>
+      <h1>Creator commerce,<br>run as a <em>system</em>.</h1>
+      <p class="lede">EchoTribe is the operating layer that connects what to promote, where the click goes, and whether to amplify it — turning creator content into retailer-confirmed revenue. Proven live with one creator. Built to plug into many.</p>
+      <div class="hero-cta">
+        <a href="#ecosystem" class="btn btn-primary">Partner with EchoTribe →</a>
+        <a href="#proof" class="btn btn-ghost">See the proof ↓</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- STAT BAND -->
+<div class="statband">
+  <div class="wrap" style="padding:0">
+    <div class="stat-grid">
+      <div class="stat"><div class="num">$27M+</div><div class="lbl">Tracked GMV · 2025–26</div></div>
+      <div class="stat"><div class="num">4.4M</div><div class="lbl">Tracked clicks · 6 mo</div></div>
+      <div class="stat"><div class="num">$37K → $2M+</div><div class="lbl">Ad spend to retailer revenue</div></div>
+      <div class="stat"><div class="num">16.9%</div><div class="lbl">Avg paid click-through rate</div></div>
+    </div>
+    <div class="src">Live platform data — Amazon Associates · Walmart via Impact · URLGenius · Meta Ads · 2025–2026</div>
+  </div>
+</div>
+
+<!-- FEATURED CLIENT / PROOF -->
+<section class="block" id="proof">
+  <div class="wrap">
+    <div class="sechead reveal">
+      <span class="secnum">01 — The Proof</span>
+      <h2>One creator. A complete <em>performance operation</em>.</h2>
+      <p>The Mommy &amp; Me Collective wasn't the obvious bet — Steph wasn't a polished influencer. EchoTribe looked at the data instead of the aesthetic, then became the system behind it: signal monitoring, link generation, content in her voice, paid amplification, and real-time optimization. Steph didn't pull the data or touch a campaign. The system did.</p>
+    </div>
+
+    <div class="feat-top" style="margin-top:46px">
+      <div class="feat-card reveal">
+        <div class="feat-handle">@EverydaywithSteph · The Mommy &amp; Me Collective</div>
+        <h3>The featured client EchoTribe was built around.</h3>
+        <p>A trusted shopping voice for moms across Amazon, Walmart &amp; Target — with an always-on storefront and proven paid amplification. Not just an influencer: a community leader, fronting a performance marketing operation run entirely by EchoTribe.</p>
+        <div class="feat-cta">
+          <a href="https://shop.mommyandmecollective.com/mediakit" target="_blank" rel="noopener" class="btn btn-primary">View the brand media kit →</a>
+        </div>
+      </div>
+      <div class="feat-card reveal" style="background:var(--dark);color:#fff;border-color:var(--dark)">
+        <div class="feat-handle" style="color:#fff;opacity:.7">The headline</div>
+        <h3 style="color:#fff;font-size:23px;margin-top:8px">$37K in managed ad spend → <span style="color:var(--pink)">$2M+</span> in retailer revenue.</h3>
+        <p style="color:rgba(255,255,255,.72)">Across two ad accounts in Q4 — cold, high-intent traffic converting at a 16.9% average click-through rate, well above the 1–2% affiliate norm. Plus ~$170K in earned creator commissions from boosted content.</p>
+      </div>
+    </div>
+
+    <div class="feat-stats reveal">
+      <div class="mini"><div class="n">$27M+</div><div class="l">Tracked GMV · 2025–26</div></div>
+      <div class="mini"><div class="n">$2.3M+</div><div class="l">Amazon tracked revenue</div></div>
+      <div class="mini"><div class="n">$25M+</div><div class="l">Walmart GMV · via Impact</div></div>
+      <div class="mini"><div class="n">12.2%</div><div class="l">Walmart sales conversion · 2026</div></div>
+      <div class="mini"><div class="n">1.1M+</div><div class="l">Community members · 4 groups</div></div>
+      <div class="mini"><div class="n">130,109</div><div class="l">Amazon units shipped</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- THE SYSTEM -->
+<section class="block" id="system" style="background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+  <div class="wrap">
+    <div class="sechead reveal">
+      <span class="secnum">02 — The System</span>
+      <h2>Signals in. Revenue out. <em>No lag.</em></h2>
+      <p>Most creator programs break at the operational layer — five platforms that don't talk to each other, "we think this worked" reporting, every win rebuilt by hand. EchoTribe is the connected loop that closes that gap.</p>
+    </div>
+    <div class="steps">
+      <div class="step reveal"><div class="k">01 · Monitor</div><h3>Real-time signal</h3><p>Live monitoring of deals, price drops, and what's actually converting right now — across retailers.</p></div>
+      <div class="step reveal"><div class="k">02 · Decide</div><h3>Rank what to promote</h3><p>Surface the next best product by live performance, not guesswork or gut feel.</p></div>
+      <div class="step reveal"><div class="k">03 · Execute</div><h3>Build &amp; amplify</h3><p>Generate tracked links, produce content in the creator's voice, then launch and boost paid.</p></div>
+      <div class="step reveal"><div class="k">04 · Attribute</div><h3>Tie to revenue</h3><p>Connect every click to retailer-confirmed orders — then double down on what works.</p></div>
+    </div>
+    <div class="flowline reveal">Signals <b>→</b> Decisions <b>→</b> Execution <b>→</b> Revenue — in real time, without adding headcount.</div>
+  </div>
+</section>
+
+<!-- LIVE DEMO -->
+<section class="block demo" id="demo">
+  <div class="wrap">
+    <div class="sechead reveal">
+      <span class="secnum">03 — Live Demo</span>
+      <h2>An always-on storefront, <em>built from real sales</em>.</h2>
+      <p>The consumer-facing layer EchoTribe powers: a continuously-updating shoppable destination where every product is hand-ranked from live click and sales data — so shoppers always land on what's converting now, across Amazon and Walmart in one place.</p>
+      <div class="demo-disclaimer">⚠ Demo preview — preparing for Q3 2026 launch · not yet driving traffic</div>
+    </div>
+
+    <div class="browser reveal">
+      <div class="browser-bar">
+        <span class="dot" style="background:#FF5F57"></span><span class="dot" style="background:#FEBC2E"></span><span class="dot" style="background:#28C840"></span>
+        <span class="browser-url">shop.mommyandmecollective.com</span>
+      </div>
+      <div class="browser-body">
+        <div class="demo-row-h">
+          <div class="t">Trending right now</div>
+          <div class="live"><span class="blink"></span> Updating from live performance data</div>
+        </div>
+        <div class="pgrid">
+          <div class="pcard"><div class="imgwrap"><img src="https://m.media-amazon.com/images/I/81i7-o7KpOL._AC_SL1500_.jpg" alt="Ninja SLUSHi" loading="lazy"></div><div class="meta"><div class="ret">Amazon</div><div class="nm">Ninja SLUSHi Frozen Drink Machine</div><div class="pr">$259</div></div></div>
+          <div class="pcard"><div class="imgwrap"><img src="https://m.media-amazon.com/images/I/313UOylugcL._SL500_.jpg" alt="Keter Deck Box" loading="lazy"></div><div class="meta"><div class="ret">Amazon</div><div class="nm">Keter 150 Gal Resin Deck Box</div><div class="pr">$159.99</div></div></div>
+          <div class="pcard"><div class="imgwrap"><img src="https://m.media-amazon.com/images/I/41ohuhlGw7L._SL500_.jpg" alt="Step2 Water Table" loading="lazy"></div><div class="meta"><div class="ret">Amazon</div><div class="nm">Step2 Pump &amp; Splash Water Table</div><div class="pr">$122.99</div></div></div>
+          <div class="pcard"><div class="imgwrap"><img src="https://m.media-amazon.com/images/I/41GXsryTLHL._SL500_.jpg" alt="Mambobaby Float" loading="lazy"></div><div class="meta"><div class="ret">Amazon</div><div class="nm">Mambobaby No-Flip Baby Pool Float</div><div class="pr">$109.99</div></div></div>
+          <div class="pcard"><div class="imgwrap"><img src="https://m.media-amazon.com/images/I/21k9ntc3I4L._SL500_.jpg" alt="Owala FreeSip" loading="lazy"></div><div class="meta"><div class="ret">Amazon</div><div class="nm">Owala FreeSip Insulated Bottle</div><div class="pr">$44.99</div></div></div>
+          <div class="pcard"><div class="imgwrap"><img src="https://i5.walmartimages.com/seo/KPOP-COMF-SET_67ca695b-8a96-444a-8e40-b67b57ec548c.62cab8c1d298232db2920622f10501bf.jpeg?odnHeight=450&odnWidth=450&odnBg=FFFFFF" alt="KPOP Bedding" loading="lazy"></div><div class="meta"><div class="ret">Walmart</div><div class="nm">KPOP Demon Hunters Comforter Set</div><div class="pr">$31.72</div></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="demo-cta reveal">
+      <a href="https://shop.mommyandmecollective.com/" target="_blank" rel="noopener" class="btn btn-primary">Explore the live demo →</a>
+    </div>
+  </div>
+</section>
+
+<!-- AS FEATURED -->
+<section class="block article" id="featured">
+  <div class="wrap">
+    <span class="secnum reveal">04 — As Featured</span>
+    <div class="quote reveal">"Performance, powered by systems <span class="mark">—</span> not people."</div>
+    <div class="byline reveal">From <em style="color:var(--ink-soft)">"Me, Myself &amp; AI"</em> by Laura Press · June 2026</div>
+    <p class="quote-sub reveal">A decade-long performance marketer's read on what happens when influencer marketing finally gets the infrastructure it's been missing — featuring EchoTribe and the Mommy &amp; Me Collective.</p>
+    <a href="#" class="btn btn-ghost reveal" id="articleLink">Read the full article →</a>
+  </div>
+</section>
+
+<!-- ECOSYSTEM -->
+<section class="block" id="ecosystem" style="background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+  <div class="wrap">
+    <div class="sechead reveal">
+      <span class="secnum">05 — What's Next</span>
+      <h2>Built to plug into the <em>ecosystem</em>.</h2>
+      <p>The model is proven with one creator. The opportunity is the network. EchoTribe is built to extend this system — connecting fragmented signals to decisions to execution to revenue — for the platforms, publishers, and networks already sitting on insights they can't act on fast enough.</p>
+    </div>
+    <div class="eco-cards">
+      <div class="eco reveal"><div class="k">For Platforms</div><h3>Turn reach into revenue</h3><p>Layer attribution and amplification logic onto your creator base — so engagement becomes measurable, repeatable retailer revenue.</p></div>
+      <div class="eco reveal"><div class="k">For Publishers</div><h3>Activate dormant signal</h3><p>Convert content traffic into a performance channel with real-time deal monitoring, tracked routing, and confirmed-sale reporting.</p></div>
+      <div class="eco reveal"><div class="k">For Networks</div><h3>Scale the operation</h3><p>Give your creator roster the system that one operator ran by hand — without the burnout, bottlenecks, or added headcount.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="block">
+  <div class="wrap">
+    <div class="final reveal">
+      <svg class="final-rings" viewBox="0 0 480 480" fill="none"><circle cx="240" cy="240" r="60" fill="#EC1A8D" opacity=".2"/><circle cx="240" cy="240" r="120" stroke="#EC1A8D" stroke-width="2" opacity=".4"/><circle cx="240" cy="240" r="190" stroke="#EC1A8D" stroke-width="2" opacity=".25"/></svg>
+      <h2>Let's connect signals to <em>revenue</em>.</h2>
+      <p>For platforms, publishers, and networks ready to operate differently.</p>
+      <div class="final-cta">
+        <a href="mailto:kelly@echotribe.ai?subject=EchoTribe%20Ecosystem%20Partnership" class="btn btn-light">Partner with EchoTribe →</a>
+        <a href="https://shop.mommyandmecollective.com/mediakit" target="_blank" rel="noopener" class="btn btn-outline-light">Brands — view the media kit</a>
+      </div>
+      <div class="contact">kelly@echotribe.ai · echotribe.ai · responding within 24–48 hours</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap foot-in">
+    <a href="#top" class="brand"><svg width="22" height="22" viewBox="0 0 26 26" fill="none"><circle cx="13" cy="13" r="3" fill="#EC1A8D"/><circle cx="13" cy="13" r="7" stroke="#EC1A8D" stroke-width="1.6" opacity=".55"/><circle cx="13" cy="13" r="11.2" stroke="#EC1A8D" stroke-width="1.3" opacity=".28"/></svg>EchoTribe</a>
+    <div class="foot-links">
+      <a href="#proof">The Proof</a>
+      <a href="#system">The System</a>
+      <a href="#demo">Live Demo</a>
+      <a href="#ecosystem">Ecosystem</a>
+      <a href="mailto:kelly@echotribe.ai">Contact</a>
+    </div>
+    <div class="foot-meta">EchoTribe Holdings, LLC · Creator Commerce Infrastructure · © 2026</div>
+  </div>
+</footer>
+
+<script>
+  // mobile menu
+  const mb=document.getElementById('menuBtn'), nl=document.getElementById('navlinks');
+  mb&&mb.addEventListener('click',()=>nl.classList.toggle('open'));
+  nl&&nl.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>nl.classList.remove('open')));
+  // reveal on scroll
+  const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.12});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
