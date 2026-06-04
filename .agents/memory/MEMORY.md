@@ -1,1 +1,0 @@
-- [Never overwrite index.html from attached_assets](index-html-source-truth.md) — attached_assets/ holds uploaded reference files; root-level files are the source of truth.

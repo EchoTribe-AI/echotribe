@@ -1,7 +1,26 @@
 import http.server
 import socketserver
+import os
+import subprocess
 
 PORT = 5000
+
+# Kill any existing process holding port 5000 before we bind
+try:
+    result = subprocess.run(
+        ['lsof', '-ti', f':{PORT}'],
+        capture_output=True, text=True, timeout=5
+    )
+    if result.stdout.strip():
+        for pid in result.stdout.strip().split('\n'):
+            if pid:
+                try:
+                    os.kill(int(pid), 9)
+                    print(f"Killed old process {pid} on port {PORT}")
+                except (ProcessLookupError, ValueError, PermissionError):
+                    pass
+except (subprocess.TimeoutExpired, FileNotFoundError):
+    pass
 
 class NoCacheHandler(http.server.SimpleHTTPRequestHandler):
     def end_headers(self):
