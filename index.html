@@ -1,578 +1,532 @@
 <!DOCTYPE html>
-<html class="scroll-smooth" lang="en">
+<html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>EchoTribe | Creator Commerce Infrastructure</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
-<script id="tailwind-config">
-  tailwind.config = {
-    darkMode:"class",
-    theme:{extend:{
-      colors:{
-        "on-surface-variant":"#5a5c5e","background":"#f6f6f9","outline-variant":"#acadaf",
-        "primary-fixed":"#ff7198","primary-fixed-dim":"#ff5389","primary":"#b50552",
-        "tertiary-container":"#e092ff","inverse-surface":"#0c0e10","surface":"#f6f6f9",
-        "surface-container-lowest":"#ffffff","surface-container-high":"#e1e2e6",
-        "on-primary":"#ffeff0","on-secondary":"#d7f9ff","primary-dim":"#a00047",
-        "surface-container-highest":"#dbdde0","surface-container-low":"#f0f0f3",
-        "tertiary-fixed":"#e092ff","on-tertiary-fixed":"#2c003f","on-secondary-container":"#005761",
-        "on-background":"#2d2f31","on-primary-container":"#4d001e","on-surface":"#2d2f31",
-        "surface-container":"#e7e8eb","primary-container":"#ff7198","outline":"#757779",
-        "surface-tint":"#b50552","secondary-container":"#7fedfe"
-      },
-      borderRadius:{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},
-      fontFamily:{"headline":["Plus Jakarta Sans"],"body":["Manrope"],"label":["Manrope"]}
-    }}
-  }
-</script>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>EchoTribe — Creator Commerce, Run as a System</title>
+<link rel="icon" type="image/png" href="data:image/png;base64,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" />
+<meta name="description" content="EchoTribe is the operating layer that transforms influencer marketing into a predictable, revenue-generating machine for top-tier brands and retailers." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400;1,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 <style>
-  .glass-panel{background:rgba(255,255,255,0.72);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);}
-  .text-gradient{background:linear-gradient(135deg,#b50552 0%,#ff7198 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-  .bg-primary-gradient{background:linear-gradient(135deg,#b50552 0%,#ff7198 100%);}
+  :root{
+    --navy:#05051F; --white:#FFFFFF; --ghost:#F3F4F6; --ink:#05051F; --muted:#54545F; --border:#E5E7EB;
+    --grad:linear-gradient(120deg,#8127CF 0%,#EC1A8D 100%);
+    --serif:"Libre Caslon Text",Georgia,serif; --sans:"Plus Jakarta Sans",system-ui,sans-serif;
+    --maxw:1200px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--white);color:var(--ink);font-family:var(--sans);line-height:1.6;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  img{max-width:100%;display:block}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px}
+  .sec{padding:104px 0}
+  h1,h2,h3,.serif{font-family:var(--serif)}
+  .gtext{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .grad{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;font-style:italic}
+  .eyebrow{font-family:var(--sans);font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+  .sechead{text-align:center;max-width:780px;margin:0 auto}
+  .sechead h2{font-size:clamp(32px,4.4vw,48px);font-weight:700;line-height:1.18;letter-spacing:-.01em;margin-top:14px}
+  .sechead p{color:var(--muted);font-size:18px;margin-top:18px;max-width:600px;margin-left:auto;margin-right:auto}
 
-  /* Modal */
-  #demo-modal{display:none;position:fixed;inset:0;z-index:100;align-items:center;justify-content:center;padding:1.5rem;}
-  #demo-modal.open{display:flex;}
-  #modal-backdrop{position:absolute;inset:0;background:rgba(13,14,16,0.6);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);}
-  #modal-panel{position:relative;z-index:10;background:#fff;border-radius:2rem;padding:3rem;width:100%;max-width:480px;box-shadow:0 32px 80px rgba(181,5,82,0.12),0 8px 24px rgba(13,14,16,0.08);}
-  .form-field{width:100%;background:#f0f0f3;border:none;border-bottom:2px solid #acadaf;border-radius:0.5rem 0.5rem 0 0;padding:0.875rem 1rem;font-family:Manrope,sans-serif;font-size:0.9375rem;color:#2d2f31;outline:none;transition:border-color .15s,background .15s;}
-  .form-field:focus{border-bottom-color:#b50552;background:#fff;}
-  .form-field::placeholder{color:#acadaf;}
-  select.form-field{appearance:none;cursor:pointer;}
-  #form-success{display:none;text-align:center;padding:1rem 0;}
+  .btn{font-family:var(--sans);font-weight:700;font-size:15px;border-radius:999px;padding:13px 26px;display:inline-flex;align-items:center;gap:8px;cursor:pointer;border:0;transition:.18s}
+  .btn-grad{background:var(--grad);color:#fff}
+  .btn-grad:hover{transform:translateY(-1px);box-shadow:0 10px 26px rgba(129,39,207,.30)}
+  .btn-outline{background:transparent;border:2px solid var(--navy);color:var(--navy);padding:11px 24px}
+  .btn-outline:hover{background:var(--navy);color:#fff}
+  .btn-outline-light{background:transparent;border:2px solid rgba(255,255,255,.4);color:#fff;padding:11px 24px}
+  .btn-outline-light:hover{border-color:#fff}
 
-  /* Act label pill */
-  .act-pill{display:inline-flex;align-items:center;gap:0.4rem;font-family:Manrope,sans-serif;font-size:0.6875rem;font-weight:700;letter-spacing:.13em;text-transform:uppercase;padding:.3rem .9rem;border-radius:9999px;}
+  /* NAV */
+  nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.88);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+  .nav-in{display:flex;align-items:center;justify-content:space-between;height:70px}
+  .brand{font-family:var(--sans);font-size:21px;font-weight:800;letter-spacing:-.02em}
+  .nav-links{display:flex;gap:30px;align-items:center}
+  .nav-links a{font-size:14.5px;font-weight:500;color:var(--muted);display:inline-flex;align-items:center;gap:4px}
+  .nav-links a:hover{color:var(--ink)}
+  .caret{font-size:10px;opacity:.7}
+  .menu-btn{display:none;background:none;border:none;font-size:24px;cursor:pointer}
 
-  /* Outcome cards */
-  .outcome-card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:1.75rem;padding:2.5rem;transition:background .2s;}
-  .outcome-card:hover{background:rgba(255,255,255,.1);}
-  .outcome-num{font-family:'Plus Jakarta Sans',sans-serif;font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#ff7198;margin-bottom:.875rem;}
-  .outcome-icon{width:3rem;height:3rem;border-radius:.875rem;background:rgba(255,113,152,.15);display:flex;align-items:center;justify-content:center;margin-bottom:1.25rem;}
-  .outcome-highlight{border-color:rgba(255,113,152,.35)!important;background:rgba(181,5,82,.1)!important;}
+  /* HERO */
+  .hero{text-align:center;padding:88px 0 72px;position:relative;overflow:hidden}
+  .hero h1{font-size:clamp(48px,7.4vw,92px);font-weight:700;line-height:1.02;letter-spacing:-.02em}
+  .hero p{font-size:clamp(17px,1.8vw,19px);color:var(--muted);max-width:560px;margin:24px auto 32px}
+  .hero-cta{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+  .hero-glow{position:absolute;top:-160px;left:50%;transform:translateX(-50%);width:760px;height:420px;background:radial-gradient(ellipse,rgba(129,39,207,.10),transparent 65%);pointer-events:none}
+
+  /* STAT BAND */
+  .statgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:8px}
+  .statcard{background:var(--navy);border-radius:16px;padding:24px;color:#fff;position:relative;overflow:hidden}
+  .statcard .top{display:flex;align-items:center;justify-content:space-between}
+  .icobox{width:40px;height:40px;border-radius:11px;background:var(--grad);display:flex;align-items:center;justify-content:center;flex:none}
+  .live{display:inline-flex;align-items:center;gap:6px;background:rgba(74,222,128,.16);color:#5ee892;font-size:11px;font-weight:600;padding:5px 10px;border-radius:999px}
+  .ld{width:6px;height:6px;border-radius:50%;background:#5ee892;animation:blink 1.6s infinite}
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+  .statnum{font-family:var(--sans);font-weight:800;font-size:clamp(34px,4vw,46px);letter-spacing:-.02em;margin-top:30px;line-height:1}
+  .statlbl{font-size:12.5px;color:rgba(255,255,255,.6);margin-top:8px;font-weight:500}
+
+  /* THE PROOF */
+  .proof{background:var(--ghost)}
+  .proof-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:52px;align-items:stretch}
+  .case{background:#fff;border:1px solid var(--border);border-radius:18px;padding:38px;display:flex;flex-direction:column}
+  .case .eyebrow{color:var(--muted)}
+  .case h3{font-size:30px;font-weight:700;line-height:1.15;margin:12px 0 16px}
+  .case p{color:var(--muted);font-size:15.5px;margin-bottom:26px}
+  .case .btn{align-self:flex-start;margin-top:auto}
+  .roi{background:var(--navy);border-radius:18px;padding:34px;color:#fff;position:relative;overflow:hidden}
+  .roi .glow{position:absolute;top:-80px;right:-80px;width:300px;height:300px;background:radial-gradient(circle,rgba(236,26,141,.28),transparent 65%);pointer-events:none}
+  .roi .lbl{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.55)}
+  .roi .big{font-family:var(--sans);font-size:26px;font-weight:800;letter-spacing:-.01em;margin-top:16px;line-height:1.3}
+  .roi .chart{margin:22px 0 6px}
+  .roi-foot{display:grid;grid-template-columns:1fr 1fr;gap:18px;border-top:1px solid rgba(255,255,255,.12);padding-top:20px;margin-top:14px}
+  .roi-foot .n{font-family:var(--sans);font-weight:800;font-size:24px}
+  .roi-foot .l{font-size:12px;color:rgba(255,255,255,.6);margin-top:2px}
+
+  /* SYSTEM */
+  .steps{display:flex;align-items:flex-start;justify-content:center;gap:6px;margin-top:56px;flex-wrap:wrap}
+  .step{flex:1;min-width:170px;max-width:230px;text-align:center;padding:0 8px}
+  .circle{width:60px;height:60px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;margin:0 auto 16px}
+  .step h3{font-size:18px;font-weight:700;font-family:var(--sans)}
+  .step p{font-size:13.5px;color:var(--muted);margin-top:7px}
+  .arrow{align-self:center;color:#C8C5CE;font-size:22px;margin-top:14px}
+
+  /* DEMO */
+  .demo-note{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);margin-top:16px;font-weight:500}
+  .demo-note .ndot{width:7px;height:7px;border-radius:50%;background:var(--grad);flex:none}
+  .browser{max-width:980px;margin:40px auto 0;border:1px solid var(--border);border-radius:16px;overflow:hidden;box-shadow:0 4px 28px rgba(0,0,0,.07);background:#fff}
+  .bbar{display:flex;align-items:center;gap:8px;padding:12px 16px;border-bottom:1px solid var(--border);background:#FBFAFC}
+  .bdot{width:11px;height:11px;border-radius:50%}
+  .burl{margin-left:10px;font-size:12.5px;color:var(--muted);background:#fff;border:1px solid var(--border);border-radius:8px;padding:5px 12px;flex:1;font-family:var(--sans)}
+  .sf{padding:26px}
+  .sf-title{font-size:22px;font-weight:800;letter-spacing:-.01em;color:var(--ink)}
+  .sf-sub{font-size:13.5px;color:var(--muted);margin-top:6px;max-width:460px}
+  .sf-ai{margin-top:14px;background:var(--grad);color:#fff;border:0;border-radius:999px;padding:10px 18px;font-weight:700;font-size:13.5px;font-family:var(--sans);display:inline-flex;align-items:center;gap:7px;cursor:pointer}
+  .sf-upd{font-size:11px;color:#9a9aa5;margin-top:10px}
+  .sf-search{display:flex;align-items:center;gap:10px;border:1px solid var(--border);border-radius:999px;padding:11px 18px;margin:22px 0 16px;color:#9a9aa5;font-size:13.5px}
+  .sf-pills{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:24px}
+  .sf-pill{border:1px solid var(--border);border-radius:999px;padding:7px 15px;font-size:13px;font-weight:600;color:var(--muted)}
+  .sf-pill.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+  .sf-sec-h{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:16px}
+  .sf-sec-h .st{font-size:17px;font-weight:800;color:var(--ink)}
+  .sf-sec-h .ss{font-size:12.5px;color:var(--muted);margin-top:3px}
+  .sf-va{font-size:13px;font-weight:600;border:1px solid var(--border);border-radius:999px;padding:8px 14px;color:var(--ink);white-space:nowrap}
+  .sf-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .sfcard{border:1px solid var(--border);border-radius:14px;overflow:hidden;background:#fff;display:flex;flex-direction:column}
+  .sfimg{position:relative;aspect-ratio:1/1;background:#fff;display:flex;align-items:center;justify-content:center;padding:14px;border-bottom:1px solid var(--border)}
+  .sfimg img{max-height:100%;width:auto;object-fit:contain}
+  .rank{position:absolute;top:10px;left:10px;background:rgba(5,5,31,.82);color:#fff;font-size:11px;font-weight:600;padding:5px 10px;border-radius:999px}
+  .heart{position:absolute;top:10px;right:10px;width:30px;height:30px;border-radius:50%;background:#fff;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:#b5b5bd;font-size:15px}
+  .sfmeta{padding:14px;display:flex;flex-direction:column;gap:6px;flex:1}
+  .sfmeta .br{font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#9a9aa5}
+  .sfmeta .tt{font-size:13px;line-height:1.35;color:var(--ink);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:35px}
+  .sfmeta .pr{font-size:17px;font-weight:800;color:var(--ink)}
+  .buy{margin-top:auto;background:linear-gradient(135deg,#9b9b78,#73734f);color:#fff;border:0;border-radius:10px;padding:11px;font-weight:700;font-size:13.5px;font-family:var(--sans);cursor:pointer}
+  .demo-cta{text-align:center;margin-top:32px}
+
+  /* QUOTE */
+  .quoteband{background:var(--navy);color:#fff;text-align:center;padding:108px 0}
+  .bigquote{font-family:var(--serif);font-size:clamp(28px,3.8vw,44px);font-weight:700;line-height:1.24;max-width:900px;margin:0 auto}
+  .qby{font-size:13px;font-weight:600;letter-spacing:.06em;color:rgba(255,255,255,.55);margin-top:30px;text-transform:uppercase}
+
+  /* ECOSYSTEM */
+  .eco-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:54px}
+  .eco{background:#fff;border:1px solid var(--border);border-radius:16px;padding:30px;text-align:center}
+  .eco .circle{margin-bottom:18px}
+  .eco h3{font-size:19px;font-weight:700;font-family:var(--sans)}
+  .eco p{font-size:14.5px;color:var(--muted);margin-top:9px}
+
+  /* FINAL CTA */
+  .final{background:var(--navy);color:#fff;text-align:center;padding:104px 0 0}
+  .final h2{font-size:clamp(34px,4.6vw,54px);font-weight:700;line-height:1.1}
+  .final-cta{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:34px}
+  .final-foot{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;border-top:1px solid rgba(255,255,255,.12);margin-top:80px;padding:26px 0}
+  .final-foot img{height:26px;width:auto}
+  .foot-links{display:flex;gap:22px;flex-wrap:wrap}
+  .foot-links a{font-size:13.5px;color:rgba(255,255,255,.6)}
+  .foot-links a:hover{color:#fff}
+
+  .reveal{opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease}
+  .reveal.in{opacity:1;transform:none}
+
+  @media(max-width:920px){
+    .statgrid,.eco-grid{grid-template-columns:1fr}
+    .proof-grid{grid-template-columns:1fr}
+    .arrow{display:none}
+    .step{max-width:none}
+    .sf-grid{grid-template-columns:repeat(2,1fr)}
+  }
+  @media(max-width:680px){
+    .wrap{padding:0 20px}
+    .sec{padding:72px 0}
+    .nav-links{display:none}
+    .menu-btn{display:block}
+    .nav-links.open{display:flex;position:absolute;top:70px;left:0;right:0;flex-direction:column;background:#fff;border-bottom:1px solid var(--border);padding:18px 24px;gap:16px}
+    .sf-grid{grid-template-columns:repeat(2,1fr)}
+    .sf{padding:18px}
+    .quoteband,.final{padding-left:0;padding-right:0}
+  }
+
+  /* DEMO REQUEST MODAL */
+  .ovl{position:fixed;inset:0;z-index:200;display:none;align-items:center;justify-content:center;padding:20px}
+  .ovl.open{display:flex}
+  .ovl-bd{position:absolute;inset:0;background:rgba(5,5,31,.55);backdrop-filter:blur(4px)}
+  .modal{position:relative;background:#fff;border-radius:20px;width:100%;max-width:460px;max-height:92vh;overflow-y:auto;box-shadow:0 24px 70px rgba(5,5,31,.35);padding:34px}
+  .modal-x{position:absolute;top:14px;right:14px;width:34px;height:34px;border-radius:50%;border:1px solid var(--border);background:#fff;color:var(--muted);font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1}
+  .modal-x:hover{color:var(--ink);border-color:var(--ink)}
+  .modal .eyebrow{color:var(--muted)}
+  .modal h3{font-family:var(--serif);font-size:27px;font-weight:700;letter-spacing:-.01em;margin-top:10px;line-height:1.15}
+  .modal .sub{color:var(--muted);font-size:14.5px;margin-top:9px}
+  .fld{margin-top:16px}
+  .fld label{display:block;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:7px}
+  .fld input,.fld select{width:100%;font-family:var(--sans);font-size:15px;color:var(--ink);background:#fff;border:1px solid var(--border);border-radius:11px;padding:12px 14px;transition:.15s}
+  .fld input:focus,.fld select:focus{outline:none;border-color:#8127CF;box-shadow:0 0 0 3px rgba(129,39,207,.14)}
+  .modal .btn-grad{width:100%;justify-content:center;margin-top:22px;padding:14px;font-size:15px}
+  .modal .btn-grad[disabled]{opacity:.6;cursor:default;transform:none;box-shadow:none}
+  .ferr{display:none;color:#D81B60;font-size:13.5px;font-weight:600;margin-top:14px}
+  .ferr.show{display:block}
+  .fnote{text-align:center;font-size:12px;color:#9a9aa5;margin-top:14px}
+  .fmsg{display:none;font-size:13.5px;font-weight:600;color:#D81B60;margin-top:16px;line-height:1.5}
+  .fmsg.show{display:block}
+  .fmsg a{color:#8127CF;text-decoration:underline;font-weight:700}
+  .fok{text-align:center;padding:8px 0 4px}
+  .fok .chk{width:60px;height:60px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;margin:4px auto 18px}
+  .fok h3{font-family:var(--serif);font-size:25px;font-weight:700}
+  .fok p{color:var(--muted);font-size:14.5px;margin-top:10px}
+  .fok .btn{margin-top:22px}
 </style>
 </head>
-<body class="bg-background text-on-surface font-body selection:bg-primary-container selection:text-on-primary-container">
+<body id="top">
 
-<!-- ══════════════════════════════════════════ -->
-<!-- MODAL                                       -->
-<!-- ══════════════════════════════════════════ -->
-<div id="demo-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
-  <div id="modal-backdrop" onclick="closeModal()"></div>
-  <div id="modal-panel">
-    <div id="form-view">
-      <div class="mb-8">
-        <span class="act-pill bg-secondary-container text-on-secondary-container mb-5 block w-fit">Early Access</span>
-        <h2 id="modal-title" class="font-headline text-3xl font-extrabold tracking-tight text-on-background mb-2">Request a Demo</h2>
-        <p class="text-on-surface-variant text-sm leading-relaxed">We'll follow up within one business day to schedule a walkthrough.</p>
-      </div>
-      <form id="demo-form" onsubmit="submitForm(event)" novalidate>
-        <div class="space-y-5">
-          <div>
-            <label class="block text-xs font-semibold font-label uppercase tracking-widest text-on-surface-variant mb-2">Full Name</label>
-            <input type="text" id="field-name" class="form-field" placeholder="Your name" required/>
-          </div>
-          <div>
-            <label class="block text-xs font-semibold font-label uppercase tracking-widest text-on-surface-variant mb-2">Work Email</label>
-            <input type="email" id="field-email" class="form-field" placeholder="you@company.com" required/>
-          </div>
-          <div>
-            <label class="block text-xs font-semibold font-label uppercase tracking-widest text-on-surface-variant mb-2">Company</label>
-            <input type="text" id="field-company" class="form-field" placeholder="Your company" required/>
-          </div>
-          <div>
-            <label class="block text-xs font-semibold font-label uppercase tracking-widest text-on-surface-variant mb-2">You are a...</label>
-            <select id="field-type" class="form-field" required>
-              <option value="" disabled selected>Select one</option>
-              <option value="network">Affiliate Network</option>
-              <option value="platform">Creator Platform</option>
-              <option value="agency">Agency or Managed Service</option>
-              <option value="brand">Brand or Advertiser</option>
-              <option value="other">Other</option>
-            </select>
-          </div>
-          <div id="form-error" class="hidden text-sm text-red-600 font-semibold pt-1">Please fill in all fields.</div>
-        </div>
-        <button type="submit" class="w-full mt-8 bg-primary-gradient text-on-primary rounded-full py-4 font-bold text-base shadow-lg hover:opacity-90 transition-all">Request Demo</button>
-        <p class="text-center text-xs text-on-surface-variant mt-4">No spam. We'll only reach out to schedule your demo.</p>
-      </form>
+<!-- NAV -->
+<nav>
+  <div class="wrap nav-in">
+    <a href="#top" class="brand">Echo<span class="gtext">Tribe</span></a>
+    <div class="nav-links" id="navlinks">
+      <a href="#ecosystem">Solutions <span class="caret">▾</span></a>
+      <a href="#proof">Case Studies</a>
+      <a href="#system">Platform</a>
+      <a href="#ecosystem">Company <span class="caret">▾</span></a>
     </div>
-    <div id="form-success">
-      <div class="w-16 h-16 rounded-full bg-secondary-container flex items-center justify-center mx-auto mb-6">
-        <span class="material-symbols-outlined text-3xl text-on-secondary-container" style="font-variation-settings:'FILL' 1;">check_circle</span>
-      </div>
-      <h3 class="font-headline text-2xl font-extrabold text-on-background mb-3">You're on the list.</h3>
-      <p class="text-on-surface-variant leading-relaxed mb-8">We'll be in touch within one business day. Check your inbox — including spam, just in case.</p>
-      <button onclick="closeModal()" class="w-full bg-surface-container-highest text-on-surface rounded-full py-3 font-bold hover:bg-surface-container-high transition-all">Close</button>
-    </div>
-  </div>
-</div>
-
-<!-- ══════════════════════════════════════════ -->
-<!-- NAV                                         -->
-<!-- ══════════════════════════════════════════ -->
-<nav class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-xl">
-  <div class="flex justify-between items-center px-8 py-4 max-w-7xl mx-auto">
-    <div class="text-2xl font-bold tracking-tighter text-primary font-headline">EchoTribe</div>
-    <div class="flex gap-4 items-center">
-      <a href="mailto:demo@echotribe.ai" class="hidden md:block text-sm text-on-surface-variant hover:text-on-background transition-colors font-label">demo@echotribe.ai</a>
-      <button onclick="openModal()" class="bg-primary-gradient text-on-primary rounded-full px-6 py-2.5 font-bold text-sm hover:opacity-90 transition-all shadow-lg">Book a Demo</button>
+    <div style="display:flex;align-items:center;gap:14px">
+      <a href="#demo" class="btn btn-grad" onclick="openDemo(event)">Request Demo</a>
+      <button class="menu-btn" id="menuBtn" aria-label="Menu">☰</button>
     </div>
   </div>
 </nav>
 
-<main class="pt-24">
-
-  <!-- ══════════════════════════════════════════ -->
-  <!-- HERO                                        -->
-  <!-- ══════════════════════════════════════════ -->
-  <section class="relative px-8 pt-20 pb-32 max-w-7xl mx-auto">
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-      <div class="lg:col-span-7">
-        <span class="act-pill bg-secondary-container text-on-secondary-container mb-6 w-fit flex items-center">
-          <span class="material-symbols-outlined text-xs mr-1" style="font-variation-settings:'FILL' 1;">auto_awesome</span>
-          Creator Commerce Infrastructure
-        </span>
-        <h1 class="font-headline text-6xl md:text-8xl font-extrabold tracking-tighter leading-[0.9] text-on-background mb-8">
-          From first post<br/>to <span class="text-gradient">closed loop.</span>
-        </h1>
-        <p class="text-xl md:text-2xl text-on-surface-variant max-w-xl leading-relaxed mb-10">
-          Organic creator content peaks and the revenue window closes before anyone acts. EchoTribe sits between that content and paid amplification — capturing what currently escapes every network, platform, and agency in the stack.
-        </p>
-        <div class="flex flex-wrap gap-4">
-          <button onclick="openModal()" class="bg-primary-gradient text-on-primary rounded-full px-8 py-4 font-bold text-lg shadow-2xl hover:opacity-90 transition-all">Book a Demo</button>
-          <a href="mailto:demo@echotribe.ai" class="bg-surface-container-highest text-on-surface rounded-full px-8 py-4 font-bold text-lg hover:bg-surface-container-high transition-all flex items-center gap-2">
-            Get in Touch<span class="material-symbols-outlined">arrow_forward</span>
-          </a>
-        </div>
-      </div>
-
-      <div class="lg:col-span-5 relative">
-        <div class="aspect-square rounded-[3rem] overflow-hidden bg-surface-container-low relative shadow-2xl">
-          <img alt="Abstract fluid 3D render with magenta and cyan gradients" class="w-full h-full object-cover"
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDJ0li3qKNT--xWPfmEYtD4_5NoiGvEx0UE80jsIX9miLUnPxkOE9xzAdCsAIauE6KEr5mv_Hn0X9olVrOls7p8pqedgDqLP4mgiFJjC8_i-_CwbXFhlBC9J_ITTysQ7MQJWREgP7Ng_L_lqQKUIvFeiAV7HfUpMJqCMqir96kOVeRhmcQ2uAQpZ2TbmgF20bGRdjCMPoYDdOwuPOHS4XCrmdfjG3jGGU12axt2KwdanMxWQrIvY3hD35P2NRMbC-ENwSQcF140cEsJ"/>
-          <div class="absolute inset-0 bg-gradient-to-t from-primary/20 to-transparent"></div>
-          <div class="absolute bottom-8 -left-8 glass-panel p-6 rounded-2xl shadow-2xl border-l border-t border-white/30 max-w-xs">
-            <div class="flex items-center gap-4 mb-3">
-              <div class="w-10 h-10 rounded-xl bg-primary-container/20 flex items-center justify-center text-primary flex-shrink-0">
-                <span class="material-symbols-outlined text-xl" style="font-variation-settings:'FILL' 1;">insights</span>
-              </div>
-              <div>
-                <div class="text-xs font-bold uppercase tracking-widest text-on-surface-variant font-label">Proof Point · April 2026</div>
-                <div class="text-2xl font-bold font-headline text-on-surface">4.6× ROAS</div>
-              </div>
-            </div>
-            <div class="text-xs text-on-surface-variant font-label">Mommy &amp; Me Collective · paid amplification on organic content</div>
-            <div class="mt-3 h-1.5 w-full bg-surface-container-high rounded-full overflow-hidden">
-              <div class="h-full bg-primary-gradient w-4/5"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ══════════════════════════════════════════ -->
-  <!-- AUDIENCE BENTO                              -->
-  <!-- ══════════════════════════════════════════ -->
-  <section class="py-32 px-8 max-w-7xl mx-auto">
-    <div class="text-center mb-20">
-      <h2 class="font-headline text-5xl font-extrabold tracking-tighter text-on-background max-w-4xl mx-auto">
-        Built for the operators who power the creator economy
-      </h2>
-    </div>
-    <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
-
-      <div class="md:col-span-8 bg-surface-container p-12 rounded-[2.5rem] flex flex-col justify-between overflow-hidden relative group min-h-[280px]">
-        <div class="relative z-10">
-          <span class="material-symbols-outlined text-4xl text-primary mb-4 block" style="font-variation-settings:'FILL' 1;">hub</span>
-          <h3 class="font-headline text-3xl font-bold mb-4">Affiliate Networks</h3>
-          <p class="text-xl text-on-surface-variant max-w-md">Give your publisher network an amplification layer. EchoSignal surfaces highest-converting content across social creators and editorial publishers alike. EchoBoost turns open windows into incremental brand revenue — without replacing any infrastructure you've already built.</p>
-        </div>
-        <div class="mt-8 flex flex-wrap gap-3">
-          <span class="px-4 py-1.5 rounded-full bg-surface-container-lowest text-on-surface text-sm font-semibold font-label">Affiliate Networks</span>
-          <span class="px-4 py-1.5 rounded-full bg-surface-container-lowest text-on-surface text-sm font-semibold font-label">Publisher Programs</span>
-          <span class="px-4 py-1.5 rounded-full bg-surface-container-lowest text-on-surface text-sm font-semibold font-label">Brand Partnerships</span>
-        </div>
-        <div class="absolute top-10 right-10 opacity-5 group-hover:opacity-10 transition-opacity">
-          <span class="material-symbols-outlined text-[10rem]">hub</span>
-        </div>
-      </div>
-
-      <div class="md:col-span-4 bg-primary-gradient text-on-primary p-10 rounded-[2.5rem] flex flex-col justify-end min-h-[280px]">
-        <span class="material-symbols-outlined text-4xl mb-4 opacity-80" style="font-variation-settings:'FILL' 1;">groups</span>
-        <h3 class="font-headline text-3xl font-bold mb-3 leading-tight">Creator Platforms</h3>
-        <p class="opacity-90 leading-relaxed mb-5">Your creators earn more per click and build shoppable infrastructure they actually own — without changing how they create.</p>
-        <div class="flex flex-wrap gap-2">
-          <span class="px-3 py-1 rounded-full bg-white/20 text-on-primary text-xs font-semibold font-label">Social Creators</span>
-          <span class="px-3 py-1 rounded-full bg-white/20 text-on-primary text-xs font-semibold font-label">Content Publishers</span>
-        </div>
-      </div>
-
-      <div class="md:col-span-4 bg-secondary-container text-on-secondary-container p-10 rounded-[2.5rem] flex flex-col justify-end min-h-[260px]">
-        <span class="material-symbols-outlined text-4xl mb-4" style="font-variation-settings:'FILL' 1;">workspace_premium</span>
-        <h3 class="font-headline text-3xl font-bold mb-3 leading-tight">Agencies &amp; Managed Services</h3>
-        <p class="text-on-secondary-container/80 leading-relaxed">Run the full closed loop across your client portfolio. We earn when you earn.</p>
-      </div>
-
-      <div class="md:col-span-8 bg-on-background rounded-[2.5rem] p-12 flex flex-col justify-between relative overflow-hidden min-h-[260px]">
-        <div class="absolute -top-20 -right-20 w-80 h-80 bg-primary/20 rounded-full blur-[80px]"></div>
-        <div class="relative z-10">
-          <div class="text-xs font-bold uppercase tracking-widest font-label mb-3" style="color:#ff7198;">Proof Point · Mommy &amp; Me Collective · April 2026</div>
-          <h4 class="font-headline text-3xl font-bold text-white mb-8 leading-tight">One creator. Three brands.<br/>The loop is live.</h4>
-        </div>
-        <div class="grid grid-cols-3 gap-6 relative z-10">
-          <div><div class="text-4xl font-headline font-extrabold mb-1" style="color:#ff7198;">4.6×</div><div class="text-sm text-white/50 font-label">ROAS on paid amplification</div></div>
-          <div><div class="text-4xl font-headline font-extrabold mb-1" style="color:#ff7198;">$1.75M</div><div class="text-sm text-white/50 font-label">GMV through routed links</div></div>
-          <div><div class="text-4xl font-headline font-extrabold mb-1" style="color:#ff7198;">16.7%</div><div class="text-sm text-white/50 font-label">CVR on Walmart routing</div></div>
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- ══════════════════════════════════════════ -->
-  <!-- THE LOOP — PRODUCT CARDS                    -->
-  <!-- ══════════════════════════════════════════ -->
-  <section class="bg-surface-container-low py-32">
-    <div class="max-w-7xl mx-auto px-8">
-
-      <div class="mb-14">
-        <h2 class="font-headline text-4xl font-extrabold tracking-tight text-on-background mb-4">The EchoTribe Loop</h2>
-        <p class="text-on-surface-variant text-lg max-w-2xl">Two acts. One compounding cycle. Every product feeds the next — and the loop closes back to the beginning stronger than it started.</p>
-      </div>
-
-      <!-- ─ ACT 1 ─ -->
-      <div class="flex items-center gap-4 mb-7">
-        <span class="act-pill bg-primary-container/30 text-primary">Act 01 — Content &amp; Discovery</span>
-        <div class="h-px flex-1 bg-outline-variant/40"></div>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
-
-        <!-- EchoVoice + EchoShop -->
-        <div class="group bg-surface-container-lowest p-8 rounded-[2rem] transition-all hover:-translate-y-2 relative overflow-hidden">
-          <div class="absolute top-0 left-0 right-0 h-1 bg-primary-gradient rounded-t-[2rem]"></div>
-          <div class="flex items-start gap-3 mb-6">
-            <div class="w-12 h-12 rounded-2xl bg-primary-container/30 flex items-center justify-center text-primary flex-shrink-0 group-hover:scale-110 transition-transform">
-              <span class="material-symbols-outlined text-2xl" style="font-variation-settings:'FILL' 1;">mic</span>
-            </div>
-            <div class="w-12 h-12 rounded-2xl bg-primary-container/20 flex items-center justify-center text-primary flex-shrink-0 group-hover:scale-110 transition-transform">
-              <span class="material-symbols-outlined text-2xl" style="font-variation-settings:'FILL' 1;">shopping_bag</span>
-            </div>
-          </div>
-          <div class="flex items-baseline gap-3 mb-1">
-            <h3 class="font-headline text-2xl font-bold">EchoVoice</h3>
-            <span class="text-on-surface-variant font-label text-base">+</span>
-            <h3 class="font-headline text-2xl font-bold">EchoShop</h3>
-          </div>
-          <p class="text-on-surface-variant font-label text-sm uppercase tracking-widest mb-5">Create &amp; Publish</p>
-          <p class="text-on-surface-variant leading-relaxed mb-6">
-            A creator records a voice note about products they love. EchoVoice turns it into a shoppable landing page — in their voice, on their subdomain, with every affiliate link attributed and tracked. EchoShop is that page: curated, conversion-ready, brand-native. The content exists in the world. Now it earns.
-          </p>
-          <div class="bg-surface-container-low rounded-xl p-4">
-            <div class="text-xs font-bold uppercase tracking-widest text-on-surface-variant font-label mb-3">What operators get</div>
-            <div class="space-y-2">
-              <div class="flex items-center gap-2 text-sm text-on-surface-variant">
-                <span class="material-symbols-outlined text-base text-primary" style="font-variation-settings:'FILL' 1;">check_circle</span>
-                Per-creator shoppable pages on branded subdomains
-              </div>
-              <div class="flex items-center gap-2 text-sm text-on-surface-variant">
-                <span class="material-symbols-outlined text-base text-primary" style="font-variation-settings:'FILL' 1;">check_circle</span>
-                Every click attributed — Archer, Levanta, or Associates
-              </div>
-              <div class="flex items-center gap-2 text-sm text-on-surface-variant">
-                <span class="material-symbols-outlined text-base text-primary" style="font-variation-settings:'FILL' 1;">check_circle</span>
-                FB Pixel active — purchase data flows into EchoBoost
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- EchoSignal -->
-        <div class="group bg-surface-container-lowest p-8 rounded-[2rem] transition-all hover:-translate-y-2">
-          <div class="w-14 h-14 rounded-2xl bg-secondary-container flex items-center justify-center text-on-secondary-container mb-8 group-hover:scale-110 transition-transform">
-            <span class="material-symbols-outlined text-3xl" style="font-variation-settings:'FILL' 1;">radar</span>
-          </div>
-          <h3 class="font-headline text-2xl font-bold mb-1">EchoSignal</h3>
-          <p class="text-on-surface-variant font-label text-sm uppercase tracking-widest mb-5">Monitor &amp; Detect</p>
-          <p class="text-on-surface-variant leading-relaxed mb-6">
-            Watches every link and every post across every creator. Measures click velocity, affiliate conversion rate, and audience engagement simultaneously. Flags the amplification window the moment organic content earns it — before the peak closes and the revenue escapes.
-          </p>
-          <div class="bg-surface-container-low rounded-xl p-4">
-            <div class="text-xs font-bold uppercase tracking-widest text-on-surface-variant font-label mb-3">Signal sources</div>
-            <div class="flex flex-wrap gap-2">
-              <span class="px-3 py-1 rounded-full bg-secondary-container text-on-secondary-container text-xs font-semibold font-label">URLGenius velocity</span>
-              <span class="px-3 py-1 rounded-full bg-secondary-container text-on-secondary-container text-xs font-semibold font-label">Archer click delta</span>
-              <span class="px-3 py-1 rounded-full bg-secondary-container text-on-secondary-container text-xs font-semibold font-label">Amazon units</span>
-              <span class="px-3 py-1 rounded-full bg-secondary-container text-on-secondary-container text-xs font-semibold font-label">Meta engagement</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ─ ACT 2 ─ -->
-      <div class="flex items-center gap-4 mb-7">
-        <span class="act-pill bg-inverse-surface text-on-secondary">Act 02 — Route &amp; Amplify</span>
-        <div class="h-px flex-1 bg-outline-variant/40"></div>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-
-        <!-- EchoRoute -->
-        <div class="group bg-surface-container-lowest p-8 rounded-[2rem] transition-all hover:-translate-y-2">
-          <div class="w-14 h-14 rounded-2xl bg-tertiary-fixed flex items-center justify-center text-on-tertiary-fixed mb-8 group-hover:scale-110 transition-transform">
-            <span class="material-symbols-outlined text-3xl" style="font-variation-settings:'FILL' 1;">alt_route</span>
-          </div>
-          <h3 class="font-headline text-2xl font-bold mb-1">EchoRoute</h3>
-          <p class="text-on-surface-variant font-label text-sm uppercase tracking-widest mb-5">Route &amp; Maximize</p>
-          <p class="text-on-surface-variant leading-relaxed mb-6">
-            Every click routes to its highest-converting retailer based on real CVR data — Archer, Levanta, or Associates. Creator permission is always required before any routing change. Bonus structures and network commitments are respected automatically. No surprises.
-          </p>
-          <div class="bg-surface-container-low rounded-xl p-4">
-            <div class="text-xs font-bold uppercase tracking-widest text-on-surface-variant font-label mb-3">Routing logic · live data</div>
-            <div class="space-y-1.5">
-              <div class="flex justify-between text-sm"><span class="text-on-surface-variant">Toys &amp; Baby</span><span class="font-semibold text-on-background">Walmart · 16.7% CVR</span></div>
-              <div class="flex justify-between text-sm"><span class="text-on-surface-variant">Beauty</span><span class="font-semibold text-on-background">Ulta · highest EPC</span></div>
-              <div class="flex justify-between text-sm"><span class="text-on-surface-variant">Home &amp; Outdoor</span><span class="font-semibold text-on-background">Wayfair · highest AOV</span></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- EchoBoost -->
-        <div class="group bg-surface-container-lowest p-8 rounded-[2rem] transition-all hover:-translate-y-2 relative overflow-hidden">
-          <div class="absolute top-0 left-0 right-0 h-1 bg-primary-gradient rounded-t-[2rem]"></div>
-          <div class="w-14 h-14 rounded-2xl bg-inverse-surface flex items-center justify-center text-on-secondary mb-8 group-hover:scale-110 transition-transform">
-            <span class="material-symbols-outlined text-3xl" style="font-variation-settings:'FILL' 1;">rocket_launch</span>
-          </div>
-          <h3 class="font-headline text-2xl font-bold mb-1">EchoBoost</h3>
-          <p class="text-on-surface-variant font-label text-sm uppercase tracking-widest mb-5">Amplify &amp; Convert</p>
-          <p class="text-on-surface-variant leading-relaxed mb-6">
-            When EchoSignal opens the window, brand budget fires on the creator's organic content — the post, the voice, the recommendation that already earned it. Not a scheduled campaign. Not guesswork. Traction-triggered. The right content reaches a paid audience at exactly the right moment.
-          </p>
-          <div class="bg-surface-container-low rounded-xl p-4">
-            <div class="text-xs font-bold uppercase tracking-widest text-on-surface-variant font-label mb-3">Live proof point</div>
-            <div class="flex gap-5">
-              <div><div class="text-xl font-headline font-bold text-on-background">4.6×</div><div class="text-xs text-on-surface-variant font-label">ROAS</div></div>
-              <div><div class="text-xl font-headline font-bold text-on-background">$1.75M</div><div class="text-xs text-on-surface-variant font-label">Routed GMV</div></div>
-              <div><div class="text-xl font-headline font-bold text-on-background">$170k+</div><div class="text-xs text-on-surface-variant font-label">Creator earnings</div></div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Loop closing indicator -->
-      <div class="flex items-center justify-center mt-10 gap-4">
-        <div class="h-px flex-1 bg-outline-variant/30"></div>
-        <div class="flex items-center gap-2 text-sm font-semibold font-label text-on-surface-variant">
-          <span class="material-symbols-outlined text-base text-primary">loop</span>
-          EchoBoost performance feeds back into EchoSignal — every cycle gets smarter
-        </div>
-        <div class="h-px flex-1 bg-outline-variant/30"></div>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- ══════════════════════════════════════════ -->
-  <!-- ONCE ECHOBOOST FIRES                        -->
-  <!-- ══════════════════════════════════════════ -->
-  <section class="py-32 bg-on-background overflow-hidden">
-    <div class="max-w-7xl mx-auto px-8 relative">
-
-      <div class="absolute -top-40 -right-40 w-[500px] h-[500px] bg-primary/15 rounded-full blur-[120px] pointer-events-none"></div>
-      <div class="absolute -bottom-40 -left-20 w-[400px] h-[400px] rounded-full blur-[100px] pointer-events-none" style="background:rgba(127,237,254,.05);"></div>
-
-      <div class="relative z-10 mb-16">
-        <span class="act-pill mb-6 block w-fit" style="background:rgba(255,113,152,.15);color:#ff7198;">Once EchoBoost fires</span>
-        <h2 class="font-headline text-5xl md:text-6xl font-extrabold tracking-tighter text-white leading-tight mb-6">
-          Four things happen.<br/><span style="color:#ff7198;">All of them compound.</span>
-        </h2>
-        <p class="text-xl text-white/60 max-w-2xl leading-relaxed">
-          The paid amplification event isn't the end of the loop — it's the beginning of the intelligence layer. Every campaign produces data that makes the next cycle stronger, and feeds directly back into what creators post next.
-        </p>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 relative z-10">
-
-        <!-- 01 -->
-        <div class="outcome-card">
-          <div class="outcome-num">01</div>
-          <div class="outcome-icon"><span class="material-symbols-outlined text-2xl" style="color:#ff7198;font-variation-settings:'FILL' 1;">trending_up</span></div>
-          <h3 class="font-headline text-2xl font-bold text-white mb-3">Ads that start strong</h3>
-          <p class="text-white/60 leading-relaxed">Signal and Route data means the first campaign already knows what product converts, what audience buys, and which retailer pays highest. EchoBoost doesn't run a test — it runs a launch. The creative is proven organic content. The targeting is real purchase-intent data, not an assumption.</p>
-        </div>
-
-        <!-- 02 -->
-        <div class="outcome-card">
-          <div class="outcome-num">02</div>
-          <div class="outcome-icon"><span class="material-symbols-outlined text-2xl" style="color:#ff7198;font-variation-settings:'FILL' 1;">labs</span></div>
-          <h3 class="font-headline text-2xl font-bold text-white mb-3">Dark post testing &amp; retargeting</h3>
-          <p class="text-white/60 leading-relaxed">Paid performance generates new ad variants automatically. Dark post testing runs against the audience that already converted organically — the highest-intent retargeting pool available. New creative is built from the same voice-to-content pipeline, tested quietly before any budget scales.</p>
-        </div>
-
-        <!-- 03 -->
-        <div class="outcome-card">
-          <div class="outcome-num">03</div>
-          <div class="outcome-icon"><span class="material-symbols-outlined text-2xl" style="color:#ff7198;font-variation-settings:'FILL' 1;">dashboard</span></div>
-          <h3 class="font-headline text-2xl font-bold text-white mb-3">Performance &amp; recommendation dashboards</h3>
-          <p class="text-white/60 leading-relaxed">Operators see what's working across every creator, every brand, every campaign — in one place. The recommendation engine surfaces the next move: which creator to boost, which product is approaching a signal window, which routing change will lift EPC. Intelligence that compounds across the entire portfolio.</p>
-        </div>
-
-        <!-- 04 — highlighted, loop-back card -->
-        <div class="outcome-card outcome-highlight">
-          <div class="outcome-num">04</div>
-          <div class="outcome-icon" style="background:rgba(255,113,152,.25);"><span class="material-symbols-outlined text-2xl" style="color:#ff7198;font-variation-settings:'FILL' 1;">auto_awesome</span></div>
-          <h3 class="font-headline text-2xl font-bold text-white mb-3">EchoShop pages built from signal data</h3>
-          <p class="text-white/60 leading-relaxed">The highest-signal products — proven by real purchase data, real click velocity, real ROAS — become curated EchoShop pages. Creators get told exactly what to post next, with the data behind it. Organic posting with confidence, not guesswork. The loop closes back to Act 1, and the next cycle starts stronger than the last.</p>
-          <div class="mt-5 flex items-center gap-2 text-sm font-semibold" style="color:#ff7198;">
-            <span class="material-symbols-outlined text-base">loop</span>
-            Returns to EchoVoice + EchoShop
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- ══════════════════════════════════════════ -->
-  <!-- ROI                                         -->
-  <!-- ══════════════════════════════════════════ -->
-  <section class="py-32 bg-on-background overflow-hidden">
-    <div class="max-w-7xl mx-auto px-8 relative">
-      <div class="absolute -top-40 -right-40 w-[600px] h-[600px] bg-primary/20 rounded-full blur-[120px]"></div>
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center relative z-10">
-        <div>
-          <h2 class="font-headline text-5xl md:text-6xl font-extrabold tracking-tighter mb-8 leading-tight text-white">
-            The longer you run it,<br/><span style="color:#ff7198;">the smarter it gets.</span>
-          </h2>
-          <p class="text-xl text-white/60 max-w-lg mb-12 leading-relaxed">Each signal improves routing. Better routing improves page conversion. Higher conversion gives EchoBoost more signal to amplify. And every campaign tells creators exactly what to post next.</p>
-          <div class="space-y-6">
-            <div class="flex items-start gap-4">
-              <div class="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 mt-1" style="background:rgba(255,113,152,.2);">
-                <span class="material-symbols-outlined text-lg" style="color:#ff7198;">check</span>
-              </div>
-              <div>
-                <h4 class="text-lg font-bold text-white">Traction-triggered amplification</h4>
-                <p class="text-white/50">Campaigns fire when organic content earns it — not on a schedule. The data decides the moment.</p>
-              </div>
-            </div>
-            <div class="flex items-start gap-4">
-              <div class="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 mt-1" style="background:rgba(255,113,152,.2);">
-                <span class="material-symbols-outlined text-lg" style="color:#ff7198;">check</span>
-              </div>
-              <div>
-                <h4 class="text-lg font-bold text-white">Commission-path routing</h4>
-                <p class="text-white/50">Every click routes to the highest-converting retailer for that creator's audience — real CVR data, creator permission always required.</p>
-              </div>
-            </div>
-            <div class="flex items-start gap-4">
-              <div class="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 mt-1" style="background:rgba(255,113,152,.2);">
-                <span class="material-symbols-outlined text-lg" style="color:#ff7198;">check</span>
-              </div>
-              <div>
-                <h4 class="text-lg font-bold text-white">Signal-driven content calendar</h4>
-                <p class="text-white/50">Paid performance feeds back into EchoShop — creators get told exactly what to post next, backed by real purchase data.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="bg-white/5 backdrop-blur-xl border border-white/10 p-12 rounded-[3rem]">
-          <div class="mb-12">
-            <div class="text-sm font-label uppercase tracking-widest mb-2" style="color:#ff7198;">Proof Point · Mommy &amp; Me Collective</div>
-            <h3 class="text-4xl font-headline font-bold text-white">Live Deployment · April 2026</h3>
-          </div>
-          <div class="space-y-10">
-            <div>
-              <div class="text-5xl font-headline font-extrabold mb-2" style="color:#ff7198;">$170k+</div>
-              <div class="text-white/50">Creator earnings generated via EchoTribe-managed infrastructure</div>
-            </div>
-            <div class="h-px bg-white/10 w-full"></div>
-            <div class="grid grid-cols-2 gap-8">
-              <div><div class="text-3xl font-headline font-bold text-white mb-1">4.6×</div><div class="text-sm text-white/50">ROAS · paid amplification</div></div>
-              <div><div class="text-3xl font-headline font-bold text-white mb-1">16.7%</div><div class="text-sm text-white/50">CVR · Walmart routing</div></div>
-            </div>
-            <button onclick="openModal()" class="w-full py-4 rounded-full border font-bold transition-colors" style="border-color:#ff7198;color:#ff7198;" onmouseover="this.style.background='#ff7198';this.style.color='#4d001e';" onmouseout="this.style.background='';this.style.color='#ff7198';">
-              Book a Demo
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ══════════════════════════════════════════ -->
-  <!-- CTA                                         -->
-  <!-- ══════════════════════════════════════════ -->
-  <section class="py-32 px-8">
-    <div class="max-w-5xl mx-auto bg-primary-gradient rounded-[3rem] p-16 text-center text-on-primary relative overflow-hidden shadow-2xl">
-      <div class="absolute inset-0 opacity-20 pointer-events-none" style="background-image:radial-gradient(circle at 2px 2px, white 1px, transparent 0);background-size:24px 24px;"></div>
-      <span class="act-pill bg-white/20 text-on-primary mb-8 relative z-10 mx-auto w-fit block">Active deployment · April 2026</span>
-      <h2 class="font-headline text-5xl md:text-6xl font-extrabold tracking-tighter mb-6 relative z-10">Ready to close the loop?</h2>
-      <p class="text-xl md:text-2xl opacity-90 mb-12 max-w-2xl mx-auto relative z-10">EchoTribe is in active deployment with one creator and three brands. We're selective about who we onboard next.</p>
-      <div class="flex flex-col md:flex-row gap-6 justify-center items-center relative z-10">
-        <button onclick="openModal()" class="bg-surface-container-lowest text-primary px-10 py-5 rounded-full font-bold text-xl shadow-xl hover:scale-105 transition-transform">Book a Demo</button>
-        <a href="mailto:demo@echotribe.ai" class="bg-white/20 backdrop-blur-md text-on-primary px-10 py-5 rounded-full font-bold text-xl border border-white/30 hover:bg-white/30 transition-all">Get Early Access</a>
-      </div>
-    </div>
-  </section>
-
-</main>
-
-<!-- ══════════════════════════════════════════ -->
-<!-- FOOTER                                      -->
-<!-- ══════════════════════════════════════════ -->
-<footer class="bg-surface-container-low w-full mt-auto">
-  <div class="px-8 py-12 max-w-7xl mx-auto text-sm">
-    <div class="flex flex-col md:flex-row justify-between items-start gap-12">
-      <div class="space-y-4">
-        <div class="text-lg font-bold text-on-background font-headline">EchoTribe</div>
-        <p class="text-on-surface-variant max-w-xs leading-relaxed">Creator commerce infrastructure. Built for operators, powered by data, invisible to creators.</p>
-        <a href="mailto:demo@echotribe.ai" class="inline-block text-primary font-semibold hover:text-primary-dim transition-colors">demo@echotribe.ai</a>
-      </div>
-      <button onclick="openModal()" class="bg-primary-gradient text-on-primary rounded-full px-8 py-3 font-bold shadow-lg hover:opacity-90 transition-all">Book a Demo</button>
-    </div>
-    <div class="mt-12 pt-8 border-t border-on-surface-variant/10 text-on-surface-variant flex flex-col md:flex-row justify-between items-center gap-4">
-      <span>© 2026 EchoTribe. All rights reserved.</span>
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-glow"></div>
+  <div class="wrap">
+    <h1>Creator commerce,<br>run as a <span class="grad">system</span>.</h1>
+    <p>EchoTribe is the operating layer that transforms influencer marketing into a predictable, revenue-generating machine for top-tier brands and retailers.</p>
+    <div class="hero-cta">
+      <a href="#ecosystem" class="btn btn-grad">Partner with EchoTribe</a>
+      <a href="#proof" class="btn btn-outline">See the proof</a>
     </div>
   </div>
-</footer>
+</header>
+
+<!-- STAT BAND -->
+<section class="wrap" style="padding-bottom:24px">
+  <div class="statgrid">
+    <div class="statcard">
+      <div class="top">
+        <span class="icobox"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></span>
+        <span class="live"><span class="ld"></span>Live Dashboard</span>
+      </div>
+      <div class="statnum">$27M+</div>
+      <div class="statlbl">Tracked GMV · 2025–26</div>
+    </div>
+    <div class="statcard">
+      <div class="top">
+        <span class="icobox"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3l7 17 2-7 7-2z"/></svg></span>
+        <span class="live"><span class="ld"></span>Live Data</span>
+      </div>
+      <div class="statnum">16.9%</div>
+      <div class="statlbl">Avg. Click-Through Rate</div>
+    </div>
+    <div class="statcard">
+      <div class="top">
+        <span class="icobox"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/></svg></span>
+        <span class="live"><span class="ld"></span>Live Data</span>
+      </div>
+      <div class="statnum">4.4M</div>
+      <div class="statlbl">Tracked Clicks · 6 mo</div>
+    </div>
+  </div>
+</section>
+
+<!-- THE PROOF -->
+<section class="sec proof" id="proof">
+  <div class="wrap">
+    <div class="sechead reveal">
+      <span class="eyebrow">The Proof</span>
+      <h2>A System Built on <span class="grad">Proven Performance</span></h2>
+    </div>
+    <div class="proof-grid">
+      <div class="case reveal">
+        <span class="eyebrow">Case Study</span>
+        <h3>The Mommy &amp; Me Collective</h3>
+        <p>The featured client EchoTribe was built around — a trusted shopping voice for moms across the top retailers, with an always-on storefront and proven paid amplification. Not just an influencer: a community leader, fronting a performance marketing operation run entirely by EchoTribe.</p>
+        <a href="#ecosystem" class="btn btn-grad">Partner with EchoTribe</a>
+      </div>
+      <div class="roi reveal">
+        <div class="glow"></div>
+        <div class="lbl">Managed Ad Spend &amp; ROI</div>
+        <div class="big"><span class="gtext">$37K</span> in managed ad spend →<br><span class="gtext">$2M+</span> in retailer revenue</div>
+        <div class="chart">
+          <svg viewBox="0 0 380 130" width="100%" height="120" preserveAspectRatio="none">
+            <defs>
+              <linearGradient id="ln" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#8127CF"/><stop offset="1" stop-color="#EC1A8D"/></linearGradient>
+              <linearGradient id="ar" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#EC1A8D" stop-opacity=".35"/><stop offset="1" stop-color="#EC1A8D" stop-opacity="0"/></linearGradient>
+            </defs>
+            <path d="M0,118 L40,108 L90,112 L140,86 L190,74 L240,52 L300,34 L380,10 L380,130 L0,130 Z" fill="url(#ar)"/>
+            <path d="M0,118 L40,108 L90,112 L140,86 L190,74 L240,52 L300,34 L380,10" fill="none" stroke="url(#ln)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="roi-foot">
+          <div><div class="n">1.6M</div><div class="l">Reach via paid amplification</div></div>
+          <div><div class="n">21.7%</div><div class="l">Top campaign CTR</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- THE SYSTEM -->
+<section class="sec" id="system">
+  <div class="wrap">
+    <div class="sechead reveal">
+      <span class="eyebrow">The System</span>
+      <h2>Signals In. Revenue Out.<br><span class="grad">No Lag.</span></h2>
+      <p>One connected system — not five platforms that don't talk to each other.</p>
+    </div>
+    <div class="steps">
+      <div class="step reveal">
+        <div class="circle"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.1 6.3L20 11l-5.9 1.7L12 19l-2.1-6.3L4 11l5.9-1.7z"/></svg></div>
+        <h3>What to promote</h3><p>Real-time deal and performance signal surfaces the next product while it's still moving.</p>
+      </div>
+      <div class="arrow">→</div>
+      <div class="step reveal">
+        <div class="circle"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/></svg></div>
+        <h3>Where the click goes</h3><p>Every link routed to the right destination and tracked end to end — nothing leaks.</p>
+      </div>
+      <div class="arrow">→</div>
+      <div class="step reveal">
+        <div class="circle"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10v4h4l6 4V6L7 10H3z"/><path d="M17 9a4 4 0 0 1 0 6"/></svg></div>
+        <h3>Whether to amplify</h3><p>Put paid behind what's already converting — and tie every dollar back to revenue.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LIVE DEMO -->
+<section class="sec" id="demo" style="padding-top:0">
+  <div class="wrap">
+    <div class="sechead reveal">
+      <span class="eyebrow">Live Demo</span>
+      <h2>An Always-On Storefront,<br>Built from <span class="grad">Real Sales</span>.</h2>
+      <div class="demo-note"><span class="ndot"></span>Live preview — full storefront launches Q3 2026</div>
+    </div>
+    <div class="browser reveal">
+      <div class="bbar">
+        <span class="bdot" style="background:#FF5F57"></span><span class="bdot" style="background:#FEBC2E"></span><span class="bdot" style="background:#28C840"></span>
+        <span class="burl">shop.mommyandmecollective.com</span>
+      </div>
+      <div class="sf">
+        <div class="sf-title">Trending with Steph</div>
+        <div class="sf-sub">Fresh finds hand-picked for your busy days, little moments, and everything in between.</div>
+        <button class="sf-ai">✨ Find with AI</button>
+        <div class="sf-upd">Updated 2026-06-03 · refreshes from live performance data</div>
+        <div class="sf-search"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9a9aa5" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg> Search trending finds</div>
+        <div class="sf-pills"><span class="sf-pill on">All</span><span class="sf-pill">Kids</span><span class="sf-pill">Toys</span><span class="sf-pill">Home</span><span class="sf-pill">Beauty</span><span class="sf-pill">Pets</span><span class="sf-pill">Outdoor</span><span class="sf-pill">Garden</span></div>
+        <div class="sf-sec-h">
+          <div><div class="st">Trending right now</div><div class="ss">The products moving fastest by units and earnings.</div></div>
+          <span class="sf-va">View all →</span>
+        </div>
+        <div class="sf-grid">
+          <div class="sfcard"><div class="sfimg"><span class="rank">#1 trending</span><span class="heart">♡</span><img src="https://i5.walmartimages.com/seo/Blackstone-Original-4-Burner-36-Propane-Omnivore-Griddle-with-Hard-Cover_bb0f19b1-803c-417b-b655-489d1ae2c1da.998a124cf4d114689dc8963c7f5dd8c8.jpeg?odnHeight=450&odnWidth=450&odnBg=FFFFFF" alt="" loading="lazy"></div><div class="sfmeta"><div class="br">Blackstone</div><div class="tt">Blackstone Original Outdoor Griddle, 4-Burner 36&quot; Flat Top</div><div class="pr">$297.00</div><button class="buy">Buy Now</button></div></div>
+          <div class="sfcard"><div class="sfimg"><span class="rank">#2 trending</span><span class="heart">♡</span><img src="https://i5.walmartimages.com/seo/CM-22FT-ROUND-POOL_f932bff0-b588-4ecd-94be-26a3ab6ccaf9.15678573412ed4daa042de2cf1ccc524.jpeg?odnHeight=450&odnWidth=450&odnBg=FFFFFF" alt="" loading="lazy"></div><div class="sfmeta"><div class="br">Coleman</div><div class="tt">Coleman Power Steel 22 ft. Round Metal Frame Pool Set</div><div class="pr">$598.00</div><button class="buy">Buy Now</button></div></div>
+          <div class="sfcard"><div class="sfimg"><span class="rank">#3 trending</span><span class="heart">♡</span><img src="https://i5.walmartimages.com/seo/LAZZO-2-Seat-Outdoor-Patio-Swing-Chair-Canopy-Swing-with-Cooler-Removable-Cushion-Weather-Resistant-Steel-Frame-Hanging-Porch-Swing-Gray_0dd8a86d-9a70-4720-a4aa-b07e3827217f.c44d297e3a66910b80f3fcf4840b22e5.jpeg?odnHeight=450&odnWidth=450&odnBg=FFFFFF" alt="" loading="lazy"></div><div class="sfmeta"><div class="br">Lazzo</div><div class="tt">LAZZO 2-Seat Outdoor Patio Swing Chair with Canopy</div><div class="pr">$139.99</div><button class="buy">Buy Now</button></div></div>
+          <div class="sfcard"><div class="sfimg"><span class="rank">#4 trending</span><span class="heart">♡</span><img src="https://i5.walmartimages.com/seo/Razor-Dirt-Quad-24V-Powered-Ride-on-12-Knobby-Tires-up-to-8-mph-Electric-4-Wheeler-for-Kids-8_ce1bbf27-1cfe-426f-b2d1-0a84f6c492ce.d2f6c27ecad360e4161964039b3a6edd.png?odnHeight=450&odnWidth=450&odnBg=FFFFFF" alt="" loading="lazy"></div><div class="sfmeta"><div class="br">Razor</div><div class="tt">Razor Dirt Quad 24V Electric Ride-On for Kids 8+</div><div class="pr">$478.00</div><button class="buy">Buy Now</button></div></div>
+          <div class="sfcard"><div class="sfimg"><span class="rank">#5 trending</span><span class="heart">♡</span><img src="https://m.media-amazon.com/images/I/81i7-o7KpOL._AC_SL1500_.jpg" alt="" loading="lazy"></div><div class="sfmeta"><div class="br">Ninja</div><div class="tt">Ninja SLUSHi Frozen Drink &amp; Slushie Machine</div><div class="pr">$259.00</div><button class="buy">Buy Now</button></div></div>
+          <div class="sfcard"><div class="sfimg"><span class="rank">#6 trending</span><span class="heart">♡</span><img src="https://m.media-amazon.com/images/I/313UOylugcL._SL500_.jpg" alt="" loading="lazy"></div><div class="sfmeta"><div class="br">Keter</div><div class="tt">Keter 150 Gallon Resin Large Deck Box</div><div class="pr">$159.99</div><button class="buy">Buy Now</button></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="demo-cta reveal">
+      <a href="https://shop.mommyandmecollective.com/" target="_blank" rel="noopener" class="btn btn-grad">Explore the live demo</a>
+    </div>
+  </div>
+</section>
+
+<!-- QUOTE -->
+<section class="quoteband">
+  <div class="wrap">
+    <div class="bigquote reveal">"Performance, powered by systems <span class="gtext">—</span> not people."</div>
+    <div class="qby reveal"><a href="https://keeponlearningwithlaura.substack.com/p/me-myself-and-ai-what-happens-when?" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;text-underline-offset:3px">Laura Press · "Me, Myself &amp; AI" · 2026</a></div>
+  </div>
+</section>
+
+<!-- ECOSYSTEM -->
+<section class="sec" id="ecosystem">
+  <div class="wrap">
+    <div class="sechead reveal">
+      <span class="eyebrow">Ecosystem</span>
+      <h2>Built to Plug Into<br>Your <span class="grad">Ecosystem</span>.</h2>
+    </div>
+    <div class="eco-grid">
+      <div class="eco reveal">
+        <div class="circle"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linejoin="round"><path d="M12 2l9 5-9 5-9-5 9-5zM3 12l9 5 9-5M3 17l9 5 9-5"/></svg></div>
+        <h3>For Platforms</h3><p>Turn reach into revenue — layer attribution and amplification onto your creator base.</p>
+      </div>
+      <div class="eco reveal">
+        <div class="circle"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3h11l3 3v15H5zM9 8h7M9 12h7M9 16h4"/></svg></div>
+        <h3>For Publishers</h3><p>Activate dormant signal — convert content traffic into a measurable performance channel.</p>
+      </div>
+      <div class="eco reveal">
+        <div class="circle"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="6" r="2.5"/><circle cx="12" cy="18" r="2.5"/><path d="M7.5 7.5L11 16M16.5 7.5L13 16"/></svg></div>
+        <h3>For Networks</h3><p>Scale the operation — give your roster the system one operator ran by hand.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="final">
+  <div class="wrap">
+    <h2 class="reveal">Let's connect signals to <span class="grad">revenue</span>.</h2>
+    <div class="final-cta reveal">
+      <a href="#demo" class="btn btn-grad" onclick="openDemo(event)">Partner with EchoTribe</a>
+      <a href="https://shop.mommyandmecollective.com/mediakit" target="_blank" rel="noopener" class="btn btn-outline-light">View the media kit</a>
+    </div>
+    <div class="final-foot">
+      <img src="data:image/png;base64,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" alt="EchoTribe" />
+      <div class="foot-links">
+        <a href="#proof">Proof of Concept</a>
+        <a href="#system">Platform</a>
+        <a href="#ecosystem">Ecosystem</a>
+        <a href="mailto:demo@echotribe.ai">demo@echotribe.ai</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DEMO REQUEST MODAL -->
+<div class="ovl" id="demoOvl" role="dialog" aria-modal="true" aria-labelledby="demoTitle">
+  <div class="ovl-bd" onclick="closeDemo()"></div>
+  <div class="modal">
+    <button class="modal-x" onclick="closeDemo()" aria-label="Close">✕</button>
+    <div id="demoView">
+      <span class="eyebrow">Early Access</span>
+      <h3 id="demoTitle">Request a demo</h3>
+      <p class="sub">Tell us a little about you and we'll follow up within one business day to schedule a walkthrough.</p>
+      <form id="demoForm" novalidate>
+        <div class="fld"><label for="d-name">Full name</label><input id="d-name" name="name" type="text" placeholder="Your name" required></div>
+        <div class="fld"><label for="d-email">Work email</label><input id="d-email" name="email" type="email" placeholder="you@company.com" required></div>
+        <div class="fld"><label for="d-company">Company</label><input id="d-company" name="company" type="text" placeholder="Your company" required></div>
+        <div class="fld"><label for="d-role">You are a…</label>
+          <select id="d-role" name="role" required>
+            <option value="" disabled selected>Select one</option>
+            <option>Brand or Advertiser</option>
+            <option>Creator Platform</option>
+            <option>Affiliate Network</option>
+            <option>Agency or Managed Service</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <input type="checkbox" name="botcheck" style="display:none" tabindex="-1" autocomplete="off">
+        <div class="ferr" id="demoErr">Please fill in all fields.</div>
+        <button type="submit" class="btn btn-grad">Request demo</button>
+        <div class="fmsg" id="demoStatus" role="alert"></div>
+        <p class="fnote">No spam. We'll only reach out to schedule your demo.</p>
+      </form>
+    </div>
+    <div id="demoOk" class="fok" style="display:none">
+      <div class="chk"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div>
+      <h3>You're on the list.</h3>
+      <p>Thanks — we'll be in touch within one business day. Check your inbox (including spam, just in case).</p>
+      <button class="btn btn-outline" onclick="closeDemo()">Close</button>
+    </div>
+  </div>
+</div>
 
 <script>
-  function openModal(){
-    document.getElementById('demo-modal').classList.add('open');
-    document.body.style.overflow='hidden';
-    document.getElementById('form-view').style.display='block';
-    document.getElementById('form-success').style.display='none';
-    document.getElementById('form-error').classList.add('hidden');
-    document.getElementById('demo-form').reset();
+  const mb=document.getElementById('menuBtn'), nl=document.getElementById('navlinks');
+  mb&&mb.addEventListener('click',()=>nl.classList.toggle('open'));
+  nl&&nl.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>nl.classList.remove('open')));
+  const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.12});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+  /* ── DEMO REQUEST FORM ───────────────────────────────────────────────
+     Submissions POST to Web3Forms and are emailed to demo@echotribe.ai.
+     The access key below is a publishable client-side key (safe to expose).
+     On success → in-page "You're on the list" card.
+     On any failure (network error, spam rejection, etc.) → an inline message
+     with a prefilled mailto link the visitor can click — NO auto mail popup.
+     The full Web3Forms response is logged to the console ([demo-form] …). */
+  const WEB3FORMS_KEY='0a20b90a-5333-40aa-8486-f80b914f8391';
+  const DEMO_EMAIL='demo@echotribe.ai';
+
+  const demoOvl=document.getElementById('demoOvl');
+  let demoLastFocus=null;
+  function openDemo(e){ if(e&&e.preventDefault)e.preventDefault();
+    demoLastFocus=document.activeElement;
+    document.getElementById('demoView').style.display='block';
+    document.getElementById('demoOk').style.display='none';
+    document.getElementById('demoErr').classList.remove('show');
+    document.getElementById('demoForm').reset();
+    demoOvl.classList.add('open'); document.body.style.overflow='hidden';
+    setTimeout(()=>document.getElementById('d-name').focus(),40);
   }
-  function closeModal(){
-    document.getElementById('demo-modal').classList.remove('open');
-    document.body.style.overflow='';
+  function closeDemo(){ demoOvl.classList.remove('open'); document.body.style.overflow='';
+    if(demoLastFocus&&demoLastFocus.focus)demoLastFocus.focus();
   }
-  document.addEventListener('keydown',function(e){if(e.key==='Escape')closeModal();});
-  function submitForm(e){
+  document.addEventListener('keydown',e=>{ if(e.key==='Escape'&&demoOvl.classList.contains('open'))closeDemo(); });
+  function showDemoOk(){ document.getElementById('demoView').style.display='none'; document.getElementById('demoOk').style.display='block'; }
+
+  const demoForm=document.getElementById('demoForm');
+  const demoStatus=document.getElementById('demoStatus');
+  function setDemoStatus(html){ if(!html){ demoStatus.classList.remove('show'); demoStatus.innerHTML=''; return; } demoStatus.innerHTML=html; demoStatus.classList.add('show'); }
+  function demoMailLink(name,email,company,role){
+    const sub=encodeURIComponent('EchoTribe demo request — '+company);
+    const body=encodeURIComponent('Name: '+name+'\nEmail: '+email+'\nCompany: '+company+'\nYou are a: '+role);
+    return '<a href="mailto:'+DEMO_EMAIL+'?subject='+sub+'&body='+body+'">'+DEMO_EMAIL+'</a>';
+  }
+  demoForm&&demoForm.addEventListener('submit',async function(e){
     e.preventDefault();
-    const name=document.getElementById('field-name').value.trim();
-    const email=document.getElementById('field-email').value.trim();
-    const company=document.getElementById('field-company').value.trim();
-    const type=document.getElementById('field-type').value;
-    const errEl=document.getElementById('form-error');
-    if(!name||!email||!company||!type){errEl.classList.remove('hidden');return;}
-    errEl.classList.add('hidden');
-    const subject=encodeURIComponent('EchoTribe Demo Request — '+company);
-    const body=encodeURIComponent('Name: '+name+'\nEmail: '+email+'\nCompany: '+company+'\nType: '+type);
-    window.location.href='mailto:demo@echotribe.ai?subject='+subject+'&body='+body;
-    setTimeout(function(){
-      document.getElementById('form-view').style.display='none';
-      document.getElementById('form-success').style.display='block';
-    },400);
-  }
+    const name=document.getElementById('d-name').value.trim();
+    const email=document.getElementById('d-email').value.trim();
+    const company=document.getElementById('d-company').value.trim();
+    const role=document.getElementById('d-role').value;
+    const err=document.getElementById('demoErr');
+    if(!name||!email||!company||!role){ err.classList.add('show'); return; }
+    err.classList.remove('show'); setDemoStatus('');
+    const btn=demoForm.querySelector('button[type=submit]'); const orig=btn.textContent;
+    btn.textContent='Sending…'; btn.disabled=true;
+    try{
+      const fd=new FormData();
+      fd.append('access_key',WEB3FORMS_KEY);
+      fd.append('subject','New EchoTribe demo request — '+company);
+      fd.append('from_name','EchoTribe Website');
+      fd.append('name',name); fd.append('email',email);
+      fd.append('company',company); fd.append('role',role);
+      const r=await fetch('https://api.web3forms.com/submit',{method:'POST',body:fd});
+      let j={}; try{ j=await r.json(); }catch(_){}
+      console.log('[demo-form] Web3Forms HTTP',r.status,'→',j);
+      if(r.ok && j && j.success){ showDemoOk(); return; }
+      const why=(j&&j.message)?j.message:('HTTP '+r.status);
+      setDemoStatus('Hmm — that didn’t send ('+why+'). Please email us directly at '+demoMailLink(name,email,company,role)+' and we’ll take it from there.');
+    }catch(netErr){
+      console.error('[demo-form] submit failed:',netErr);
+      setDemoStatus('We couldn’t reach our form service just now. Please email us directly at '+demoMailLink(name,email,company,role)+' and we’ll follow up.');
+    }finally{
+      btn.textContent=orig; btn.disabled=false;
+    }
+  });
 </script>
 </body>
 </html>
