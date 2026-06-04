@@ -187,6 +187,9 @@
   .ferr{display:none;color:#D81B60;font-size:13.5px;font-weight:600;margin-top:14px}
   .ferr.show{display:block}
   .fnote{text-align:center;font-size:12px;color:#9a9aa5;margin-top:14px}
+  .fmsg{display:none;font-size:13.5px;font-weight:600;color:#D81B60;margin-top:16px;line-height:1.5}
+  .fmsg.show{display:block}
+  .fmsg a{color:#8127CF;text-decoration:underline;font-weight:700}
   .fok{text-align:center;padding:8px 0 4px}
   .fok .chk{width:60px;height:60px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;margin:4px auto 18px}
   .fok h3{font-family:var(--serif);font-size:25px;font-weight:700}
@@ -438,6 +441,7 @@
         <input type="checkbox" name="botcheck" style="display:none" tabindex="-1" autocomplete="off">
         <div class="ferr" id="demoErr">Please fill in all fields.</div>
         <button type="submit" class="btn btn-grad">Request demo</button>
+        <div class="fmsg" id="demoStatus" role="alert"></div>
         <p class="fnote">No spam. We'll only reach out to schedule your demo.</p>
       </form>
     </div>
@@ -458,11 +462,12 @@
   document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 
   /* ── DEMO REQUEST FORM ───────────────────────────────────────────────
-     Submissions are emailed to kelly@echotribe.ai via Web3Forms.
-     TO GO LIVE: get a free access key (no account) at https://web3forms.com
-     — enter kelly@echotribe.ai, they email you a key, paste it below.
-     Until then (or if the service is unreachable) the form falls back to
-     opening the visitor's mail app pre-filled, so no lead is ever lost. */
+     Submissions POST to Web3Forms and are emailed to kelly@echotribe.ai.
+     The access key below is a publishable client-side key (safe to expose).
+     On success → in-page "You're on the list" card.
+     On any failure (network error, spam rejection, etc.) → an inline message
+     with a prefilled mailto link the visitor can click — NO auto mail popup.
+     The full Web3Forms response is logged to the console ([demo-form] …). */
   const WEB3FORMS_KEY='0a20b90a-5333-40aa-8486-f80b914f8391';
   const DEMO_EMAIL='kelly@echotribe.ai';
 
@@ -484,6 +489,13 @@
   function showDemoOk(){ document.getElementById('demoView').style.display='none'; document.getElementById('demoOk').style.display='block'; }
 
   const demoForm=document.getElementById('demoForm');
+  const demoStatus=document.getElementById('demoStatus');
+  function setDemoStatus(html){ if(!html){ demoStatus.classList.remove('show'); demoStatus.innerHTML=''; return; } demoStatus.innerHTML=html; demoStatus.classList.add('show'); }
+  function demoMailLink(name,email,company,role){
+    const sub=encodeURIComponent('EchoTribe demo request — '+company);
+    const body=encodeURIComponent('Name: '+name+'\nEmail: '+email+'\nCompany: '+company+'\nYou are a: '+role);
+    return '<a href="mailto:'+DEMO_EMAIL+'?subject='+sub+'&body='+body+'">'+DEMO_EMAIL+'</a>';
+  }
   demoForm&&demoForm.addEventListener('submit',async function(e){
     e.preventDefault();
     const name=document.getElementById('d-name').value.trim();
@@ -492,28 +504,28 @@
     const role=document.getElementById('d-role').value;
     const err=document.getElementById('demoErr');
     if(!name||!email||!company||!role){ err.classList.add('show'); return; }
-    err.classList.remove('show');
+    err.classList.remove('show'); setDemoStatus('');
     const btn=demoForm.querySelector('button[type=submit]'); const orig=btn.textContent;
     btn.textContent='Sending…'; btn.disabled=true;
-    const keyReady=WEB3FORMS_KEY && WEB3FORMS_KEY.indexOf('YOUR_')!==0;
-    if(keyReady){
-      try{
-        const fd=new FormData();
-        fd.append('access_key',WEB3FORMS_KEY);
-        fd.append('subject','New EchoTribe demo request — '+company);
-        fd.append('from_name','EchoTribe Website');
-        fd.append('name',name); fd.append('email',email);
-        fd.append('company',company); fd.append('role',role);
-        const r=await fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Accept':'application/json'},body:fd});
-        const j=await r.json();
-        if(j.success){ showDemoOk(); btn.textContent=orig; btn.disabled=false; return; }
-      }catch(_){ /* fall through to mailto */ }
+    try{
+      const fd=new FormData();
+      fd.append('access_key',WEB3FORMS_KEY);
+      fd.append('subject','New EchoTribe demo request — '+company);
+      fd.append('from_name','EchoTribe Website');
+      fd.append('name',name); fd.append('email',email);
+      fd.append('company',company); fd.append('role',role);
+      const r=await fetch('https://api.web3forms.com/submit',{method:'POST',body:fd});
+      let j={}; try{ j=await r.json(); }catch(_){}
+      console.log('[demo-form] Web3Forms HTTP',r.status,'→',j);
+      if(r.ok && j && j.success){ showDemoOk(); return; }
+      const why=(j&&j.message)?j.message:('HTTP '+r.status);
+      setDemoStatus('Hmm — that didn’t send ('+why+'). Please email us directly at '+demoMailLink(name,email,company,role)+' and we’ll take it from there.');
+    }catch(netErr){
+      console.error('[demo-form] submit failed:',netErr);
+      setDemoStatus('We couldn’t reach our form service just now. Please email us directly at '+demoMailLink(name,email,company,role)+' and we’ll follow up.');
+    }finally{
+      btn.textContent=orig; btn.disabled=false;
     }
-    /* Fallback: open the visitor's mail client pre-filled so the lead still reaches the inbox */
-    const sub=encodeURIComponent('EchoTribe demo request — '+company);
-    const body=encodeURIComponent('Name: '+name+'\nEmail: '+email+'\nCompany: '+company+'\nYou are a: '+role);
-    window.location.href='mailto:'+DEMO_EMAIL+'?subject='+sub+'&body='+body;
-    setTimeout(()=>{ showDemoOk(); btn.textContent=orig; btn.disabled=false; },300);
   });
 </script>
 </body>
